@@ -1,65 +1,51 @@
-import Image from "next/image";
+import HomeHero from "@/components/home/HomeHero";
 
-export default function Home() {
+export default function Page() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
+    <main className="bg-[#0A0A0C] text-[#F3F2EE]">
+      <HomeHero />
+
+      <section className="border-t border-white/10">
+        <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12">
+          <div className="flex items-end justify-between gap-6">
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.32em] text-white/55">
+                Selected
+              </p>
+              <h2 className="mt-3 text-2xl tracking-[-0.02em] sm:text-3xl">
+                Frames & Moments
+              </h2>
+            </div>
+
             <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              href="/work"
+              className="hidden text-[11px] uppercase tracking-[0.28em] text-white/55 hover:text-white md:block"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              View all work
+            </a>
+          </div>
+
+          {/* Placeholder strip (next step we’ll make this real data + links) */}
+          <div className="mt-8 grid gap-3 sm:grid-cols-3">
+            <div className="aspect-[4/5] rounded-2xl border border-white/10 bg-white/5" />
+            <div className="aspect-[4/5] rounded-2xl border border-white/10 bg-white/5" />
+            <div className="aspect-[4/5] rounded-2xl border border-white/10 bg-white/5" />
+          </div>
+
+          <div id="reel" className="mt-14 rounded-2xl border border-white/10 bg-white/5 p-6">
+            <p className="text-[11px] uppercase tracking-[0.32em] text-white/55">
+              Reel
+            </p>
+            <h3 className="mt-3 text-2xl tracking-[-0.02em]">
+              2026 Highlight Reel
+            </h3>
+            <p className="mt-3 max-w-2xl text-white/65">
+              Replace this block with your reel embed (YouTube/Vimeo/IG) once you
+              send the link.
+            </p>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </section>
+    </main>
   );
 }
