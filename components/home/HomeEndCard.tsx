@@ -86,7 +86,7 @@ export default function HomeEndCard() {
             <div className="mt-8 text-[11px] uppercase tracking-[0.32em] text-black/55">
               Work
             </div>
-            <div className="mt-2 text-sm text-black/70">Film • Edit • Photo</div>
+            <div className="mt-2 text-sm text-black/70">Directing • Cinematography • Edit</div>
           </div>
         </div>
       </div>
