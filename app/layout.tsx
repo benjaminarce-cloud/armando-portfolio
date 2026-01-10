@@ -1,10 +1,9 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Bodoni_Moda, Inter } from "next/font/google";
 
-const serif = Cormorant_Garamond({
+const serif = Bodoni_Moda({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
   variable: "--font-serif",
   display: "swap",
 });
