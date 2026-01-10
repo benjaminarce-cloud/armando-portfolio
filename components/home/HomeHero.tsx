@@ -20,16 +20,15 @@ export default function HomeHero() {
           />
         </video>
 
-        {/* Dark cinematic wash */}
+        {/* Dark wash */}
         <div className="absolute inset-0 bg-black/55" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/35 to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/10" />
       </div>
 
       {/* Top nav */}
       <header className="relative z-10">
         <div className="mx-auto max-w-6xl px-5 pt-6 sm:px-8 lg:px-12">
           <div className="flex items-center justify-between">
-            {/* Left: location + descriptor */}
             <div className="flex items-baseline gap-3">
               <span className="text-[11px] uppercase tracking-[0.32em] text-white/55">
                 San Diego
@@ -39,7 +38,6 @@ export default function HomeHero() {
               </span>
             </div>
 
-            {/* Right: nav only */}
             <nav className="flex items-center gap-6">
               <Link
                 href="/work"
@@ -64,29 +62,19 @@ export default function HomeHero() {
         </div>
       </header>
 
-      {/* Hero copy */}
+      {/* Bottom-left title card */}
       <div className="relative z-10">
-        <div className="mx-auto max-w-6xl px-5 pb-16 pt-24 sm:px-8 sm:pt-28 lg:px-12 lg:pt-32">
-          <p className="text-[11px] uppercase tracking-[0.32em] text-white/55">
-            Sports film • Social-first campaigns • Run culture
-          </p>
+        <div className="mx-auto max-w-6xl px-5 sm:px-8 lg:px-12">
+          <div className="absolute bottom-10 left-0 right-0">
+            <div className="mx-auto max-w-6xl px-5 sm:px-8 lg:px-12">
+              {/* Optional tiny kicker above the name (kept minimal) */}
+              <p className="text-[11px] uppercase tracking-[0.32em] text-white/55">
+                Sports film • Social-first • Run culture
+              </p>
 
-          {/* Headline */}
-          <h1 className="mt-6 text-[clamp(52px,7vw,92px)] leading-[0.92] tracking-[-0.04em]">
-            Armando Aguilar
-          </h1>
-
-          {/* Supporting line */}
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-white/70 sm:text-lg">
-            Cinematic sports stories for teams, brands, and athletes — built for
-            reels, drops, and game-day energy.
-          </p>
-
-          {/* Minimal cue (no buttons) */}
-          <div className="mt-14">
-            <div className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.32em] text-white/40">
-              <span className="h-px w-10 bg-white/15" />
-              <span>Selected frames below</span>
+              <h1 className="mt-4 text-[clamp(52px,7vw,92px)] leading-[0.92] tracking-[-0.04em]">
+                Armando Aguilar
+              </h1>
             </div>
           </div>
         </div>
