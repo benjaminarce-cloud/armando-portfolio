@@ -23,8 +23,7 @@ export default function HomeHero() {
         {/* Keep the image vibrant:
             1) remove the full-screen dark wash
             2) only add a localized bottom-left gradient for text legibility */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-transparent to-transparent" />
+       <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
       </div>
 
       {/* Foreground layout */}
