@@ -8,13 +8,13 @@ export type Project = {
   coverSrc: string;
   coverAlt?: string;
 
-  // Used by SpotlightRail (optional, but your code expects it)
   previewSrc?: string;
+  posterSrc?: string;   // ✅ add this
 
   tags?: string[];
   client?: string;
   href?: string;
-  role?: string; // add if /work page renders p.role
+  role?: string;
 };
 
 export const projects: Project[] = [
