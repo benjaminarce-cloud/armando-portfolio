@@ -23,7 +23,7 @@ export default function HomeHero() {
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0C]/95 via-[#0A0A0C]/45 to-[#0A0A0C]/20" />
         <div className="absolute inset-0 bg-[radial-gradient(1100px_circle_at_50%_28%,rgba(255,255,255,0.08),transparent_55%)]" />
 
-        {/* Optional grain overlay (safe if missing; just remove if you want) */}
+        {/* Optional grain overlay */}
         <div className="pointer-events-none absolute inset-0 opacity-[0.10] mix-blend-soft-light">
           <Image
             src="/img/grain.png"
