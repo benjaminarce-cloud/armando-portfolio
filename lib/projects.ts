@@ -9,7 +9,6 @@ export type Project = {
   coverAlt?: string;
 
   previewSrc?: string;
-  posterSrc?: string;   // ✅ add this
 
   tags?: string[];
   client?: string;
