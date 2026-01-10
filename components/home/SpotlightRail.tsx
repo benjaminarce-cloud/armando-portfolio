@@ -58,11 +58,11 @@ export default function SpotlightRail() {
   }, []);
 
   return (
-    <section className="border-t border-white/10 bg-[#0A0A0C] text-[#F3F2EE]">
+    <section className="border-t border-black/10 bg-[#F3F2EE] text-[#0A0A0C]">
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12">
         <div className="flex items-end justify-between gap-6">
           <div>
-            <p className="text-[11px] uppercase tracking-[0.32em] text-white/55">
+            <p className="text-[11px] uppercase tracking-[0.32em] text-black/55">
               Featured
             </p>
 
@@ -70,14 +70,14 @@ export default function SpotlightRail() {
               Selected work.
             </h2>
 
-            <p className="mt-4 max-w-xl text-sm text-white/55">
+            <p className="mt-4 max-w-xl text-sm text-black/55">
               Hover to preview. Tap to open.
             </p>
           </div>
 
           <Link
             href="/work"
-            className="hidden text-[11px] uppercase tracking-[0.28em] text-white/55 hover:text-[var(--accent)] md:block"
+            className="hidden text-[11px] uppercase tracking-[0.28em] text-black/55 hover:text-black md:block"
           >
             View all work
           </Link>
@@ -88,8 +88,8 @@ export default function SpotlightRail() {
             ref={scrollerRef}
             className={[
               "flex gap-4",
-              "overflow-x-auto overflow-y-visible", // IMPORTANT: prevents top-edge clipping
-              "py-8 pb-10", // IMPORTANT: gives room for scale/translate
+              "overflow-x-auto overflow-y-visible", // prevents top-edge clipping when scaled
+              "py-10 pb-12", // more breathing room = more “poster wall” presence
               "px-1",
               "[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
             ].join(" ")}
@@ -110,11 +110,11 @@ export default function SpotlightRail() {
                   ].join(" ")}
                   style={{ scrollSnapAlign: "center" }}
                 >
-                  {/* OUTER glow (not clipped by the card's overflow-hidden) */}
+                  {/* A24-ish “paper lift” glow (subtle, warm) */}
                   {isHot && (
                     <span
                       aria-hidden
-                      className="pointer-events-none absolute -inset-6 rounded-[40px] bg-white/10 blur-2xl opacity-25"
+                      className="pointer-events-none absolute -inset-6 rounded-[40px] bg-black/10 blur-2xl opacity-40"
                     />
                   )}
 
@@ -124,11 +124,11 @@ export default function SpotlightRail() {
             })}
           </div>
 
-          <div className="mt-2 flex items-center justify-between text-[11px] uppercase tracking-[0.28em] text-white/55">
+          <div className="mt-2 flex items-center justify-between text-[11px] uppercase tracking-[0.28em] text-black/55">
             <span className="hidden sm:inline">Swipe / scroll</span>
             <span className="inline-flex items-center gap-3">
-              <span className="h-px w-10 bg-white/15" />
-              <Link href="/work" className="hover:text-[var(--accent)]">
+              <span className="h-px w-10 bg-black/15" />
+              <Link href="/work" className="hover:text-black">
                 Explore all
               </Link>
             </span>
@@ -151,13 +151,13 @@ function RailCard({ p, isActive }: { p: Item; isActive: boolean }) {
     <Link
       href={`/work/${p.slug}`}
       className={[
-        "relative block rounded-3xl border bg-white/[0.03] overflow-hidden",
+        "relative block rounded-3xl overflow-hidden",
         "transform-gpu will-change-transform",
-        "transition-[transform,opacity,border-color,box-shadow] duration-300 ease-out",
-        "border-white/10",
+        "transition-[transform,opacity,box-shadow] duration-300 ease-out",
+        // White section = cards should feel like “glossy prints” on a table
         isActive
-          ? "opacity-100 -translate-y-2 scale-[1.05] border-white/30 shadow-[0_40px_140px_rgba(0,0,0,0.75)]"
-          : "opacity-75 scale-[0.985] hover:opacity-95 hover:-translate-y-1 hover:scale-[1.01] hover:border-white/20 hover:shadow-[0_26px_90px_rgba(0,0,0,0.6)]",
+          ? "opacity-100 -translate-y-2 scale-[1.06] shadow-[0_36px_120px_rgba(0,0,0,0.22)]"
+          : "opacity-80 scale-[0.99] hover:opacity-95 hover:-translate-y-1 hover:scale-[1.02] shadow-[0_18px_60px_rgba(0,0,0,0.14)]",
       ].join(" ")}
     >
       {/* Vertical reel frame */}
@@ -185,11 +185,14 @@ function RailCard({ p, isActive }: { p: Item; isActive: boolean }) {
             />
           )}
 
-          {/* overlay gradient + meta */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/10" />
+          {/* Softer “print” vignette so text reads without screaming */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+
+          {/* micro-border that reads like a photo edge */}
+          <div className="pointer-events-none absolute inset-0 ring-1 ring-white/10" />
 
           <div className="absolute bottom-0 left-0 right-0 p-5">
-            <p className="text-[11px] uppercase tracking-[0.32em] text-white/55">
+            <p className="text-[11px] uppercase tracking-[0.32em] text-white/60">
               {(p as any).category} • {p.year}
             </p>
 
@@ -198,18 +201,13 @@ function RailCard({ p, isActive }: { p: Item; isActive: boolean }) {
             </h3>
 
             {(p as any).role ? (
-              <p className="mt-2 text-sm text-white/60">{(p as any).role}</p>
+              <p className="mt-2 text-sm text-white/65">{(p as any).role}</p>
             ) : null}
 
-            <div className="mt-5 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.28em] text-white/55">
-              <span className="h-px w-10 bg-white/15" />
-              <span
-                className={[
-                  "transition-colors",
-                  isActive ? "text-[var(--accent)]" : "group-hover:text-white",
-                ].join(" ")}
-              >
-                Watch
+            <div className="mt-5 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.28em] text-white/60">
+              <span className="h-px w-10 bg-white/20" />
+              <span className="transition-colors group-hover:text-white">
+                Open
               </span>
             </div>
           </div>
