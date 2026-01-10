@@ -43,31 +43,47 @@ export default function HomeEndCard() {
           <div className="lg:col-span-5">
             <div className="border-t border-black/10">
               {LINKS.map((x) => (
-                <a
-                  key={x.label}
-                  href={x.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group block border-b border-black/10 py-6 transition-colors hover:bg-[#0A0A0C]"
-                >
-                  <div className="flex items-center justify-between gap-6 px-0">
-                    <div className="text-[11px] uppercase tracking-[0.32em] text-black/70 transition-colors group-hover:text-[#F3F2EE]">
-                      {x.label}
-                    </div>
+              <a
+  key={item.label}
+  href={item.href}
+  target="_blank"
+  rel="noreferrer"
+  className="group relative block border-b border-black/10 py-5"
+>
+  {/* inset hover slab */}
+  <span
+    aria-hidden
+    className="
+      pointer-events-none absolute inset-x-0 inset-y-2
+      rounded-2xl bg-transparent
+      transition-colors duration-200
+      group-hover:bg-[#0A0A0C]
+    "
+  />
 
-                    <div className="flex items-center gap-2">
-                      <span className="text-[11px] uppercase tracking-[0.32em] text-black/35 transition-colors group-hover:text-white/70">
-                        Open
-                      </span>
-                      <span className="translate-x-0 text-black/35 transition-all group-hover:translate-x-1 group-hover:text-white/70">
-                        →
-                      </span>
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
+  {/* content */}
+  <div className="relative flex items-end justify-between gap-6 px-6">
+    <div>
+      <div className="text-[11px] uppercase tracking-[0.32em] text-black/55 transition-colors group-hover:text-white/55">
+        {item.label}
+      </div>
+
+      {/* if you're removing usernames, delete this whole block on Contact/Home */}
+      <div className="mt-2 font-[var(--font-sans)] text-[22px] leading-tight text-black transition-colors group-hover:text-[#F3F2EE] sm:text-[26px]">
+        {item.value}
+      </div>
+    </div>
+
+    <div className="pb-1 text-[11px] uppercase tracking-[0.32em] text-black/40 transition-colors group-hover:text-white/70">
+      <span className="inline-flex items-center gap-2">
+        Open
+        <span className="translate-x-0 transition-transform duration-200 group-hover:translate-x-1">
+          →
+        </span>
+      </span>
+    </div>
+  </div>
+</a>
 
           {/* Right */}
           <div className="lg:col-span-2">
