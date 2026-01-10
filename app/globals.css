@@ -14,3 +14,8 @@ html,
 body {
   height: 100%;
 }
+
+.editorial-title {
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+}
