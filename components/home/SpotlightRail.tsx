@@ -54,23 +54,24 @@ export default function SpotlightRail() {
     const el = scrollerRef.current;
     const first = cardRefs.current[0];
     if (!el || !first) return;
-    // subtle nudge so it doesn't start awkwardly left
     el.scrollLeft = 12;
   }, []);
 
   return (
-    <section className="bg-[#0A0A0C] text-[#F3F2EE] border-t border-white/10">
+    <section className="border-t border-white/10 bg-[#0A0A0C] text-[#F3F2EE]">
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12">
         <div className="flex items-end justify-between gap-6">
           <div>
             <p className="text-[11px] uppercase tracking-[0.32em] text-white/55">
               Featured
             </p>
-            <h2 className="font-display editorial-title mt-4 text-[clamp(34px,4.2vw,56px)]">
-              Scroll the reel.
+
+            <h2 className="font-display editorial-title mt-4 text-[clamp(38px,5.6vw,72px)] leading-[0.95] tracking-[-0.03em]">
+              Selected work.
             </h2>
-            <p className="mt-4 max-w-xl text-white/60">
-              Hover to preview. Tap to open the project.
+
+            <p className="mt-4 max-w-xl text-sm text-white/55">
+              Hover to preview. Tap to open.
             </p>
           </div>
 
@@ -85,25 +86,42 @@ export default function SpotlightRail() {
         <div className="mt-10">
           <div
             ref={scrollerRef}
-            className="flex gap-4 overflow-x-auto pb-6 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className={[
+              "flex gap-4",
+              "overflow-x-auto overflow-y-visible", // IMPORTANT: prevents top-edge clipping
+              "py-8 pb-10", // IMPORTANT: gives room for scale/translate
+              "px-1",
+              "[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+            ].join(" ")}
           >
-            {items.map((p, idx) => (
-              <div
-                key={p.slug}
-                ref={(node) => {
-                  cardRefs.current[idx] = node;
-                }}
-                onMouseEnter={() => setActive(idx)}
-                className={[
-                  "group relative shrink-0 scroll-mx-6",
-                  "snap-center",
-                  idx === active ? "z-10" : "z-0",
-                ].join(" ")}
-                style={{ scrollSnapAlign: "center" }}
-              >
-                <RailCard p={p} isActive={idx === active} />
-              </div>
-            ))}
+            {items.map((p, idx) => {
+              const isHot = idx === active;
+
+              return (
+                <div
+                  key={p.slug}
+                  ref={(node) => {
+                    cardRefs.current[idx] = node;
+                  }}
+                  onMouseEnter={() => setActive(idx)}
+                  className={[
+                    "group relative shrink-0 scroll-mx-6 snap-center",
+                    isHot ? "z-20" : "z-10",
+                  ].join(" ")}
+                  style={{ scrollSnapAlign: "center" }}
+                >
+                  {/* OUTER glow (not clipped by the card's overflow-hidden) */}
+                  {isHot && (
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute -inset-6 rounded-[40px] bg-white/10 blur-2xl opacity-25"
+                    />
+                  )}
+
+                  <RailCard p={p} isActive={isHot} />
+                </div>
+              );
+            })}
           </div>
 
           <div className="mt-2 flex items-center justify-between text-[11px] uppercase tracking-[0.28em] text-white/55">
@@ -123,25 +141,33 @@ export default function SpotlightRail() {
 
 function RailCard({ p, isActive }: { p: Item; isActive: boolean }) {
   // Only load video when spotlighted (perf)
-  const showVideo = isActive && Boolean(p.previewSrc);
+  const showVideo = isActive && Boolean((p as any).previewSrc);
+
+  const previewSrc = (p as any).previewSrc as string | undefined;
+  const posterSrc =
+    ((p as any).posterSrc as string | undefined) ?? (p as any).coverSrc;
 
   return (
     <Link
       href={`/work/${p.slug}`}
       className={[
-        "block rounded-3xl border border-white/10 bg-white/[0.03] overflow-hidden",
-        "transition duration-700 ease-out",
-        isActive ? "scale-[1.02] border-white/20" : "scale-[0.98] opacity-80 hover:opacity-95",
+        "relative block rounded-3xl border bg-white/[0.03] overflow-hidden",
+        "transform-gpu will-change-transform",
+        "transition-[transform,opacity,border-color,box-shadow] duration-300 ease-out",
+        "border-white/10",
+        isActive
+          ? "opacity-100 -translate-y-2 scale-[1.05] border-white/30 shadow-[0_40px_140px_rgba(0,0,0,0.75)]"
+          : "opacity-75 scale-[0.985] hover:opacity-95 hover:-translate-y-1 hover:scale-[1.01] hover:border-white/20 hover:shadow-[0_26px_90px_rgba(0,0,0,0.6)]",
       ].join(" ")}
     >
       {/* Vertical reel frame */}
       <div className="relative w-[240px] sm:w-[260px] md:w-[300px] lg:w-[320px]">
         <div className="relative aspect-[9/16] bg-black">
-          {showVideo ? (
+          {showVideo && previewSrc ? (
             <video
               className="absolute inset-0 h-full w-full object-cover"
-             src={p.previewSrc}
-poster={p.posterSrc ?? p.coverSrc}
+              src={previewSrc}
+              poster={posterSrc}
               muted
               playsInline
               loop
@@ -150,7 +176,7 @@ poster={p.posterSrc ?? p.coverSrc}
             />
           ) : (
             <Image
-              src={p.posterSrc ?? p.coverSrc}
+              src={posterSrc}
               alt={`${p.title} poster frame`}
               fill
               sizes="320px"
@@ -164,16 +190,25 @@ poster={p.posterSrc ?? p.coverSrc}
 
           <div className="absolute bottom-0 left-0 right-0 p-5">
             <p className="text-[11px] uppercase tracking-[0.32em] text-white/55">
-              {p.category} • {p.year}
+              {(p as any).category} • {p.year}
             </p>
+
             <h3 className="font-display editorial-title mt-2 text-[clamp(22px,2.2vw,30px)]">
               {p.title}
             </h3>
-            <p className="mt-2 text-sm text-white/60">{p.role}</p>
+
+            {(p as any).role ? (
+              <p className="mt-2 text-sm text-white/60">{(p as any).role}</p>
+            ) : null}
 
             <div className="mt-5 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.28em] text-white/55">
               <span className="h-px w-10 bg-white/15" />
-              <span className={isActive ? "text-[var(--accent)]" : "group-hover:text-white"}>
+              <span
+                className={[
+                  "transition-colors",
+                  isActive ? "text-[var(--accent)]" : "group-hover:text-white",
+                ].join(" ")}
+              >
                 Watch
               </span>
             </div>
