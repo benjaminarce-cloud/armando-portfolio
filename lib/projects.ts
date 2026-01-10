@@ -10,7 +10,10 @@ export type Project = {
   category: ProjectCategory;
   year: string;
   role: string;
-  coverSrc: string; // MUST exist (image path in /public)
+
+  coverSrc: string;    // used for /work poster wall
+  posterSrc: string;   // used for the rail (fast)
+  previewSrc?: string; // optional mp4 loop for spotlight
   instagramUrl: string;
 };
 
