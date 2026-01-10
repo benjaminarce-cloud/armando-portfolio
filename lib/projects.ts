@@ -1,48 +1,90 @@
+export type ProjectCategory =
+  | "SDSU Athletics"
+  | "Run Club"
+  | "Brand / Drop"
+  | "Social / Hype";
+
 export type Project = {
   slug: string;
   title: string;
+  category: ProjectCategory;
   year: string;
   role: string;
-  category: "Athletics" | "Run Club" | "Brand";
-  frames: Array<{ src: string; alt: string }>;
+  coverSrc: string; // MUST exist (image path in /public)
+  instagramUrl: string;
 };
 
 export const projects: Project[] = [
   {
-    slug: "sdsu-hoops-night-run",
-    title: "SDSU Hoops — Night Run",
+    slug: "project-01",
+    title: "Hype Cut",
+    category: "SDSU Athletics",
     year: "2025",
-    role: "Director • Camera • Edit",
-    category: "Athletics",
-    frames: [
-      { src: "/img/projects/sdsu-hoops/frame-01.jpg", alt: "Crowd lights and pregame intensity" },
-      { src: "/img/projects/sdsu-hoops/frame-02.jpg", alt: "Tunnel close-up, hard shadows" }
-    ]
+    role: "Shoot + Edit",
+    coverSrc: "/img/hero-poster.jpg",
+    instagramUrl: "https://www.instagram.com/p/DMqsa7STxqz/",
   },
   {
-    slug: "uvu-club-run-series",
-    title: "UVU Club — Run Series",
+    slug: "project-02",
+    title: "Game Day Energy",
+    category: "SDSU Athletics",
     year: "2025",
-    role: "Camera • Edit",
+    role: "Shoot + Edit",
+    coverSrc: "/img/hero-poster.jpg",
+    instagramUrl: "https://www.instagram.com/p/DRxn1KkEi1_/",
+  },
+  {
+    slug: "project-03",
+    title: "Night Run",
     category: "Run Club",
-    frames: [
-      { src: "/img/projects/run-club/frame-01.jpg", alt: "Shoes on pavement, early morning" },
-      { src: "/img/projects/run-club/frame-02.jpg", alt: "Pack shot, shallow depth" }
-    ]
+    year: "2025",
+    role: "Shoot + Edit",
+    coverSrc: "/img/hero-poster.jpg",
+    instagramUrl: "https://www.instagram.com/p/DP9pVblEo7y/",
   },
   {
-    slug: "brand-drop-social-tease",
-    title: "Brand Drop — Social Tease",
+    slug: "project-04",
+    title: "Pace Pack",
+    category: "Run Club",
     year: "2024",
-    role: "Edit • Color • Motion",
-    category: "Brand",
-    frames: [
-      { src: "/img/projects/brand-drop/frame-01.jpg", alt: "Product silhouette in hard light" },
-      { src: "/img/projects/brand-drop/frame-02.jpg", alt: "Texture macro, hands framing" }
-    ]
-  }
+    role: "Shoot + Edit",
+    coverSrc: "/img/hero-poster.jpg",
+    instagramUrl: "https://www.instagram.com/p/DJfInIlTo5I/",
+  },
+  {
+    slug: "project-05",
+    title: "Teaser Drop",
+    category: "Brand / Drop",
+    year: "2025",
+    role: "Edit + Color",
+    coverSrc: "/img/hero-poster.jpg",
+    instagramUrl: "https://www.instagram.com/p/DOyy_XpD1Dd/",
+  },
+  {
+    slug: "project-06",
+    title: "Mic’d Moments",
+    category: "Social / Hype",
+    year: "2025",
+    role: "Shoot + Edit",
+    coverSrc: "/img/hero-poster.jpg",
+    instagramUrl: "https://www.instagram.com/p/DMYkz9jzNXQ/",
+  },
+  {
+    slug: "project-07",
+    title: "Sideline Reactions",
+    category: "Social / Hype",
+    year: "2025",
+    role: "Shoot + Edit",
+    coverSrc: "/img/hero-poster.jpg",
+    instagramUrl: "https://www.instagram.com/p/DMGVqUISj_E/",
+  },
+  {
+    slug: "project-08",
+    title: "Training Detail",
+    category: "SDSU Athletics",
+    year: "2024",
+    role: "Shoot + Edit",
+    coverSrc: "/img/hero-poster.jpg",
+    instagramUrl: "https://www.instagram.com/p/DCFbVI9JWQZ/",
+  },
 ];
-
-export function getProjectBySlug(slug: string) {
-  return projects.find((p) => p.slug === slug);
-}
