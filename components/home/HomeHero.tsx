@@ -65,7 +65,7 @@ export default function HomeHero() {
         {/* Bottom-left title card */}
         <div className="mt-auto">
           <div className="mx-auto max-w-6xl px-5 pb-10 sm:px-8 sm:pb-12 lg:px-12 lg:pb-16">
-            <div className="relative inline-block">
+            <div className="relative inline-block max-w-[92vw]">
               {/* ghost layer */}
               <div
                 aria-hidden="true"
@@ -79,7 +79,8 @@ export default function HomeHero() {
                   blur-[0.2px]
                   select-none
                   pointer-events-none
-                  whitespace-nowrap
+                  whitespace-normal sm:whitespace-nowrap
+                  break-words
                 "
               >
                 Armando Aguilar
@@ -95,7 +96,8 @@ export default function HomeHero() {
                   tracking-[-0.02em]
                   text-white
                   drop-shadow-[0_18px_60px_rgba(0,0,0,0.65)]
-                  whitespace-nowrap
+                  whitespace-normal sm:whitespace-nowrap
+                  break-words
                   pb-[0.08em]
                 "
               >
