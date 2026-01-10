@@ -63,46 +63,40 @@ export default function HomeHero() {
         </header>
 
         {/* Bottom-left title card */}
-        <div className="mt-auto">
-          <div className="mx-auto max-w-6xl px-5 pb-10 sm:px-8 sm:pb-12 lg:px-12 lg:pb-14">
-            {/* C) Ghost layer title */}
-            <div className="relative inline-block">
-              {/* ghost layer */}
-              <div
-                aria-hidden="true"
-                className="
-                  absolute -top-[0.06em] left-[0.02em]
-                  font-[var(--font-serif)]
-                  text-[clamp(64px,8.8vw,124px)]
-                  leading-[0.82]
-                  tracking-[-0.02em]
-                  text-white/22
-                  blur-[0.2px]
-                  select-none
-                  pointer-events-none
-                "
-              >
-                Armando Aguilar
-              </div>
+      <div className="relative inline-block">
+  {/* ghost layer */}
+  <div
+    aria-hidden="true"
+    className="
+      absolute -top-[0.06em] left-[0.02em]
+      font-[var(--font-serif)]
+      text-[clamp(64px,8.8vw,124px)]
+      leading-[0.82]
+      tracking-[-0.02em]
+      text-white/22
+      blur-[0.2px]
+      select-none
+      pointer-events-none
+      whitespace-nowrap
+    "
+  >
+    Armando Aguilar
+  </div>
 
-              {/* main layer */}
-              <h1
-                className="
-                  relative
-                  font-[var(--font-serif)]
-                  text-[clamp(64px,8.8vw,124px)]
-                  leading-[0.82]
-                  tracking-[-0.02em]
-                  text-white
-                  drop-shadow-[0_18px_60px_rgba(0,0,0,0.65)]
-                "
-              >
-                Armando Aguilar
-              </h1>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+  {/* main layer */}
+  <h1
+    className="
+      relative
+      font-[var(--font-serif)]
+      text-[clamp(64px,8.8vw,124px)]
+      leading-[0.82]
+      tracking-[-0.02em]
+      text-white
+      drop-shadow-[0_18px_60px_rgba(0,0,0,0.65)]
+      whitespace-nowrap
+      pb-[0.08em]
+    "
+  >
+    Armando Aguilar
+  </h1>
+</div>
