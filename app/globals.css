@@ -1,7 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: dark;
+  --bg-dark: #0a0a0c;
+  --fg-dark: #f3f2ee;
+
+  --bg-paper: #f4f3ef;
+  --fg-ink: #0a0a0c;
+
+  --accent: #7a0b12; /* deep crimson */
 }
 
 html,
