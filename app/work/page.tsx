@@ -1,63 +1,108 @@
 import Image from "next/image";
 import Link from "next/link";
-import { selectedFrames } from "@/lib/frames";
+import { projects } from "@/lib/projects";
 
 export default function WorkPage() {
   return (
-    <main className="min-h-screen bg-[#0A0A0C] text-[#F3F2EE]">
+    <main className="min-h-screen bg-[var(--bg-paper)] text-[var(--fg-ink)]">
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12">
-        <div className="flex items-end justify-between gap-6">
-          <div>
-            <p className="text-[11px] uppercase tracking-[0.32em] text-white/55">
-              Work
-            </p>
-            <h1 className="mt-3 text-3xl tracking-[-0.03em] sm:text-5xl">
-              Campaigns & Projects
-            </h1>
-            <p className="mt-4 max-w-2xl text-white/65">
-              Social-first sports storytelling — shot and edited for energy, clarity, and replay.
-            </p>
-          </div>
-
+        {/* Top bar */}
+        <div className="flex items-center justify-between">
           <Link
             href="/"
-            className="hidden text-[11px] uppercase tracking-[0.28em] text-white/55 hover:text-white md:block"
+            className="text-[11px] uppercase tracking-[0.28em] text-black/60 hover:text-black"
           >
-            Back home
+            Armando Aguilar
           </Link>
+
+          <div className="flex items-center gap-6 text-[11px] uppercase tracking-[0.28em] text-black/60">
+            <a
+              href="https://instagram.com/armandoaguilare"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-black"
+            >
+              Instagram
+            </a>
+            <Link href="/contact" className="hover:text-black">
+              Contact
+            </Link>
+          </div>
         </div>
 
-        <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {selectedFrames.map((it) => (
-            <Link
-              key={it.id}
-              href={it.href}
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5"
-            >
-              <div className="relative aspect-[4/5]">
-                <Image
-                  src={it.imageSrc}
-                  alt={it.imageAlt}
-                  fill
-                  sizes="(max-width: 1024px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-black/10" />
-              </div>
+        {/* Heading */}
+        <div className="mt-14">
+          <p className="text-[11px] uppercase tracking-[0.32em] text-black/55">
+            Work
+          </p>
+          <h1 className="editorial-title mt-4 text-[clamp(44px,6vw,84px)]">
+            Films & Campaigns
+          </h1>
+          <p className="mt-6 max-w-2xl text-black/60">
+            Sports marketing films, social-first edits, and run culture stories —
+            built for replay.
+          </p>
+        </div>
 
-              <div className="absolute inset-x-0 bottom-0 p-5">
-                <p className="text-[11px] uppercase tracking-[0.28em] text-white/55">
-                  {it.year}
-                </p>
-                <p className="mt-2 text-lg tracking-[-0.02em]">{it.title}</p>
-                <p className="mt-1 text-sm text-white/60">{it.subtitle}</p>
-              </div>
+        {/* A24-ish grid */}
+        <div className="mt-14 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
+          {projects.map((p, i) => (
+            <article key={p.slug} className={tileOffset(i)}>
+              <Link href={`/work/${p.slug}`} className="group block">
+                <div className="relative">
+                  {/* Poster image */}
+                  <div className="relative aspect-[4/5] overflow-hidden bg-black/5">
+                    <Image
+                      src={p.coverSrc}
+                      alt={`${p.title} cover frame`}
+                      fill
+                      sizes="(max-width: 1024px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.02]"
+                    />
+                  </div>
 
-              <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/0 transition duration-500 group-hover:ring-white/15" />
-            </Link>
+                  {/* Minimal meta */}
+                  <div className="mt-6">
+                    <p className="text-[11px] uppercase tracking-[0.28em] text-black/50">
+                      {p.category} • {p.year}
+                    </p>
+
+                    <h2 className="editorial-title mt-3 text-3xl">
+                      {p.title}
+                    </h2>
+
+                    <p className="mt-3 text-sm text-black/60">
+                      {p.role}
+                    </p>
+
+                    <div className="mt-6 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.28em] text-black/55">
+                      <span className="h-px w-10 bg-black/15" />
+                      <span className="group-hover:text-black">
+                        View
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </article>
           ))}
         </div>
       </div>
     </main>
   );
+}
+
+/**
+ * Offsets mimic the “curated wall” feel (not a uniform catalog).
+ * Subtle, responsive-safe.
+ */
+function tileOffset(i: number) {
+  // Only offset on large screens so mobile stays clean.
+  const map: Record<number, string> = {
+    1: "lg:translate-y-10",
+    2: "lg:-translate-y-4",
+    4: "lg:translate-y-6",
+    5: "lg:-translate-y-8",
+  };
+  return map[i % 6] ?? "";
 }
