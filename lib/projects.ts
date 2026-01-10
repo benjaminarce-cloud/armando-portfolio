@@ -4,7 +4,8 @@ export type Project = {
   slug: string;
   title: string;
   year: number;
-  category: string; // <-- add this
+  category: string;
+  role: string; // <-- ADD THIS
   coverSrc: string;
   coverAlt?: string;
 
@@ -19,6 +20,7 @@ export const projects: Project[] = [
     slug: "nil-campaign",
     title: "NIL Campaign",
     category: "Campaign",
+    role: "Director / Editor",
     year: 2025,
     coverSrc: "/img/files/NIL%20campaign.jpg",
     coverAlt: "NIL campaign still frame",
@@ -28,6 +30,7 @@ export const projects: Project[] = [
     slug: "run-club",
     title: "Run Club",
     category: "Run Culture",
+    role: "Director / Editor",
     year: 2025,
     coverSrc: "/img/files/run%20club.jpg",
     coverAlt: "Run club still frame",
@@ -37,6 +40,7 @@ export const projects: Project[] = [
     slug: "cam-ward",
     title: "Cam Ward",
     category: "Athlete Profile",
+    role: "Director / Editor",
     year: 2025,
     coverSrc: "/img/files/cam%20ward.jpg",
     coverAlt: "Cam Ward still frame",
@@ -46,6 +50,7 @@ export const projects: Project[] = [
     slug: "off-szn",
     title: "Off Szn",
     category: "Training",
+    role: "Director / Editor",
     year: 2025,
     coverSrc: "/img/files/off%20szn.jpg",
     coverAlt: "Off season still frame",
@@ -55,6 +60,7 @@ export const projects: Project[] = [
     slug: "recap",
     title: "Recap",
     category: "Recap",
+    role: "Editor",
     year: 2025,
     coverSrc: "/img/files/recap.jpg",
     coverAlt: "Recap still frame",
@@ -64,6 +70,7 @@ export const projects: Project[] = [
     slug: "the-madness",
     title: "The Madness",
     category: "Game Day",
+    role: "Director / Editor",
     year: 2025,
     coverSrc: "/img/files/the%20madness.jpg",
     coverAlt: "The madness still frame",
@@ -73,6 +80,7 @@ export const projects: Project[] = [
     slug: "basketball",
     title: "Basketball",
     category: "Sports Film",
+    role: "Director / Editor",
     year: 2025,
     coverSrc: "/img/files/basketball.png",
     coverAlt: "Basketball still frame",
