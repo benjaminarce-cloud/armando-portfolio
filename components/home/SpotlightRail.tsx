@@ -150,7 +150,7 @@ poster={p.posterSrc ?? p.coverSrc}
             />
           ) : (
             <Image
-              src={p.posterSrc}
+              src={p.posterSrc ?? p.coverSrc}
               alt={`${p.title} poster frame`}
               fill
               sizes="320px"
