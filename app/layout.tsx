@@ -1,31 +1,33 @@
-import type { Metadata } from "next";
 import "./globals.css";
-import { DM_Serif_Display, Inter } from "next/font/google";
+import type { Metadata } from "next";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 
-const display = DM_Serif_Display({
+const serif = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: "400",
-  variable: "--font-display",
+  weight: ["500", "600", "700"],
+  variable: "--font-serif",
+  display: "swap",
 });
 
 const sans = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Armando Aguilar — Sports Film",
-  description: "Sports marketing films, social-first edits, and run culture stories.",
+  title: "Armando Aguilar",
+  description: "Sports filmmaker • San Diego",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+    <html lang="en">
+      <body className={`${sans.variable} ${serif.variable} antialiased`}>
+        {children}
+      </body>
     </html>
   );
 }
