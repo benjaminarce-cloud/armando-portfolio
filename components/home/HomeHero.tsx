@@ -71,14 +71,13 @@ export default function HomeHero() {
           <div className="mx-auto max-w-6xl px-5 pb-10 sm:px-8 sm:pb-12 lg:px-12 lg:pb-14">
             <h1
               className="
-                font-[var(--font-serif)]
-                text-[clamp(64px,8.5vw,120px)]
-                leading-[0.86]
-                tracking-[-0.03em]
-                font-semibold
-                text-white
-                drop-shadow-[0_30px_60px_rgba(0,0,0,0.65)]
-              "
+  font-[var(--font-serif)]
+  text-[clamp(64px,8.8vw,124px)]
+  leading-[0.82]
+  tracking-[-0.02em]
+  text-white
+  drop-shadow-[0_18px_60px_rgba(0,0,0,0.65)]
+"
             >
               Armando Aguilar
             </h1>
