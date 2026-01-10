@@ -5,14 +5,16 @@ export type Project = {
   title: string;
   year: number;
   category: string;
-  role: string; // <-- ADD THIS
   coverSrc: string;
   coverAlt?: string;
 
-  // Optional fields (safe to ignore if you don't use them yet)
+  // Used by SpotlightRail (optional, but your code expects it)
+  previewSrc?: string;
+
   tags?: string[];
   client?: string;
-  href?: string; // external link (optional)
+  href?: string;
+  role?: string; // add if /work page renders p.role
 };
 
 export const projects: Project[] = [
@@ -20,9 +22,8 @@ export const projects: Project[] = [
     slug: "nil-campaign",
     title: "NIL Campaign",
     category: "Campaign",
-    role: "Director / Editor",
     year: 2025,
-    coverSrc: "/img/files/NIL%20campaign.jpg",
+    coverSrc: "/img/files/nil-campaign.jpg",
     coverAlt: "NIL campaign still frame",
     tags: ["Social-first", "Sports"],
   },
@@ -30,9 +31,8 @@ export const projects: Project[] = [
     slug: "run-club",
     title: "Run Club",
     category: "Run Culture",
-    role: "Director / Editor",
     year: 2025,
-    coverSrc: "/img/files/run%20club.jpg",
+    coverSrc: "/img/files/run-club.jpg",
     coverAlt: "Run club still frame",
     tags: ["Community", "Lifestyle"],
   },
@@ -40,9 +40,8 @@ export const projects: Project[] = [
     slug: "cam-ward",
     title: "Cam Ward",
     category: "Athlete Profile",
-    role: "Director / Editor",
     year: 2025,
-    coverSrc: "/img/files/cam%20ward.jpg",
+    coverSrc: "/img/files/cam-ward.jpg",
     coverAlt: "Cam Ward still frame",
     tags: ["Profile", "Sports"],
   },
@@ -50,9 +49,8 @@ export const projects: Project[] = [
     slug: "off-szn",
     title: "Off Szn",
     category: "Training",
-    role: "Director / Editor",
     year: 2025,
-    coverSrc: "/img/files/off%20szn.jpg",
+    coverSrc: "/img/files/off-szn.jpg",
     coverAlt: "Off season still frame",
     tags: ["Workout", "Sports"],
   },
@@ -60,7 +58,6 @@ export const projects: Project[] = [
     slug: "recap",
     title: "Recap",
     category: "Recap",
-    role: "Editor",
     year: 2025,
     coverSrc: "/img/files/recap.jpg",
     coverAlt: "Recap still frame",
@@ -70,9 +67,8 @@ export const projects: Project[] = [
     slug: "the-madness",
     title: "The Madness",
     category: "Game Day",
-    role: "Director / Editor",
     year: 2025,
-    coverSrc: "/img/files/the%20madness.jpg",
+    coverSrc: "/img/files/the-madness.jpg",
     coverAlt: "The madness still frame",
     tags: ["Energy", "Crowd"],
   },
@@ -80,13 +76,20 @@ export const projects: Project[] = [
     slug: "basketball",
     title: "Basketball",
     category: "Sports Film",
-    role: "Director / Editor",
     year: 2025,
     coverSrc: "/img/files/basketball.png",
     coverAlt: "Basketball still frame",
     tags: ["Hoops", "Cinematic"],
   },
+  // Optional extra card if you want it:
+  // {
+  //   slug: "soccer",
+  //   title: "Soccer",
+  //   category: "Training",
+  //   year: 2025,
+  //   coverSrc: "/img/files/soccer.jpg",
+  //   coverAlt: "Soccer still frame",
+  // },
 ];
 
-// Alias in case other components import PROJECTS
 export const PROJECTS = projects;
