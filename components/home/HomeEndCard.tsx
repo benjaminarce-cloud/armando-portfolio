@@ -10,8 +10,8 @@ const LINKS = [
 export default function HomeEndCard() {
   return (
     <section className="bg-[#F3F2EE] text-[#0A0A0C]">
-      {/* End card (white footer) */}
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12">
+        {/* top line */}
         <div className="flex items-center justify-between border-t border-black/10 pt-6">
           <div className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em] text-black/55">
             <span>End</span>
@@ -42,48 +42,39 @@ export default function HomeEndCard() {
           {/* Social links */}
           <div className="lg:col-span-5">
             <div className="border-t border-black/10">
-              {LINKS.map((x) => (
-              <a
-  key={item.label}
-  href={item.href}
-  target="_blank"
-  rel="noreferrer"
-  className="group relative block border-b border-black/10 py-5"
->
-  {/* inset hover slab */}
-  <span
-    aria-hidden
-    className="
-      pointer-events-none absolute inset-x-0 inset-y-2
-      rounded-2xl bg-transparent
-      transition-colors duration-200
-      group-hover:bg-[#0A0A0C]
-    "
-  />
+              {LINKS.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group relative block border-b border-black/10 py-5"
+                >
+                  {/* inset hover slab */}
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-0 inset-y-2 rounded-2xl bg-transparent transition-colors duration-200 group-hover:bg-[#0A0A0C]"
+                  />
 
-  {/* content */}
-  <div className="relative flex items-end justify-between gap-6 px-6">
-    <div>
-      <div className="text-[11px] uppercase tracking-[0.32em] text-black/55 transition-colors group-hover:text-white/55">
-        {item.label}
-      </div>
+                  {/* content */}
+                  <div className="relative flex items-center justify-between gap-6 px-6">
+                    <div className="font-[var(--font-sans)] text-[18px] tracking-[-0.01em] text-black transition-colors group-hover:text-[#F3F2EE] sm:text-[20px]">
+                      {item.label}
+                    </div>
 
-      {/* if you're removing usernames, delete this whole block on Contact/Home */}
-      <div className="mt-2 font-[var(--font-sans)] text-[22px] leading-tight text-black transition-colors group-hover:text-[#F3F2EE] sm:text-[26px]">
-        {item.value}
-      </div>
-    </div>
-
-    <div className="pb-1 text-[11px] uppercase tracking-[0.32em] text-black/40 transition-colors group-hover:text-white/70">
-      <span className="inline-flex items-center gap-2">
-        Open
-        <span className="translate-x-0 transition-transform duration-200 group-hover:translate-x-1">
-          →
-        </span>
-      </span>
-    </div>
-  </div>
-</a>
+                    <div className="text-[11px] uppercase tracking-[0.32em] text-black/40 transition-colors group-hover:text-white/70">
+                      <span className="inline-flex items-center gap-2">
+                        Open
+                        <span className="translate-x-0 transition-transform duration-200 group-hover:translate-x-1">
+                          →
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
 
           {/* Right */}
           <div className="lg:col-span-2">
