@@ -140,8 +140,8 @@ function RailCard({ p, isActive }: { p: Item; isActive: boolean }) {
           {showVideo ? (
             <video
               className="absolute inset-0 h-full w-full object-cover"
-              src={p.previewSrc}
-              poster={p.posterSrc}
+             src={p.previewSrc}
+poster={p.posterSrc ?? p.coverSrc}
               muted
               playsInline
               loop
