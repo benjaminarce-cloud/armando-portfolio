@@ -1,3 +1,4 @@
+// components/home/HomeEndCard.tsx
 import Link from "next/link";
 
 const LINKS = [
@@ -7,11 +8,17 @@ const LINKS = [
   { label: "TikTok", href: "https://www.tiktok.com/@armandoaguillarr" },
 ];
 
+const WORK_ITEMS = ["Directing", "Cinematography", "Edit"];
+
+function isMailto(href: string) {
+  return href.startsWith("mailto:");
+}
+
 export default function HomeEndCard() {
   return (
     <section className="bg-[#F3F2EE] text-[#0A0A0C]">
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12">
-        {/* top line */}
+        {/* top bar */}
         <div className="flex items-center justify-between border-t border-black/10 pt-6">
           <div className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em] text-black/55">
             <span>End</span>
@@ -35,7 +42,7 @@ export default function HomeEndCard() {
             </h2>
 
             <p className="mt-5 max-w-md text-sm text-black/60">
-              For bookings and collaborations, email works best.
+              Bookings + collaborations — email works best.
             </p>
           </div>
 
@@ -46,19 +53,19 @@ export default function HomeEndCard() {
                 <a
                   key={item.label}
                   href={item.href}
-                  target="_blank"
-                  rel="noreferrer"
+                  {...(isMailto(item.href)
+                    ? {}
+                    : { target: "_blank", rel: "noreferrer" })}
                   className="group relative block border-b border-black/10 py-5"
                 >
-                  {/* inset hover slab */}
+                  {/* inset hover slab (adds breathing room so edges don't hug text) */}
                   <span
                     aria-hidden
-                    className="pointer-events-none absolute inset-x-0 inset-y-2 rounded-2xl bg-transparent transition-colors duration-200 group-hover:bg-[#0A0A0C]"
+                    className="pointer-events-none absolute inset-y-2 left-2 right-2 rounded-2xl bg-transparent transition-colors duration-200 group-hover:bg-[#0A0A0C]"
                   />
 
-                  {/* content */}
                   <div className="relative flex items-center justify-between gap-6 px-6">
-                    <div className="font-[var(--font-sans)] text-[18px] tracking-[-0.01em] text-black transition-colors group-hover:text-[#F3F2EE] sm:text-[20px]">
+                    <div className="text-[14px] font-[var(--font-sans)] tracking-[-0.01em] text-black transition-colors group-hover:text-[#F3F2EE]">
                       {item.label}
                     </div>
 
@@ -86,7 +93,19 @@ export default function HomeEndCard() {
             <div className="mt-8 text-[11px] uppercase tracking-[0.32em] text-black/55">
               Work
             </div>
-            <div className="mt-2 text-sm text-black/70">Directing • Cinematography • Edit</div>
+
+            {/* Option A (recommended): one-line, clean, wraps nicely */}
+            <div className="mt-2 text-sm text-black/70">
+              {WORK_ITEMS.join(" • ")}
+            </div>
+
+            {/* Option B (if you want the vertical editorial list instead)
+            <div className="mt-2 space-y-1 text-sm text-black/70">
+              {WORK_ITEMS.map((w) => (
+                <div key={w}>{w}</div>
+              ))}
+            </div>
+            */}
           </div>
         </div>
       </div>
