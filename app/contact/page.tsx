@@ -19,7 +19,7 @@ const CONTACT_LINKS = [
   {
     label: "TikTok",
     value: "@armandoaguillarr",
-    href: "https://www.tiktok.com/@armandoaguilarr",
+    href: "https://www.tiktok.com/@armandoaguillarr",
   },
 ];
 
@@ -54,15 +54,31 @@ export default function ContactPage() {
         </div>
 
         {/* rows */}
-        <div className="mt-12 border-t border-black/10">
-          {CONTACT_LINKS.map((item) => (
+        <div className="mt-12">
+          {CONTACT_LINKS.map((item, idx) => (
             <a
               key={item.label}
               href={item.href}
               target="_blank"
               rel="noreferrer"
-              className="group block border-b border-black/10 py-6 transition-colors hover:bg-[#0A0A0C]"
+              className="
+                group relative block
+                py-6
+                transition-colors
+                hover:bg-[#0A0A0C]
+                -mx-4 px-4
+                sm:-mx-6 sm:px-6
+                lg:-mx-8 lg:px-8
+              "
             >
+              {/* top divider */}
+              {idx === 0 && (
+                <div className="pointer-events-none absolute left-0 right-0 top-0 h-px bg-black/10 group-hover:bg-white/10" />
+              )}
+
+              {/* bottom divider */}
+              <div className="pointer-events-none absolute left-0 right-0 bottom-0 h-px bg-black/10 group-hover:bg-white/10" />
+
               <div className="flex items-end justify-between gap-6">
                 <div>
                   <div className="text-[11px] uppercase tracking-[0.32em] text-black/55 transition-colors group-hover:text-white/55">
