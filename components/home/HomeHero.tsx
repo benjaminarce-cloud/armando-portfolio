@@ -2,10 +2,12 @@ import Image from "next/image";
 import Container from "@/components/ui/Container";
 import ButtonLink from "@/components/ui/ButtonLink";
 
+const HERO_VIDEO =
+  process.env.NEXT_PUBLIC_HERO_VIDEO_URL || "";
+
 export default function HomeHero() {
   return (
     <section className="relative min-h-[100svh] overflow-hidden bg-[#0A0A0C]">
-      {/* Background media */}
       <div className="absolute inset-0">
         <video
           className="h-full w-full object-cover"
@@ -16,26 +18,17 @@ export default function HomeHero() {
           preload="metadata"
           poster="/img/hero-poster.jpg"
         >
-          <source src="/video/hero-loop.mp4" type="video/mp4" />
+          {HERO_VIDEO ? <source src={HERO_VIDEO} type="video/mp4" /> : null}
         </video>
 
-        {/* Cinematic matte + light shaping */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0C]/95 via-[#0A0A0C]/45 to-[#0A0A0C]/20" />
         <div className="absolute inset-0 bg-[radial-gradient(1100px_circle_at_50%_28%,rgba(255,255,255,0.08),transparent_55%)]" />
 
-        {/* Optional grain overlay */}
         <div className="pointer-events-none absolute inset-0 opacity-[0.10] mix-blend-soft-light">
-          <Image
-            src="/img/grain.png"
-            alt=""
-            fill
-            priority={false}
-            className="object-cover"
-          />
+          <Image src="/img/grain.png" alt="" fill className="object-cover" />
         </div>
       </div>
 
-      {/* Top nav */}
       <header className="relative z-10">
         <Container>
           <div className="flex items-center justify-between py-6">
@@ -72,7 +65,6 @@ export default function HomeHero() {
         </Container>
       </header>
 
-      {/* Hero content */}
       <div className="relative z-10 flex min-h-[calc(100svh-84px)] items-end">
         <Container>
           <div className="pb-14 sm:pb-20 lg:pb-24">
