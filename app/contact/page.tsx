@@ -14,12 +14,12 @@ const CONTACT_LINKS = [
   {
     label: "LinkedIn",
     value: "linkedin.com/in/armandoaguillarr",
-    href: "https://www.linkedin.com/in/armandoaguillarr",
+    href: "https://www.linkedin.com/in/armandoaguilarr/",
   },
   {
     label: "TikTok",
     value: "@armandoaguillarr",
-    href: "https://www.tiktok.com/@armandoaguillarr",
+    href: "https://www.tiktok.com/@armandoaguilarr",
   },
 ];
 
