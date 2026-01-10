@@ -3,23 +3,27 @@ import Link from "next/link";
 const CONTACT_LINKS = [
   {
     label: "Instagram",
-    value: "armandoaguilare",
+    value: "Daily cuts + stills",
     href: "https://instagram.com/armandoaguilare",
+    meta: "@armandoaguilare",
   },
   {
     label: "Email",
-    value: "armandirix@gmail.com",
+    value: "Bookings / collaborations",
     href: "mailto:armandirix@gmail.com",
+    meta: "armandirix@gmail.com",
   },
   {
     label: "LinkedIn",
-    value: "linkedin.com/in/armandoaguillarr",
-    href: "https://www.linkedin.com/in/armandoaguilarr/",
+    value: "Credits + experience",
+    href: "https://www.linkedin.com/in/armandoaguillarr/",
+    meta: "linkedin.com/in/armandoaguillarr",
   },
   {
     label: "TikTok",
-    value: "@armandoaguillarr",
+    value: "Short edits + momentum",
     href: "https://www.tiktok.com/@armandoaguillarr",
+    meta: "@armandoaguillarr",
   },
 ];
 
@@ -87,6 +91,10 @@ export default function ContactPage() {
 
                   <div className="mt-2 font-[var(--font-sans)] text-[22px] leading-tight text-black transition-colors group-hover:text-[#F3F2EE] sm:text-[26px]">
                     {item.value}
+                  </div>
+
+                  <div className="mt-2 text-[11px] uppercase tracking-[0.28em] text-black/40 transition-colors group-hover:text-white/45">
+                    {item.meta}
                   </div>
                 </div>
 
