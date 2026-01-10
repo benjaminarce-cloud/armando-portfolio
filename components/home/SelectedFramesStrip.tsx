@@ -4,12 +4,7 @@ import { selectedFrames } from "@/lib/frames";
 
 function InstagramGlyph({ className = "" }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      className={className}
-      fill="none"
-    >
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="none">
       <path
         d="M16.5 7.5h.01M7.8 3h8.4A4.8 4.8 0 0 1 21 7.8v8.4A4.8 4.8 0 0 1 16.2 21H7.8A4.8 4.8 0 0 1 3 16.2V7.8A4.8 4.8 0 0 1 7.8 3Z"
         stroke="currentColor"
@@ -91,6 +86,7 @@ type CardProps = (typeof selectedFrames)[number];
 function FrameCard({ title, subtitle, year, imageSrc, imageAlt, href, igUrl }: CardProps) {
   return (
     <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+      {/* Main card click target */}
       <Link href={href} className="block">
         <div className="relative aspect-[4/5]">
           <Image
@@ -101,14 +97,12 @@ function FrameCard({ title, subtitle, year, imageSrc, imageAlt, href, igUrl }: C
             className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
             priority={false}
           />
-
-          {/* Shape light + vignette */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-black/10" />
           <div className="absolute inset-0 bg-[radial-gradient(900px_circle_at_50%_15%,rgba(255,255,255,0.10),transparent_55%)] opacity-70" />
         </div>
 
         <div className="absolute inset-x-0 bottom-0 p-5">
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-[11px] uppercase tracking-[0.28em] text-white/55">
                 {year}
@@ -120,26 +114,27 @@ function FrameCard({ title, subtitle, year, imageSrc, imageAlt, href, igUrl }: C
                 {subtitle}
               </p>
             </div>
-
-            {igUrl ? (
-              <a
-                href={igUrl}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`Open ${title} on Instagram`}
-                className="pointer-events-auto inline-flex h-10 w-10 items-center justify-center rounded-full
-                           bg-black/35 text-white/70 ring-1 ring-white/10 transition-colors
-                           hover:bg-black/55 hover:text-white"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <InstagramGlyph className="h-5 w-5" />
-              </a>
-            ) : null}
           </div>
         </div>
       </Link>
 
-      {/* Hover edge highlight */}
+      {/* Separate IG button overlay (not nested inside Link) */}
+      {igUrl ? (
+        <div className="absolute bottom-5 right-5">
+          <a
+            href={igUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`Open ${title} on Instagram`}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full
+                       bg-black/35 text-white/70 ring-1 ring-white/10 transition-colors
+                       hover:bg-black/55 hover:text-white"
+          >
+            <InstagramGlyph className="h-5 w-5" />
+          </a>
+        </div>
+      ) : null}
+
       <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/0 transition duration-500 group-hover:ring-white/15" />
     </div>
   );
