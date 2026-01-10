@@ -17,7 +17,7 @@ const CONTACT_LINKS = [
     label: "LinkedIn",
     value: "Credits + experience",
     href: "https://www.linkedin.com/in/armandoaguillarr/",
-    meta: "linkedin.com/in/armandoaguillarr",
+    meta: "armandoaguillarr",
   },
   {
     label: "TikTok",
