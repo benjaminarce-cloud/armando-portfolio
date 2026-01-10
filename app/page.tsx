@@ -25,24 +25,43 @@ export default function Page() {
             </a>
           </div>
 
-          {/* Placeholder strip (next step we’ll make this real data + links) */}
+          {/* Placeholder strip for now — next step we make it real */}
           <div className="mt-8 grid gap-3 sm:grid-cols-3">
             <div className="aspect-[4/5] rounded-2xl border border-white/10 bg-white/5" />
             <div className="aspect-[4/5] rounded-2xl border border-white/10 bg-white/5" />
             <div className="aspect-[4/5] rounded-2xl border border-white/10 bg-white/5" />
           </div>
 
-          <div id="reel" className="mt-14 rounded-2xl border border-white/10 bg-white/5 p-6">
-            <p className="text-[11px] uppercase tracking-[0.32em] text-white/55">
-              Reel
-            </p>
-            <h3 className="mt-3 text-2xl tracking-[-0.02em]">
-              2026 Highlight Reel
-            </h3>
-            <p className="mt-3 max-w-2xl text-white/65">
-              Replace this block with your reel embed (YouTube/Vimeo/IG) once you
-              send the link.
-            </p>
+          {/* Reel */}
+          <div
+            id="reel"
+            className="mt-14 overflow-hidden rounded-2xl border border-white/10 bg-black shadow-[0_30px_80px_rgba(0,0,0,0.55)]"
+          >
+            <div className="flex items-center justify-between gap-6 px-5 py-4 sm:px-6">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.32em] text-white/55">
+                  Reel
+                </p>
+                <h3 className="mt-2 text-xl tracking-[-0.02em] sm:text-2xl">
+                  Highlight Reel
+                </h3>
+              </div>
+              <span className="text-[11px] uppercase tracking-[0.28em] text-white/40">
+                Tap to play
+              </span>
+            </div>
+
+            <div className="aspect-video bg-black">
+              <video
+                className="h-full w-full object-cover"
+                controls
+                playsInline
+                preload="metadata"
+                poster="/img/hero-poster.jpg"
+              >
+                <source src="/video/hero-loop.mp4" type="video/mp4" />
+              </video>
+            </div>
           </div>
         </div>
       </section>
