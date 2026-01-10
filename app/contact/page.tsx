@@ -108,7 +108,7 @@ export default function ContactPage() {
 
         {/* footer note */}
         <div className="mt-10 text-[11px] uppercase tracking-[0.32em] text-black/45">
-          Response time varies. Serious inquiries only.
+          Serious inquiries only.
         </div>
       </div>
     </main>
