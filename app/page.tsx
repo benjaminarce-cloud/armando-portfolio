@@ -1,11 +1,13 @@
 import HomeHero from "@/components/home/HomeHero";
-import SelectedFramesStrip from "@/components/home/SelectedFramesStrip";
+import SpotlightRail from "@/components/home/SpotlightRail";
 
 export default function Page() {
   return (
     <main className="bg-[#0A0A0C] text-[#F3F2EE]">
       <HomeHero />
-      <SelectedFramesStrip />
+
+      {/* Netflix-style spotlight row (vertical reels + hover/center spotlight) */}
+      <SpotlightRail />
 
       {/* Reel */}
       <section className="border-t border-white/10">
