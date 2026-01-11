@@ -113,10 +113,6 @@ export default function HomeHero() {
           </div>
         </div>
       </div>
-
-      {/* Cinematic intro CSS */}
-      <style jsx>{`
-      `}</style>
     </section>
   );
 }
