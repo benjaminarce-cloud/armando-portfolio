@@ -5,7 +5,7 @@ export default function HomeHero() {
     <section className="relative min-h-[92vh] overflow-hidden bg-[#0A0A0C] text-[#F3F2EE]">
       {/* Background video */}
       <div className="absolute inset-0">
-        {/* Video (push-in + deblur + fade) */}
+        {/* Video (fade-in + subtle push-in) */}
         <video
           className="hero-video h-full w-full object-cover"
           autoPlay
@@ -21,8 +21,8 @@ export default function HomeHero() {
           />
         </video>
 
-        {/* Iris black reveal (starts full black, shrinks from center) */}
-        <div className="hero-iris" aria-hidden="true" />
+        {/* Eye-open reveal (full black -> opens vertically from center) */}
+        <div className="hero-lids" aria-hidden="true" />
 
         {/* Your existing gradient for readability */}
         <div
