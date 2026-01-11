@@ -5,8 +5,9 @@ export default function HomeHero() {
     <section className="relative min-h-[92vh] overflow-hidden bg-[#0A0A0C] text-[#F3F2EE]">
       {/* Background video */}
       <div className="absolute inset-0">
+        {/* Video (push-in + deblur + fade) */}
         <video
-          className="h-full w-full object-cover"
+          className="hero-video h-full w-full object-cover"
           autoPlay
           muted
           loop
@@ -20,7 +21,14 @@ export default function HomeHero() {
           />
         </video>
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+        {/* Iris black reveal (starts full black, shrinks from center) */}
+        <div className="hero-iris" aria-hidden="true" />
+
+        {/* Your existing gradient for readability */}
+        <div
+          className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent"
+          aria-hidden="true"
+        />
       </div>
 
       {/* Foreground layout */}
@@ -65,7 +73,7 @@ export default function HomeHero() {
         {/* Bottom-left title card */}
         <div className="mt-auto">
           <div className="mx-auto max-w-6xl px-5 pb-10 sm:px-8 sm:pb-12 lg:px-12 lg:pb-16">
-            <div className="relative inline-block max-w-[92vw]">
+            <div className="relative inline-block">
               {/* ghost layer */}
               <div
                 aria-hidden="true"
@@ -79,8 +87,7 @@ export default function HomeHero() {
                   blur-[0.2px]
                   select-none
                   pointer-events-none
-                  whitespace-normal sm:whitespace-nowrap
-                  break-words
+                  whitespace-nowrap
                 "
               >
                 Armando Aguilar
@@ -96,8 +103,7 @@ export default function HomeHero() {
                   tracking-[-0.02em]
                   text-white
                   drop-shadow-[0_18px_60px_rgba(0,0,0,0.65)]
-                  whitespace-normal sm:whitespace-nowrap
-                  break-words
+                  whitespace-nowrap
                   pb-[0.08em]
                 "
               >
@@ -107,6 +113,60 @@ export default function HomeHero() {
           </div>
         </div>
       </div>
+
+      {/* Cinematic intro CSS */}
+      <style jsx>{`
+        /* Video: soft fade-in + deblur + slow push-in */
+        .hero-video {
+          opacity: 0;
+          filter: blur(10px) saturate(1.05) contrast(1.05);
+          transform: scale(1.12);
+          transform-origin: 50% 45%;
+          animation: heroVideoIn 1200ms cubic-bezier(0.2, 0.8, 0.2, 1) 120ms
+            forwards;
+        }
+
+        /* Iris overlay: starts fully covering, shrinks from center */
+        .hero-iris {
+          position: absolute;
+          inset: 0;
+          background: #0a0a0c;
+          /* Start huge circle (covers everything), shrink to 0 (reveals video from center) */
+          clip-path: circle(160% at 50% 50%);
+          animation: heroIris 1100ms cubic-bezier(0.2, 0.8, 0.2, 1) 0ms forwards;
+          pointer-events: none;
+        }
+
+        @keyframes heroVideoIn {
+          to {
+            opacity: 1;
+            filter: blur(0px) saturate(1) contrast(1);
+            transform: scale(1);
+          }
+        }
+
+        @keyframes heroIris {
+          to {
+            clip-path: circle(0% at 50% 50%);
+          }
+        }
+
+        /* Respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+          .hero-video,
+          .hero-iris {
+            animation: none !important;
+          }
+          .hero-video {
+            opacity: 1;
+            filter: none;
+            transform: none;
+          }
+          .hero-iris {
+            clip-path: circle(0% at 50% 50%);
+          }
+        }
+      `}</style>
     </section>
   );
 }
