@@ -1,4 +1,5 @@
 @import "tailwindcss";
+
 html {
   font-family: var(--font-sans), system-ui, -apple-system, Segoe UI, Roboto, Arial,
     sans-serif;
@@ -25,55 +26,111 @@ body {
 }
 
 /* -----------------------------
-   Cinematic hero intro
-   (safe for Server Components)
+   Cinematic hero intro (Server-safe)
 ------------------------------ */
 
-/* Video: soft fade-in + deblur + slow push-in */
+/* Video: fade-in + subtle push-in (no blur) */
 .hero-video {
   opacity: 0;
-  filter: blur(10px) saturate(1.05) contrast(1.05);
-  transform: scale(1.12);
+  transform: scale(1.06);
   transform-origin: 50% 45%;
-  animation: heroVideoIn 1200ms cubic-bezier(0.2, 0.8, 0.2, 1) 120ms forwards;
-}
-
-/* Iris overlay: starts fully covering, shrinks from center */
-.hero-iris {
-  position: absolute;
-  inset: 0;
-  background: #0a0a0c;
-  clip-path: circle(160% at 50% 50%);
-  animation: heroIris 1100ms cubic-bezier(0.2, 0.8, 0.2, 1) 0ms forwards;
-  pointer-events: none;
+  animation: heroVideoIn 1400ms cubic-bezier(0.16, 1, 0.3, 1) 120ms forwards;
 }
 
 @keyframes heroVideoIn {
   to {
     opacity: 1;
-    filter: blur(0px) saturate(1) contrast(1);
     transform: scale(1);
   }
 }
 
-@keyframes heroIris {
+/* Eye-open reveal:
+   starts fully black, opens from center like eyelids */
+.hero-lids {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5; /* above video, under text */
+}
+
+/* top + bottom lids */
+.hero-lids::before,
+.hero-lids::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background: #0a0a0c;
+  will-change: transform;
+  transform: translateY(0);
+}
+
+/* top lid slides up */
+.hero-lids::before {
+  top: 0;
+  border-bottom-left-radius: 999px;
+  border-bottom-right-radius: 999px;
+  animation: lidOpenTop 1900ms cubic-bezier(0.16, 1, 0.3, 1) 120ms forwards;
+}
+
+/* bottom lid slides down */
+.hero-lids::after {
+  bottom: 0;
+  border-top-left-radius: 999px;
+  border-top-right-radius: 999px;
+  animation: lidOpenBottom 1900ms cubic-bezier(0.16, 1, 0.3, 1) 120ms forwards;
+}
+
+/* subtle center seam that fades out */
+.hero-lids {
+  background: linear-gradient(
+    to bottom,
+    transparent 49.7%,
+    rgba(10, 10, 12, 0.9) 50%,
+    transparent 50.3%
+  );
+  opacity: 1;
+  animation: seamFade 900ms ease-out 360ms forwards;
+}
+
+@keyframes lidOpenTop {
   to {
-    clip-path: circle(0% at 50% 50%);
+    transform: translateY(-115%);
+  }
+}
+
+@keyframes lidOpenBottom {
+  to {
+    transform: translateY(115%);
+  }
+}
+
+@keyframes seamFade {
+  to {
+    opacity: 0;
   }
 }
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .hero-video,
-  .hero-iris {
+  .hero-lids,
+  .hero-lids::before,
+  .hero-lids::after {
     animation: none !important;
   }
   .hero-video {
     opacity: 1;
-    filter: none;
     transform: none;
   }
-  .hero-iris {
-    clip-path: circle(0% at 50% 50%);
+  .hero-lids {
+    opacity: 0;
+  }
+  .hero-lids::before {
+    transform: translateY(-115%);
+  }
+  .hero-lids::after {
+    transform: translateY(115%);
   }
 }
