@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Bodoni_Moda, Inter } from "next/font/google";
-import SiteHeader from "@/components/SiteHeader";
+import AppHeader from "@/components/AppHeader";
 
 const serif = Bodoni_Moda({
   subsets: ["latin"],
@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${sans.variable} ${serif.variable} antialiased`}>
-        <SiteHeader />
+        <AppHeader />
         {children}
       </body>
     </html>
