@@ -1,32 +1,34 @@
 import Image from "next/image";
 import Link from "next/link";
 import { projects } from "@/lib/projects";
+import { filterProjectsByGroup } from "@/lib/workGroups";
 
-type WorkPageProps = {
-  searchParams?: { group?: string };
-};
+export default async function WorkPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ group?: string }>;
+}) {
+  const sp = (await searchParams) ?? {};
+  const group = sp.group;
 
-export default function WorkPage({ searchParams }: WorkPageProps) {
-  const group = searchParams?.group;
-
-  const filtered = group
-    ? projects.filter((p: any) => (p.group ?? "other") === group)
-    : projects;
+  const filtered = filterProjectsByGroup(projects, group);
 
   return (
-    <main className="min-h-screen pt-24 bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
+    <main className="min-h-screen bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12">
-        {/* spacer for fixed header */}
-        <div className="h-20 sm:h-24" />
-
         {/* Heading */}
         <div className="mt-10">
           <p className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
             Work
+            {group ? (
+              <span className="ml-3 text-[color:var(--page-muted)]/80">
+                / {String(group).toUpperCase()}
+              </span>
+            ) : null}
           </p>
 
           <h1 className="editorial-title mt-4 text-[clamp(44px,6vw,84px)]">
-            {group ? group.toUpperCase() : "Films & Campaigns"}
+            Films & Campaigns
           </h1>
 
           <p className="mt-6 max-w-2xl text-[color:var(--page-muted)]">
@@ -35,15 +37,16 @@ export default function WorkPage({ searchParams }: WorkPageProps) {
           </p>
         </div>
 
+        {/* Grid */}
         <div className="mt-14 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((p: any, i: number) => (
+          {filtered.map((p, i) => (
             <article key={p.slug} className={tileOffset(i)}>
               <Link href={`/work/${p.slug}`} className="group block">
                 <div className="relative">
                   <div className="relative aspect-[4/5] overflow-hidden bg-black/5">
                     <Image
                       src={p.coverSrc}
-                      alt={`${p.title} cover frame`}
+                      alt={p.coverAlt ?? `${p.title} cover frame`}
                       fill
                       sizes="(max-width: 1024px) 50vw, 33vw"
                       className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.02]"
@@ -59,9 +62,11 @@ export default function WorkPage({ searchParams }: WorkPageProps) {
                       {p.title}
                     </h2>
 
-                    <p className="mt-3 text-sm text-[color:var(--page-muted)]">
-                      {p.role}
-                    </p>
+                    {p.role ? (
+                      <p className="mt-3 text-sm text-[color:var(--page-muted)]">
+                        {p.role}
+                      </p>
+                    ) : null}
 
                     <div className="mt-6 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-muted)]">
                       <span className="h-px w-10 bg-[color:var(--page-border)]" />
