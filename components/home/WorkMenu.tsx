@@ -6,7 +6,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 type MenuItem = {
   label: string;
   href: string;
-  // later you can add: previewSrc / posterSrc
 };
 
 export default function WorkMenu() {
@@ -23,7 +22,6 @@ export default function WorkMenu() {
   const [active, setActive] = useState(0);
 
   // Refs to measure positions
-  const listRef = useRef<HTMLDivElement | null>(null);
   const railRef = useRef<HTMLDivElement | null>(null); // right column (relative)
   const cardRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
@@ -37,15 +35,14 @@ export default function WorkMenu() {
 
     if (!rail || !card || !item) return;
 
-    // Position within the section (not the viewport)
     const itemRect = item.getBoundingClientRect();
     const railRect = rail.getBoundingClientRect();
 
-    // Desired top: align preview center with hovered row center
+    // Align preview center with active row center
     const itemCenterY = itemRect.top - railRect.top + itemRect.height / 2;
     const desiredTop = itemCenterY - card.offsetHeight / 2;
 
-    // Clamp so preview stays inside the rail
+    // Clamp inside rail
     const maxTop = Math.max(0, rail.offsetHeight - card.offsetHeight);
     const clamped = Math.min(Math.max(desiredTop, 0), maxTop);
 
@@ -54,7 +51,7 @@ export default function WorkMenu() {
 
   useEffect(() => {
     recomputeY();
-    // Also update when scrolling/resizing so it stays correct
+
     const onScroll = () => recomputeY();
     const onResize = () => recomputeY();
 
@@ -78,10 +75,7 @@ export default function WorkMenu() {
               Work
             </p>
 
-            <div
-              ref={listRef}
-              className="mt-10 border-t border-[color:var(--page-border)]"
-            >
+            <div className="mt-10 border-t border-[color:var(--page-border)]">
               {items.map((item, idx) => (
                 <Link
                   key={item.href}
@@ -111,7 +105,10 @@ export default function WorkMenu() {
                     </h3>
 
                     <span className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)] group-hover:text-[color:var(--page-fg)] transition-colors">
-                      Open <span className="inline-block translate-x-0 group-hover:translate-x-1 transition-transform">→</span>
+                      Open{" "}
+                      <span className="inline-block translate-x-0 group-hover:translate-x-1 transition-transform">
+                        →
+                      </span>
                     </span>
                   </div>
                 </Link>
@@ -123,17 +120,14 @@ export default function WorkMenu() {
             </p>
           </div>
 
-          {/* RIGHT: preview zone (moves only vertically, never follows cursor) */}
+          {/* RIGHT: preview zone */}
           <div className="relative col-span-12 hidden lg:block lg:col-span-5">
-            {/* This element’s height matches the left column via the grid */}
-            <div
-              ref={railRef}
-              className="relative h-full"
-            >
+            <div ref={railRef} className="relative h-full">
               <div
                 ref={cardRef}
                 className={[
-                  "absolute left-0 right-0",
+                  "absolute right-0",
+                  "w-[520px] xl:w-[600px]", // BIGGER
                   "rounded-3xl border border-[color:var(--page-border)]",
                   "bg-[color:var(--page-card)] shadow-[0_50px_140px_rgba(0,0,0,0.18)]",
                   "overflow-hidden",
@@ -142,8 +136,8 @@ export default function WorkMenu() {
                 ].join(" ")}
                 style={{ transform: `translateY(${y}px)` }}
               >
-                {/* Placeholder preview: swap this for video/image later */}
-                <div className="aspect-[16/10] bg-gradient-to-b from-black/10 to-black/30" />
+                {/* Placeholder preview (swap for image/video later) */}
+                <div className="aspect-[4/5] bg-gradient-to-b from-black/10 to-black/30" />
 
                 <div className="flex items-center justify-between px-5 py-4">
                   <span className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
