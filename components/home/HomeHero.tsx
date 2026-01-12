@@ -1,9 +1,9 @@
 export default function HomeHero() {
   return (
-    
     <section
       data-hero="true"
-      className="relative min-h-[92vh] overflow-hidden bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
+      className="relative min-h-[92vh] overflow-hidden bg-[#0A0A0C] text-[#F3F2EE]"
+    >
       {/* Background video */}
       <div className="absolute inset-0">
         <video
@@ -38,6 +38,7 @@ export default function HomeHero() {
         <div className="mt-auto">
           <div className="mx-auto max-w-6xl px-5 pb-10 sm:px-8 sm:pb-12 lg:px-12 lg:pb-16">
             <div className="relative inline-block">
+              {/* ghost layer */}
               <div
                 aria-hidden="true"
                 className="
@@ -53,6 +54,7 @@ export default function HomeHero() {
                 Armando Aguilar
               </div>
 
+              {/* main layer */}
               <h1
                 className="
                   relative
