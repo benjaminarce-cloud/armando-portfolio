@@ -38,6 +38,29 @@ body {
   letter-spacing: -0.03em;
   line-height: 0.92;
 }
+:root {
+  --bg-dark: #0a0a0c;
+  --fg-dark: #f3f2ee;
+
+  --bg-paper: #f4f3ef;
+  --fg-ink: #0a0a0c;
+
+  --accent: #7a0b12;
+
+  /* NEW: app-level vars used by pages/components */
+  --page-bg: var(--bg-dark);
+  --page-fg: var(--fg-dark);
+}
+
+html[data-theme="light"] {
+  --page-bg: var(--bg-paper);
+  --page-fg: var(--fg-ink);
+}
+
+html[data-theme="dark"] {
+  --page-bg: var(--bg-dark);
+  --page-fg: var(--fg-dark);
+}
 
 /* -----------------------------
    Theme toggle button (A24-minimal)
