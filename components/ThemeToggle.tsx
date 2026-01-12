@@ -29,6 +29,8 @@ export default function ThemeToggle() {
     window.localStorage.setItem("theme", next);
   };
 
+  const isDark = theme === "dark";
+
   return (
     <button
       type="button"
@@ -38,38 +40,23 @@ export default function ThemeToggle() {
         group relative grid h-9 w-9 place-items-center
         rounded-full border border-[color:var(--page-border)]
         bg-[color:var(--page-card)]
-        text-[color:var(--page-fg)]
         transition
         hover:bg-[color:var(--page-hover)]
         focus:outline-none focus:ring-2 focus:ring-[color:var(--accent)]/40
       "
-      title={theme === "dark" ? "Switch to light" : "Switch to dark"}
     >
-      {/* Split-disc mark (cleaner than eclipse) */}
-      <svg
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        className="opacity-80 transition-opacity group-hover:opacity-95"
-        aria-hidden="true"
-      >
-        {/* outline */}
-        <circle
-          cx="12"
-          cy="12"
-          r="9"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          opacity="0.85"
-        />
-        {/* filled half */}
-        <path
-          d="M12 3a9 9 0 0 0 0 18V3z"
-          fill="currentColor"
-          opacity={theme === "dark" ? 0.85 : 0.35}
-        />
-      </svg>
+      {/* ring */}
+      <span className="relative block h-4 w-4 rounded-full border border-current/35 text-[color:var(--page-fg)]" />
+
+      {/* orbit dot */}
+      <span
+        className={[
+          "absolute block h-1.5 w-1.5 rounded-full",
+          "bg-[color:var(--page-fg)] opacity-80",
+          "transition-transform duration-300 ease-out",
+          isDark ? "translate-x-[7px]" : "-translate-x-[7px]",
+        ].join(" ")}
+      />
     </button>
   );
 }
