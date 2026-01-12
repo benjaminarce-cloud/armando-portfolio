@@ -4,7 +4,7 @@ import { projects } from "@/lib/projects";
 
 export default function WorkPage() {
   return (
-    <main className="min-h-screen bg-[var(--page-bg)] text-[var(--page-fg)]">
+    <main className="min-h-screen bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12">
         {/* Top bar */}
         <div className="flex items-center justify-between">
