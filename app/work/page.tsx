@@ -14,7 +14,7 @@ export default function WorkPage({ searchParams }: WorkPageProps) {
     : projects;
 
   return (
-    <main className="min-h-screen bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
+    <main className="min-h-screen pt-24 bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12">
         {/* spacer for fixed header */}
         <div className="h-20 sm:h-24" />
