@@ -29,7 +29,7 @@ const CONTACT_LINKS = [
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-[#F3F2EE] text-[#0A0A0C]">
+    <main className="min-h-screen bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
       <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8 lg:px-12">
         {/* top bar */}
         <header className="flex items-center justify-between">
