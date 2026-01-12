@@ -1,38 +1,19 @@
-import Link from "next/link";
-import ThemeToggle from "@/components/ThemeToggle";
-
 const CONTACT_LINKS = [
   { label: "Instagram", href: "https://instagram.com/armandoaguilare" },
   { label: "Email", href: "mailto:armandirix@gmail.com" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/armandoaguilarr/" },
-  { label: "TikTok", href: "https://www.tiktok.com/@armandoaguilarr" },
+  { label: "TikTok", href: "https://www.tiktok.com/@armandoaguillarr" },
 ];
 
 export default function ContactPage() {
   return (
     <main className="min-h-screen bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
-      <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8 lg:px-12">
-        {/* top bar */}
-        <header className="flex items-center justify-between">
-          <div className="flex items-center gap-4 text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
-            <span>Contact</span>
-            <span className="h-[1px] w-10 bg-[color:var(--page-border)]" />
-            <span>Available</span>
-          </div>
+      {/* Spacer for fixed global header */}
+      <div className="h-20 sm:h-24" />
 
-          <div className="flex items-center gap-4">
-            <Link
-              href="/"
-              className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)] hover:text-[color:var(--page-fg)]"
-            >
-              Home
-            </Link>
-            <ThemeToggle />
-          </div>
-        </header>
-
+      <div className="mx-auto max-w-6xl px-5 pb-12 sm:px-8 lg:px-12">
         {/* headline */}
-        <div className="mt-16">
+        <div className="mt-10">
           <h1 className="font-[var(--font-serif)] text-[clamp(48px,6.6vw,96px)] leading-[0.95] tracking-[-0.03em]">
             Let&apos;s talk.
           </h1>
@@ -51,7 +32,7 @@ export default function ContactPage() {
               rel="noreferrer"
               className="group relative block border-b border-[color:var(--page-border)] py-6"
             >
-              {/* inset hover slab (gives breathing room so edges don’t hug text) */}
+              {/* inset hover slab */}
               <span
                 aria-hidden="true"
                 className="
