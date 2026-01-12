@@ -1,36 +1,24 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-
-type MenuItem = {
-  label: string;
-  href: string;
-};
+import { projects } from "@/lib/projects";
+import { WORK_GROUPS, GroupId, groupPosterSrc } from "@/lib/workGroups";
 
 export default function WorkMenu() {
-  const items: MenuItem[] = useMemo(
-    () => [
-      { label: "SDSU Basketball", href: "/work?group=sdsu" },
-      { label: "NIL", href: "/work?group=nil" },
-      { label: "Freelance", href: "/work?group=freelance" },
-      { label: "Other", href: "/work?group=other" },
-    ],
-    []
-  );
+  const items = useMemo(() => WORK_GROUPS, []);
 
   const [active, setActive] = useState(0);
 
-  const railRef = useRef<HTMLDivElement | null>(null);
+  // Refs to measure positions
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const railRef = useRef<HTMLDivElement | null>(null); // right column (relative)
   const cardRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
-  // vertical position of preview within the rail
   const [y, setY] = useState(0);
-
-  // micro parallax inside preview
-  const [px, setPx] = useState(0);
-  const [py, setPy] = useState(0);
+  const [parallax, setParallax] = useState(0);
 
   const recomputeY = () => {
     const rail = railRef.current;
@@ -50,6 +38,7 @@ export default function WorkMenu() {
     setY(clamped);
   };
 
+  // keep preview aligned to hovered row
   useEffect(() => {
     recomputeY();
 
@@ -66,53 +55,80 @@ export default function WorkMenu() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active]);
 
-  const onPreviewMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = e.currentTarget;
-    const r = el.getBoundingClientRect();
+  // micro parallax (subtle)
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
 
-    // normalized [-0.5..0.5]
-    const nx = (e.clientX - r.left) / r.width - 0.5;
-    const ny = (e.clientY - r.top) / r.height - 0.5;
+    let raf = 0;
 
-    // subtle only
-    setPx(nx * 10);
-    setPy(ny * 10);
-  };
+    const tick = () => {
+      raf = 0;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
 
-  const onPreviewLeave = () => {
-    setPx(0);
-    setPy(0);
-  };
+      // progress through viewport: 0..1 while section is around screen
+      const t = (vh - rect.top) / (vh + rect.height);
+      const clamped = Math.min(1, Math.max(0, t));
+
+      // tiny movement
+      setParallax((clamped - 0.5) * 12); // px
+    };
+
+    const onScroll = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(tick);
+    };
+
+    tick();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+
+    return () => {
+      if (raf) window.cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  const activeGroup = items[active];
+  const poster = groupPosterSrc(activeGroup.id as GroupId, projects);
 
   return (
-    <section className="bg-[color:var(--page-bg)] text-[color:var(--page-fg)] border-t border-[color:var(--page-border)]">
+    <section
+      ref={sectionRef as any}
+      className="bg-[color:var(--page-bg)] text-[color:var(--page-fg)] border-t border-[color:var(--page-border)]"
+    >
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12">
         <div className="grid grid-cols-12 gap-10">
-          {/* LEFT */}
+          {/* LEFT: list */}
           <div className="col-span-12 lg:col-span-7">
             <p className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
               Work
             </p>
 
             <div className="mt-10 border-t border-[color:var(--page-border)]">
-              {items.map((item, idx) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  ref={(node) => {
-                    itemRefs.current[idx] = node;
-                  }}
-                  onMouseEnter={() => setActive(idx)}
-                  onFocus={() => setActive(idx)}
-                  className="group relative block border-b border-[color:var(--page-border)] py-10 focus:outline-none"
-                >
-                  <div className="flex items-end justify-between gap-6">
-                    <div className="min-w-0">
+              {items.map((item, idx) => {
+                const isActive = idx === active;
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    ref={(node) => {
+                      itemRefs.current[idx] = node;
+                    }}
+                    onMouseEnter={() => setActive(idx)}
+                    onFocus={() => setActive(idx)}
+                    className="group block border-b border-[color:var(--page-border)] py-10 focus:outline-none"
+                  >
+                    <div className="flex items-end justify-between gap-6">
                       <h3
                         className={[
                           "font-[var(--font-sans)]",
-                          "text-[clamp(44px,5.2vw,84px)] leading-[0.93] tracking-[-0.035em]",
-                          idx === active
+                          // stronger + cleaner, closer to A24 impact
+                          "text-[clamp(44px,5.2vw,88px)] leading-[0.94] tracking-[-0.04em]",
+                          isActive
                             ? "text-[color:var(--page-fg)]"
                             : "text-[color:var(--page-muted)]",
                           "transition-colors duration-200",
@@ -122,27 +138,16 @@ export default function WorkMenu() {
                         {item.label}
                       </h3>
 
-                      {/* tiny underline accent */}
-                      <div className="mt-4 h-px w-14 bg-[color:var(--page-border)]">
-                        <div
-                          className={[
-                            "h-px bg-[color:var(--page-fg)] transition-all duration-300",
-                            idx === active ? "w-14 opacity-60" : "w-0 opacity-0",
-                            "group-hover:w-14 group-hover:opacity-40",
-                          ].join(" ")}
-                        />
-                      </div>
-                    </div>
-
-                    <span className="shrink-0 text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)] group-hover:text-[color:var(--page-fg)] transition-colors">
-                      Open{" "}
-                      <span className="inline-block translate-x-0 group-hover:translate-x-1 transition-transform">
-                        →
+                      <span className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)] group-hover:text-[color:var(--page-fg)] transition-colors">
+                        Open{" "}
+                        <span className="inline-block translate-x-0 group-hover:translate-x-1 transition-transform">
+                          →
+                        </span>
                       </span>
-                    </span>
-                  </div>
-                </Link>
-              ))}
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
 
             <p className="mt-8 text-sm text-[color:var(--page-muted)]">
@@ -150,72 +155,74 @@ export default function WorkMenu() {
             </p>
           </div>
 
-          {/* RIGHT: sticky preview */}
+          {/* RIGHT: preview zone */}
           <div className="relative col-span-12 hidden lg:block lg:col-span-5">
-            <div
-              ref={railRef}
-              className="sticky top-28 h-[calc(100vh-8rem)] overflow-visible"
-            >
+            <div ref={railRef} className="relative h-full">
               <div
                 ref={cardRef}
                 className={[
                   "absolute",
+                  // Slight overlap into the list, A24-ish
                   "-left-10 right-0",
-                  "max-w-[420px]",
-                  "rounded-[28px] border border-[color:var(--page-border)]",
-                  "bg-[color:var(--page-card)]",
-                  "shadow-[0_45px_120px_rgba(0,0,0,0.14)]",
+                  "rounded-3xl border border-[color:var(--page-border)]",
+                  "bg-[color:var(--page-card)] shadow-[0_50px_140px_rgba(0,0,0,0.18)]",
                   "overflow-hidden",
                   "will-change-transform",
+                  "transition-transform duration-260 ease-out",
                 ].join(" ")}
-                style={{
-                  transform: `translateY(${y}px) translate3d(${px}px, ${py}px, 0)`,
-                  transition: "transform 220ms ease-out",
-                }}
-                onMouseMove={onPreviewMove}
-                onMouseLeave={onPreviewLeave}
+                style={{ transform: `translateY(${y}px)` }}
               >
-                {/* “media” area */}
-                <div className="relative aspect-[4/5] overflow-hidden">
-                  {/* soft background placeholder */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/35" />
-
-                  {/* micro parallax inner layer (what you’ll swap with image/video later) */}
+                {/* Poster area (smaller than before) */}
+                <div className="relative aspect-[16/11]">
+                  {/* image */}
                   <div
                     className="absolute inset-0"
-                    style={{
-                      transform: `translate3d(${px * 0.6}px, ${py * 0.6}px, 0) scale(1.03)`,
-                      transition: "transform 220ms ease-out",
-                      willChange: "transform",
-                    }}
+                    style={{ transform: `translateY(${parallax}px)` }}
                   >
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.20),transparent_55%)]" />
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(0,0,0,0.18),transparent_60%)]" />
+                    <Image
+                      src={poster}
+                      alt={`${activeGroup.label} preview`}
+                      fill
+                      sizes="(max-width: 1024px) 40vw, 28vw"
+                      className="object-cover"
+                      priority={false}
+                    />
                   </div>
 
-                  {/* huge translucent word */}
-                  <div
-                    className="
-                      absolute inset-x-0 top-8
-                      px-6
-                      font-[var(--font-sans)]
-                      text-[72px] leading-[0.9] tracking-[-0.05em]
-                      text-[color:var(--page-fg)]
-                      opacity-[0.16]
-                      select-none pointer-events-none
-                    "
-                  >
-                    {items[active]?.label}
+                  {/* big translucent word */}
+                  <div className="absolute inset-0 pointer-events-none">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent" />
+                    <div className="absolute left-6 right-6 bottom-6">
+                      <div className="relative">
+                        <div
+                          className="
+                            absolute -top-10 left-0
+                            font-[var(--font-sans)]
+                            text-[56px]
+                            leading-none
+                            tracking-[-0.05em]
+                            text-white/25
+                            select-none
+                            whitespace-nowrap
+                            blur-[0.2px]
+                          "
+                        >
+                          {activeGroup.label}
+                        </div>
+
+                        <div className="h-10" />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                {/* footer bar */}
+                {/* footer */}
                 <div className="flex items-center justify-between px-5 py-4">
                   <span className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
                     Preview
                   </span>
                   <span className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
-                    {items[active]?.label}
+                    {activeGroup.label}
                   </span>
                 </div>
               </div>
