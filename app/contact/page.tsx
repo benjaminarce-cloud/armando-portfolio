@@ -4,8 +4,8 @@ import ThemeToggle from "@/components/ThemeToggle";
 const CONTACT_LINKS = [
   { label: "Instagram", href: "https://instagram.com/armandoaguilare" },
   { label: "Email", href: "mailto:armandirix@gmail.com" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/armandoaguillarr/" },
-  { label: "TikTok", href: "https://www.tiktok.com/@armandoaguillarr" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/armandoaguilarr/" },
+  { label: "TikTok", href: "https://www.tiktok.com/@armandoaguilarr" },
 ];
 
 export default function ContactPage() {
