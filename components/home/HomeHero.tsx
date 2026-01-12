@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function HomeHero() {
   return (
@@ -46,26 +47,30 @@ export default function HomeHero() {
                 </span>
               </div>
 
-              <nav className="flex items-center gap-6 font-[var(--font-sans)]">
-                <Link
-                  href="/work"
-                  className="text-[11px] uppercase tracking-[0.32em] text-white/70 hover:text-white"
-                >
-                  Work
-                </Link>
-                <Link
-                  href="/about"
-                  className="text-[11px] uppercase tracking-[0.32em] text-white/70 hover:text-white"
-                >
-                  About
-                </Link>
-                <Link
-                  href="/contact"
-                  className="text-[11px] uppercase tracking-[0.32em] text-white/70 hover:text-white"
-                >
-                  Contact
-                </Link>
-              </nav>
+              <div className="flex items-center gap-4">
+                <nav className="flex items-center gap-6 font-[var(--font-sans)]">
+                  <Link
+                    href="/work"
+                    className="text-[11px] uppercase tracking-[0.32em] text-white/70 hover:text-white"
+                  >
+                    Work
+                  </Link>
+                  <Link
+                    href="/about"
+                    className="text-[11px] uppercase tracking-[0.32em] text-white/70 hover:text-white"
+                  >
+                    About
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="text-[11px] uppercase tracking-[0.32em] text-white/70 hover:text-white"
+                  >
+                    Contact
+                  </Link>
+                </nav>
+
+                <ThemeToggle />
+              </div>
             </div>
           </div>
         </header>
