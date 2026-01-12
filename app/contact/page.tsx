@@ -7,7 +7,7 @@ const CONTACT_LINKS = [
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
+    <main className="min-h-screen pt-24 bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
       {/* Spacer for fixed global header */}
       <div className="h-20 sm:h-24" />
 
