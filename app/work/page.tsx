@@ -2,55 +2,44 @@ import Image from "next/image";
 import Link from "next/link";
 import { projects } from "@/lib/projects";
 
-export default function WorkPage() {
+type WorkPageProps = {
+  searchParams?: { group?: string };
+};
+
+export default function WorkPage({ searchParams }: WorkPageProps) {
+  const group = searchParams?.group;
+
+  const filtered = group
+    ? projects.filter((p: any) => (p.group ?? "other") === group)
+    : projects;
+
   return (
     <main className="min-h-screen bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12">
-        {/* Top bar */}
-        <div className="flex items-center justify-between">
-          <Link
-            href="/"
-            className="text-[11px] uppercase tracking-[0.28em] opacity-60 transition-opacity hover:opacity-100"
-          >
-            Armando Aguilar
-          </Link>
-
-          <div className="flex items-center gap-6 text-[11px] uppercase tracking-[0.28em] opacity-60">
-            <a
-              href="https://instagram.com/armandoaguilare"
-              target="_blank"
-              rel="noreferrer"
-              className="transition-opacity hover:opacity-100"
-            >
-              Instagram
-            </a>
-            <Link href="/contact" className="transition-opacity hover:opacity-100">
-              Contact
-            </Link>
-          </div>
-        </div>
+        {/* spacer for fixed header */}
+        <div className="h-20 sm:h-24" />
 
         {/* Heading */}
-        <div className="mt-14">
-          <p className="text-[11px] uppercase tracking-[0.32em] opacity-55">
+        <div className="mt-10">
+          <p className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
             Work
           </p>
+
           <h1 className="editorial-title mt-4 text-[clamp(44px,6vw,84px)]">
-            Films & Campaigns
+            {group ? group.toUpperCase() : "Films & Campaigns"}
           </h1>
-          <p className="mt-6 max-w-2xl opacity-60">
+
+          <p className="mt-6 max-w-2xl text-[color:var(--page-muted)]">
             Sports marketing films, social-first edits, and run culture stories —
             built for replay.
           </p>
         </div>
 
-        {/* A24-ish grid */}
         <div className="mt-14 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((p, i) => (
+          {filtered.map((p: any, i: number) => (
             <article key={p.slug} className={tileOffset(i)}>
               <Link href={`/work/${p.slug}`} className="group block">
                 <div className="relative">
-                  {/* Poster image */}
                   <div className="relative aspect-[4/5] overflow-hidden bg-black/5">
                     <Image
                       src={p.coverSrc}
@@ -61,21 +50,22 @@ export default function WorkPage() {
                     />
                   </div>
 
-                  {/* Minimal meta */}
                   <div className="mt-6">
-                    <p className="text-[11px] uppercase tracking-[0.28em] opacity-50">
+                    <p className="text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-muted)]">
                       {p.category} • {p.year}
                     </p>
 
-                    <h2 className="editorial-title mt-3 text-3xl">{p.title}</h2>
+                    <h2 className="editorial-title mt-3 text-3xl">
+                      {p.title}
+                    </h2>
 
-                    {p.role ? (
-                      <p className="mt-3 text-sm opacity-60">{p.role}</p>
-                    ) : null}
+                    <p className="mt-3 text-sm text-[color:var(--page-muted)]">
+                      {p.role}
+                    </p>
 
-                    <div className="mt-6 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.28em] opacity-55">
-                      <span className="h-px w-10 bg-current/15" />
-                      <span className="transition-opacity group-hover:opacity-100">
+                    <div className="mt-6 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-muted)]">
+                      <span className="h-px w-10 bg-[color:var(--page-border)]" />
+                      <span className="group-hover:text-[color:var(--page-fg)]">
                         View
                       </span>
                     </div>
@@ -90,12 +80,7 @@ export default function WorkPage() {
   );
 }
 
-/**
- * Offsets mimic the “curated wall” feel (not a uniform catalog).
- * Subtle, responsive-safe.
- */
 function tileOffset(i: number) {
-  // Only offset on large screens so mobile stays clean.
   const map: Record<number, string> = {
     1: "lg:translate-y-10",
     2: "lg:-translate-y-4",
