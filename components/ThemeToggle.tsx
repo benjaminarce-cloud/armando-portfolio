@@ -2,48 +2,66 @@
 
 import { useEffect, useState } from "react";
 
-type Theme = "light" | "dark";
+type Theme = "dark" | "light";
 
-function getThemeFromDom(): Theme {
-  const t = document.documentElement.dataset.theme;
-  return t === "light" ? "light" : "dark";
+function getInitialTheme(): Theme {
+  if (typeof window === "undefined") return "dark";
+  const saved = window.localStorage.getItem("theme");
+  if (saved === "light" || saved === "dark") return saved;
+  return window.matchMedia?.("(prefers-color-scheme: light)")?.matches
+    ? "light"
+    : "dark";
 }
 
-function applyTheme(t: Theme) {
-  document.documentElement.dataset.theme = t;
-}
-
-export default function ThemeToggle({ className = "" }: { className?: string }) {
+export default function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>("dark");
 
   useEffect(() => {
-    // read what layout script set (before paint)
-    const domTheme = getThemeFromDom();
-    setTheme(domTheme);
-    applyTheme(domTheme);
+    const t = getInitialTheme();
+    setTheme(t);
+    document.documentElement.setAttribute("data-theme", t);
   }, []);
 
-  const next: Theme = theme === "dark" ? "light" : "dark";
+  const toggle = () => {
+    const next: Theme = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    document.documentElement.setAttribute("data-theme", next);
+    window.localStorage.setItem("theme", next);
+  };
 
   return (
     <button
       type="button"
-      aria-label={`Switch to ${next} mode`}
-      title={`Switch to ${next} mode`}
-      onClick={() => {
-        setTheme(next);
-        applyTheme(next);
-        try {
-          localStorage.setItem("theme", next);
-        } catch {}
-      }}
-      className={[
-        "theme-toggle-icon",
-        theme === "dark" ? "is-dark" : "is-light",
-        className,
-      ].join(" ")}
+      onClick={toggle}
+      aria-label="Toggle theme"
+      className="
+        group relative grid h-9 w-9 place-items-center
+        rounded-full border border-[color:var(--page-border)]
+        bg-[color:var(--page-card)]
+        transition
+        hover:bg-[color:var(--page-hover)]
+        focus:outline-none focus:ring-2 focus:ring-[color:var(--accent)]/40
+      "
     >
-      <span className="dot" aria-hidden="true" />
+      {/* Eclipse mark */}
+      <span className="relative block h-4 w-4">
+        <span
+          className="
+            absolute inset-0 rounded-full
+            bg-[color:var(--page-fg)]
+            opacity-80 transition-opacity
+            group-hover:opacity-95
+          "
+        />
+        <span
+          className="
+            absolute inset-0 rounded-full
+            bg-[color:var(--page-bg)]
+            translate-x-[35%] transition-transform
+            group-hover:translate-x-[42%]
+          "
+        />
+      </span>
     </button>
   );
 }
