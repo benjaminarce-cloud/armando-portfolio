@@ -21,8 +21,7 @@ export default function WorkMenu() {
 
   const [active, setActive] = useState(0);
 
-  // Refs to measure positions
-  const railRef = useRef<HTMLDivElement | null>(null); // right column (relative)
+  const railRef = useRef<HTMLDivElement | null>(null);
   const cardRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
@@ -32,17 +31,14 @@ export default function WorkMenu() {
     const rail = railRef.current;
     const card = cardRef.current;
     const item = itemRefs.current[active];
-
     if (!rail || !card || !item) return;
 
     const itemRect = item.getBoundingClientRect();
     const railRect = rail.getBoundingClientRect();
 
-    // Align preview center with active row center
     const itemCenterY = itemRect.top - railRect.top + itemRect.height / 2;
     const desiredTop = itemCenterY - card.offsetHeight / 2;
 
-    // Clamp inside rail
     const maxTop = Math.max(0, rail.offsetHeight - card.offsetHeight);
     const clamped = Math.min(Math.max(desiredTop, 0), maxTop);
 
@@ -51,7 +47,6 @@ export default function WorkMenu() {
 
   useEffect(() => {
     recomputeY();
-
     const onScroll = () => recomputeY();
     const onResize = () => recomputeY();
 
@@ -67,7 +62,7 @@ export default function WorkMenu() {
 
   return (
     <section className="bg-[color:var(--page-bg)] text-[color:var(--page-fg)] border-t border-[color:var(--page-border)]">
-      <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:px-12">
         <div className="grid grid-cols-12 gap-10">
           {/* LEFT: list */}
           <div className="col-span-12 lg:col-span-7">
@@ -76,43 +71,64 @@ export default function WorkMenu() {
             </p>
 
             <div className="mt-10 border-t border-[color:var(--page-border)]">
-              {items.map((item, idx) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  ref={(node) => {
-                    itemRefs.current[idx] = node;
-                  }}
-                  onMouseEnter={() => setActive(idx)}
-                  onFocus={() => setActive(idx)}
-                  className={[
-                    "group block border-b border-[color:var(--page-border)] py-10",
-                    "focus:outline-none",
-                  ].join(" ")}
-                >
-                  <div className="flex items-end justify-between gap-6">
-                    <h3
-                      className={[
-                        "font-[var(--font-sans)]",
-                        "text-[clamp(44px,5.2vw,84px)] leading-[0.95] tracking-[-0.03em]",
-                        idx === active
-                          ? "text-[color:var(--page-fg)]"
-                          : "text-[color:var(--page-muted)]",
-                        "transition-colors duration-200",
-                      ].join(" ")}
-                    >
-                      {item.label}
-                    </h3>
+              {items.map((item, idx) => {
+                const isActive = idx === active;
 
-                    <span className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)] group-hover:text-[color:var(--page-fg)] transition-colors">
-                      Open{" "}
-                      <span className="inline-block translate-x-0 group-hover:translate-x-1 transition-transform">
-                        →
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    ref={(node) => {
+                      itemRefs.current[idx] = node;
+                    }}
+                    onMouseEnter={() => setActive(idx)}
+                    onFocus={() => setActive(idx)}
+                    className="group block border-b border-[color:var(--page-border)] py-10 focus:outline-none"
+                  >
+                    <div className="flex items-end justify-between gap-8">
+                      {/* TITLE */}
+                      <div className="min-w-0">
+                        <h3
+                          className={[
+                            "font-[var(--font-sans)]",
+                            "text-[clamp(44px,5.1vw,84px)] leading-[0.92] tracking-[-0.04em]",
+                            // always black-ish in light mode; in dark mode it will be light via --page-fg
+                            isActive
+                              ? "text-[color:var(--page-fg)]"
+                              : "text-[color:var(--page-fg)]/80",
+                            "transition-colors duration-200",
+                          ].join(" ")}
+                        >
+                          {item.label}
+                        </h3>
+
+                        {/* editorial micro underline (A24-ish) */}
+                        <div
+                          className={[
+                            "mt-4 h-px w-0 bg-[color:var(--page-fg)]/35",
+                            "transition-all duration-300 ease-out",
+                            isActive ? "w-16" : "group-hover:w-12",
+                          ].join(" ")}
+                        />
+                      </div>
+
+                      {/* OPEN */}
+                      <span
+                        className={[
+                          "shrink-0 text-[11px] uppercase tracking-[0.32em]",
+                          "text-[color:var(--page-fg)]/55 group-hover:text-[color:var(--page-fg)]/85",
+                          "transition-colors",
+                        ].join(" ")}
+                      >
+                        Open{" "}
+                        <span className="inline-block translate-x-0 group-hover:translate-x-1 transition-transform duration-200">
+                          →
+                        </span>
                       </span>
-                    </span>
-                  </div>
-                </Link>
-              ))}
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
 
             <p className="mt-8 text-sm text-[color:var(--page-muted)]">
@@ -126,24 +142,40 @@ export default function WorkMenu() {
               <div
                 ref={cardRef}
                 className={[
-                  "absolute right-0",
-                  "w-[520px] xl:w-[600px]", // BIGGER
-                  "rounded-3xl border border-[color:var(--page-border)]",
-                  "bg-[color:var(--page-card)] shadow-[0_50px_140px_rgba(0,0,0,0.18)]",
+                  "absolute",
+                  // Make it smaller and more intentional
+                  "right-0 w-[88%]",
+                  // Slight overlap into the left column (editorial feel)
+                  "-translate-x-6",
+                  "rounded-[28px] border border-[color:var(--page-border)]",
+                  "bg-[color:var(--page-bg)]",
+                  "shadow-[0_55px_160px_rgba(0,0,0,0.16)]",
                   "overflow-hidden",
-                  "transition-transform duration-300 ease-out",
                   "will-change-transform",
                 ].join(" ")}
-                style={{ transform: `translateY(${y}px)` }}
+                style={{ transform: `translateY(${y}px) translateX(-24px)` }}
               >
-                {/* Placeholder preview (swap for image/video later) */}
-                <div className="aspect-[4/5] bg-gradient-to-b from-black/10 to-black/30" />
+                {/* Preview surface */}
+                <div className="relative aspect-[4/5] bg-black/10">
+                  {/* placeholder image block */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/10 to-black/25" />
 
+                  {/* grain overlay */}
+                  <div
+                    className="absolute inset-0 opacity-[0.16] mix-blend-multiply"
+                    style={{
+                      backgroundImage:
+                        "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E\")",
+                    }}
+                  />
+                </div>
+
+                {/* Footer meta */}
                 <div className="flex items-center justify-between px-5 py-4">
-                  <span className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
+                  <span className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-fg)]/55">
                     Preview
                   </span>
-                  <span className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
+                  <span className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-fg)]/55">
                     {items[active]?.label}
                   </span>
                 </div>
