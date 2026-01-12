@@ -1,12 +1,10 @@
 import Link from "next/link";
-import ThemeToggle from "@/components/ThemeToggle";
 
 export default function HomeHero() {
   return (
-    <section className="relative min-h-[92vh] overflow-hidden bg-[var(--page-bg)] text-[var(--page-fg)]">
+    <section className="relative min-h-[92vh] overflow-hidden bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
       {/* Background video */}
       <div className="absolute inset-0">
-        {/* Video (fade-in + subtle push-in) */}
         <video
           className="hero-video h-full w-full object-cover"
           autoPlay
@@ -22,19 +20,15 @@ export default function HomeHero() {
           />
         </video>
 
-        {/* Eye-open reveal (full black -> opens vertically from center) */}
         <div className="hero-lids" aria-hidden="true" />
 
-        {/* Your existing gradient for readability */}
         <div
           className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent"
           aria-hidden="true"
         />
       </div>
 
-      {/* Foreground layout */}
       <div className="relative z-10 flex min-h-[92vh] flex-col">
-        {/* Top nav */}
         <header>
           <div className="mx-auto max-w-6xl px-5 pt-6 sm:px-8 lg:px-12">
             <div className="flex items-center justify-between">
@@ -47,39 +41,33 @@ export default function HomeHero() {
                 </span>
               </div>
 
-              <div className="flex items-center gap-4">
-                <nav className="flex items-center gap-6 font-[var(--font-sans)]">
-                  <Link
-                    href="/work"
-                    className="text-[11px] uppercase tracking-[0.32em] opacity-70 transition-opacity hover:opacity-100"
-                  >
-                    Work
-                  </Link>
-                  <Link
-                    href="/about"
-                    className="text-[11px] uppercase tracking-[0.32em] opacity-70 transition-opacity hover:opacity-100"
-                  >
-                    About
-                  </Link>
-                  <Link
-                    href="/contact"
-                    className="text-[11px] uppercase tracking-[0.32em] opacity-70 transition-opacity hover:opacity-100"
-                  >
-                    Contact
-                  </Link>
-                </nav>
-
-                <ThemeToggle />
-              </div>
+              <nav className="flex items-center gap-6 font-[var(--font-sans)]">
+                <Link
+                  href="/work"
+                  className="text-[11px] uppercase tracking-[0.32em] opacity-70 transition-opacity hover:opacity-100"
+                >
+                  Work
+                </Link>
+                <Link
+                  href="/about"
+                  className="text-[11px] uppercase tracking-[0.32em] opacity-70 transition-opacity hover:opacity-100"
+                >
+                  About
+                </Link>
+                <Link
+                  href="/contact"
+                  className="text-[11px] uppercase tracking-[0.32em] opacity-70 transition-opacity hover:opacity-100"
+                >
+                  Contact
+                </Link>
+              </nav>
             </div>
           </div>
         </header>
 
-        {/* Bottom-left title card */}
         <div className="mt-auto">
           <div className="mx-auto max-w-6xl px-5 pb-10 sm:px-8 sm:pb-12 lg:px-12 lg:pb-16">
             <div className="relative inline-block">
-              {/* ghost layer */}
               <div
                 aria-hidden="true"
                 className="
@@ -98,7 +86,6 @@ export default function HomeHero() {
                 Armando Aguilar
               </div>
 
-              {/* main layer */}
               <h1
                 className="
                   relative
