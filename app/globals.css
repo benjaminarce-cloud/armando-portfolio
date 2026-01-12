@@ -14,14 +14,22 @@ html {
 
   --accent: #7a0b12; /* deep crimson */
 
-  /* theme tokens (default dark) */
+  /* App-level tokens (default: dark) */
   --page-bg: var(--bg-dark);
   --page-fg: var(--fg-dark);
+  --page-muted: rgba(243, 242, 238, 0.6);
+  --page-border: rgba(255, 255, 255, 0.12);
+  --page-card: rgba(255, 255, 255, 0.03);
+  --page-hover: rgba(255, 255, 255, 0.06);
 }
 
 html[data-theme="light"] {
   --page-bg: var(--bg-paper);
   --page-fg: var(--fg-ink);
+  --page-muted: rgba(10, 10, 12, 0.6);
+  --page-border: rgba(10, 10, 12, 0.12);
+  --page-card: rgba(10, 10, 12, 0.03);
+  --page-hover: rgba(10, 10, 12, 0.06);
 }
 
 html,
@@ -37,93 +45,6 @@ body {
 .editorial-title {
   letter-spacing: -0.03em;
   line-height: 0.92;
-}
-
-/* -----------------------------
-   Theme tokens (used everywhere)
------------------------------- */
-
-html {
-  /* default to dark unless your toggle sets data-theme */
-  --page-bg: var(--bg-dark);
-  --page-fg: var(--fg-dark);
-
-  --page-muted: rgba(243, 242, 238, 0.6);
-  --page-border: rgba(255, 255, 255, 0.12);
-  --page-card: rgba(255, 255, 255, 0.03);
-  --page-hover: rgba(255, 255, 255, 0.06);
-}
-
-html[data-theme="light"] {
-  --page-bg: var(--bg-paper);
-  --page-fg: var(--fg-ink);
-
-  --page-muted: rgba(10, 10, 12, 0.6);
-  --page-border: rgba(10, 10, 12, 0.12);
-  --page-card: rgba(10, 10, 12, 0.03);
-  --page-hover: rgba(10, 10, 12, 0.06);
-}
-:root {
-  --bg-dark: #0a0a0c;
-  --fg-dark: #f3f2ee;
-
-  --bg-paper: #f4f3ef;
-  --fg-ink: #0a0a0c;
-
-  --accent: #7a0b12;
-
-  /* NEW: app-level vars used by pages/components */
-  --page-bg: var(--bg-dark);
-  --page-fg: var(--fg-dark);
-}
-
-html[data-theme="light"] {
-  --page-bg: var(--bg-paper);
-  --page-fg: var(--fg-ink);
-}
-
-html[data-theme="dark"] {
-  --page-bg: var(--bg-dark);
-  --page-fg: var(--fg-dark);
-}
-
-/* -----------------------------
-   Theme toggle button (A24-minimal)
------------------------------- */
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  padding: 10px 12px;
-  font-size: 11px;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
-  transition: border-color 150ms ease, color 150ms ease, background 150ms ease,
-    transform 150ms ease;
-}
-
-html[data-theme="light"] .theme-toggle {
-  border-color: rgba(0, 0, 0, 0.18);
-  color: rgba(0, 0, 0, 0.55);
-}
-
-.theme-toggle:hover {
-  border-color: rgba(255, 255, 255, 0.35);
-  color: rgba(255, 255, 255, 0.92);
-  transform: translateY(-1px);
-}
-
-html[data-theme="light"] .theme-toggle:hover {
-  border-color: rgba(0, 0, 0, 0.35);
-  color: rgba(0, 0, 0, 0.9);
-}
-
-.theme-toggle:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--accent);
 }
 
 /* -----------------------------
@@ -145,8 +66,7 @@ html[data-theme="light"] .theme-toggle:hover {
   }
 }
 
-/* Eye-open reveal:
-   starts fully black, opens from center like eyelids */
+/* Eye-open reveal (top/bottom lids) */
 .hero-lids {
   position: absolute;
   inset: 0;
@@ -154,7 +74,6 @@ html[data-theme="light"] .theme-toggle:hover {
   z-index: 5; /* above video, under text */
 }
 
-/* top + bottom lids */
 .hero-lids::before,
 .hero-lids::after {
   content: "";
@@ -167,7 +86,6 @@ html[data-theme="light"] .theme-toggle:hover {
   transform: translateY(0);
 }
 
-/* top lid slides up */
 .hero-lids::before {
   top: 0;
   border-bottom-left-radius: 999px;
@@ -175,7 +93,6 @@ html[data-theme="light"] .theme-toggle:hover {
   animation: lidOpenTop 1900ms cubic-bezier(0.16, 1, 0.3, 1) 120ms forwards;
 }
 
-/* bottom lid slides down */
 .hero-lids::after {
   bottom: 0;
   border-top-left-radius: 999px;
@@ -183,7 +100,6 @@ html[data-theme="light"] .theme-toggle:hover {
   animation: lidOpenBottom 1900ms cubic-bezier(0.16, 1, 0.3, 1) 120ms forwards;
 }
 
-/* subtle center seam that fades out */
 .hero-lids {
   background: linear-gradient(
     to bottom,
@@ -236,13 +152,16 @@ html[data-theme="light"] .theme-toggle:hover {
   }
 }
 
-/* Icon-only theme toggle */
+/* -----------------------------
+   Icon-only theme toggle (A24-minimal)
+------------------------------ */
+
 .theme-toggle-icon {
   height: 36px;
   width: 36px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  background: rgba(10, 10, 12, 0.22);
+  border: 1px solid var(--page-border);
+  background: var(--page-card);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   display: inline-flex;
@@ -251,30 +170,21 @@ html[data-theme="light"] .theme-toggle:hover {
   transition: transform 150ms ease, border-color 150ms ease, background 150ms ease;
 }
 
-html[data-theme="light"] .theme-toggle-icon {
-  border-color: rgba(0, 0, 0, 0.18);
-  background: rgba(244, 243, 239, 0.7);
-}
-
 .theme-toggle-icon:hover {
   transform: translateY(-1px);
-  border-color: rgba(255, 255, 255, 0.4);
-}
-
-html[data-theme="light"] .theme-toggle-icon:hover {
-  border-color: rgba(0, 0, 0, 0.35);
+  background: var(--page-hover);
 }
 
 .theme-toggle-icon:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 55%, transparent);
 }
 
 .theme-toggle-icon .dot {
   height: 10px;
   width: 10px;
   border-radius: 999px;
-  transition: transform 200ms ease, background 200ms ease, opacity 200ms ease;
+  transition: transform 200ms ease, opacity 200ms ease, background 200ms ease;
 }
 
 /* dark mode: filled dot */
@@ -284,7 +194,7 @@ html[data-theme="light"] .theme-toggle-icon:hover {
   transform: scale(1);
 }
 
-/* light mode: hollow-ish dot */
+/* light mode: softer dot */
 .theme-toggle-icon.is-light .dot {
   background: rgba(10, 10, 12, 0.9);
   opacity: 0.55;
