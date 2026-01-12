@@ -49,7 +49,7 @@ export default function SpotlightRail() {
     };
   }, []);
 
-  // On first mount, center the first card a bit (nice starting state)
+  // On first mount, center the first card a bit
   useEffect(() => {
     const el = scrollerRef.current;
     const first = cardRefs.current[0];
@@ -62,7 +62,7 @@ export default function SpotlightRail() {
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12">
         <div className="flex items-end justify-between gap-6">
           <div>
-            <p className="text-[11px] uppercase tracking-[0.32em] text-black/55">
+            <p className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
               Featured
             </p>
 
@@ -70,14 +70,14 @@ export default function SpotlightRail() {
               Selected work.
             </h2>
 
-            <p className="mt-4 max-w-xl text-sm text-black/55">
+            <p className="mt-4 max-w-xl text-sm text-[color:var(--page-muted)]">
               Hover to preview. Tap to open.
             </p>
           </div>
 
           <Link
             href="/work"
-            className="hidden text-[11px] uppercase tracking-[0.28em] text-black/55 hover:text-black md:block"
+            className="hidden text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-muted)] hover:text-[color:var(--accent)] md:block"
           >
             View all work
           </Link>
@@ -88,8 +88,8 @@ export default function SpotlightRail() {
             ref={scrollerRef}
             className={[
               "flex gap-4",
-              "overflow-x-auto overflow-y-visible", // prevents top-edge clipping when scaled
-              "py-10 pb-12", // more breathing room = more “poster wall” presence
+              "overflow-x-auto overflow-y-visible",
+              "py-8 pb-10",
               "px-1",
               "[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
             ].join(" ")}
@@ -110,11 +110,11 @@ export default function SpotlightRail() {
                   ].join(" ")}
                   style={{ scrollSnapAlign: "center" }}
                 >
-                  {/* A24-ish “paper lift” glow (subtle, warm) */}
+                  {/* OUTER glow (theme-aware) */}
                   {isHot && (
                     <span
                       aria-hidden
-                      className="pointer-events-none absolute -inset-6 rounded-[40px] bg-black/10 blur-2xl opacity-40"
+                      className="pointer-events-none absolute -inset-6 rounded-[40px] bg-[color:var(--page-fg)] blur-2xl opacity-[0.08]"
                     />
                   )}
 
@@ -124,11 +124,11 @@ export default function SpotlightRail() {
             })}
           </div>
 
-          <div className="mt-2 flex items-center justify-between text-[11px] uppercase tracking-[0.28em] text-black/55">
+          <div className="mt-2 flex items-center justify-between text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-muted)]">
             <span className="hidden sm:inline">Swipe / scroll</span>
             <span className="inline-flex items-center gap-3">
-              <span className="h-px w-10 bg-black/15" />
-              <Link href="/work" className="hover:text-black">
+              <span className="h-px w-10 bg-[color:var(--page-border)]" />
+              <Link href="/work" className="hover:text-[color:var(--accent)]">
                 Explore all
               </Link>
             </span>
@@ -152,12 +152,13 @@ function RailCard({ p, isActive }: { p: Item; isActive: boolean }) {
       href={`/work/${p.slug}`}
       className={[
         "relative block rounded-3xl overflow-hidden",
+        "border border-[color:var(--page-border)]",
+        "bg-[color:var(--page-card)]",
         "transform-gpu will-change-transform",
-        "transition-[transform,opacity,box-shadow] duration-300 ease-out",
-        // White section = cards should feel like “glossy prints” on a table
+        "transition-[transform,opacity,border-color,box-shadow] duration-300 ease-out",
         isActive
-          ? "opacity-100 -translate-y-2 scale-[1.06] shadow-[0_36px_120px_rgba(0,0,0,0.22)]"
-          : "opacity-80 scale-[0.99] hover:opacity-95 hover:-translate-y-1 hover:scale-[1.02] shadow-[0_18px_60px_rgba(0,0,0,0.14)]",
+          ? "opacity-100 -translate-y-2 scale-[1.05] shadow-[0_40px_140px_rgba(0,0,0,0.35)]"
+          : "opacity-90 scale-[0.985] hover:opacity-100 hover:-translate-y-1 hover:scale-[1.01] hover:shadow-[0_26px_90px_rgba(0,0,0,0.25)]",
       ].join(" ")}
     >
       {/* Vertical reel frame */}
@@ -185,29 +186,31 @@ function RailCard({ p, isActive }: { p: Item; isActive: boolean }) {
             />
           )}
 
-          {/* Softer “print” vignette so text reads without screaming */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+          {/* Keep poster text ALWAYS readable (never theme-flips) */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/10" />
 
-          {/* micro-border that reads like a photo edge */}
-          <div className="pointer-events-none absolute inset-0 ring-1 ring-white/10" />
-
-          <div className="absolute bottom-0 left-0 right-0 p-5">
+          <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
             <p className="text-[11px] uppercase tracking-[0.32em] text-white/60">
               {(p as any).category} • {p.year}
             </p>
 
-            <h3 className="font-display editorial-title mt-2 text-[clamp(22px,2.2vw,30px)]">
+            <h3 className="font-display editorial-title mt-2 text-[clamp(22px,2.2vw,30px)] text-white">
               {p.title}
             </h3>
 
             {(p as any).role ? (
-              <p className="mt-2 text-sm text-white/65">{(p as any).role}</p>
+              <p className="mt-2 text-sm text-white/70">{(p as any).role}</p>
             ) : null}
 
-            <div className="mt-5 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.28em] text-white/60">
+            <div className="mt-5 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.28em] text-white/65">
               <span className="h-px w-10 bg-white/20" />
-              <span className="transition-colors group-hover:text-white">
-                Open
+              <span
+                className={[
+                  "transition-colors",
+                  isActive ? "text-[var(--accent)]" : "group-hover:text-white",
+                ].join(" ")}
+              >
+                Watch
               </span>
             </div>
           </div>
