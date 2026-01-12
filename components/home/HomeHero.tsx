@@ -3,7 +3,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 
 export default function HomeHero() {
   return (
-    <section className="relative min-h-[92vh] overflow-hidden bg-[#0A0A0C] text-[#F3F2EE]">
+    <section className="relative min-h-[92vh] overflow-hidden bg-[var(--page-bg)] text-[var(--page-fg)]">
       {/* Background video */}
       <div className="absolute inset-0">
         {/* Video (fade-in + subtle push-in) */}
@@ -39,10 +39,10 @@ export default function HomeHero() {
           <div className="mx-auto max-w-6xl px-5 pt-6 sm:px-8 lg:px-12">
             <div className="flex items-center justify-between">
               <div className="flex items-baseline gap-3">
-                <span className="text-[11px] uppercase tracking-[0.32em] text-white/70">
+                <span className="text-[11px] uppercase tracking-[0.32em] opacity-70">
                   San Diego
                 </span>
-                <span className="text-[11px] uppercase tracking-[0.32em] text-white/45">
+                <span className="text-[11px] uppercase tracking-[0.32em] opacity-45">
                   Film Student
                 </span>
               </div>
@@ -51,19 +51,19 @@ export default function HomeHero() {
                 <nav className="flex items-center gap-6 font-[var(--font-sans)]">
                   <Link
                     href="/work"
-                    className="text-[11px] uppercase tracking-[0.32em] text-white/70 hover:text-white"
+                    className="text-[11px] uppercase tracking-[0.32em] opacity-70 transition-opacity hover:opacity-100"
                   >
                     Work
                   </Link>
                   <Link
                     href="/about"
-                    className="text-[11px] uppercase tracking-[0.32em] text-white/70 hover:text-white"
+                    className="text-[11px] uppercase tracking-[0.32em] opacity-70 transition-opacity hover:opacity-100"
                   >
                     About
                   </Link>
                   <Link
                     href="/contact"
-                    className="text-[11px] uppercase tracking-[0.32em] text-white/70 hover:text-white"
+                    className="text-[11px] uppercase tracking-[0.32em] opacity-70 transition-opacity hover:opacity-100"
                   >
                     Contact
                   </Link>
