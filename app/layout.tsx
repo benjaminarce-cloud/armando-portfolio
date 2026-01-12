@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Bodoni_Moda, Inter } from "next/font/google";
-import ThemeToggle from "@/components/ThemeToggle";
+import SiteHeader from "@/components/SiteHeader";
 
 const serif = Bodoni_Moda({
   subsets: ["latin"],
@@ -26,9 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${sans.variable} ${serif.variable} antialiased`}>
-        <div className="fixed right-5 top-6 z-50 sm:right-8 sm:top-7">
-          <ThemeToggle />
-        </div>
+        <SiteHeader />
         {children}
       </body>
     </html>
