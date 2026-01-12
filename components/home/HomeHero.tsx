@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 export default function HomeHero() {
   return (
     <section className="relative min-h-[92vh] overflow-hidden bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
@@ -28,43 +26,12 @@ export default function HomeHero() {
         />
       </div>
 
+      {/* Foreground */}
       <div className="relative z-10 flex min-h-[92vh] flex-col">
-        <header>
-          <div className="mx-auto max-w-6xl px-5 pt-6 sm:px-8 lg:px-12">
-            <div className="flex items-center justify-between">
-              <div className="flex items-baseline gap-3">
-                <span className="text-[11px] uppercase tracking-[0.32em] opacity-70">
-                  San Diego
-                </span>
-                <span className="text-[11px] uppercase tracking-[0.32em] opacity-45">
-                  Film Student
-                </span>
-              </div>
+        {/* leave room for fixed header */}
+        <div className="h-20 sm:h-24" />
 
-              <nav className="flex items-center gap-6 font-[var(--font-sans)]">
-                <Link
-                  href="/work"
-                  className="text-[11px] uppercase tracking-[0.32em] opacity-70 transition-opacity hover:opacity-100"
-                >
-                  Work
-                </Link>
-                <Link
-                  href="/about"
-                  className="text-[11px] uppercase tracking-[0.32em] opacity-70 transition-opacity hover:opacity-100"
-                >
-                  About
-                </Link>
-                <Link
-                  href="/contact"
-                  className="text-[11px] uppercase tracking-[0.32em] opacity-70 transition-opacity hover:opacity-100"
-                >
-                  Contact
-                </Link>
-              </nav>
-            </div>
-          </div>
-        </header>
-
+        {/* Bottom-left title card */}
         <div className="mt-auto">
           <div className="mx-auto max-w-6xl px-5 pb-10 sm:px-8 sm:pb-12 lg:px-12 lg:pb-16">
             <div className="relative inline-block">
@@ -73,14 +40,11 @@ export default function HomeHero() {
                 className="
                   absolute -top-[0.06em] left-[0.02em]
                   font-[var(--font-serif)]
-                  text-[clamp(64px,8.8vw,124px)]
+                  text-[clamp(56px,8.2vw,124px)]
                   leading-[0.82]
                   tracking-[-0.02em]
                   text-white/22
-                  blur-[0.2px]
-                  select-none
-                  pointer-events-none
-                  whitespace-nowrap
+                  select-none pointer-events-none whitespace-nowrap
                 "
               >
                 Armando Aguilar
@@ -90,7 +54,7 @@ export default function HomeHero() {
                 className="
                   relative
                   font-[var(--font-serif)]
-                  text-[clamp(64px,8.8vw,124px)]
+                  text-[clamp(56px,8.2vw,124px)]
                   leading-[0.82]
                   tracking-[-0.02em]
                   text-white
