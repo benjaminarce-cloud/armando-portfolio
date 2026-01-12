@@ -4,7 +4,7 @@ import HomeEndCard from "@/components/home/HomeEndCard";
 
 export default function Page() {
   return (
-    <main className="bg-[#0A0A0C] text-[#F3F2EE]">
+    <main className="bg-[var(--page-bg)] text-[var(--page-fg)]">
       <HomeHero />
 
       {/* Netflix-style spotlight row (vertical reels + hover/center spotlight) */}
