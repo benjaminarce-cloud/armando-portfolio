@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Bodoni_Moda, Inter } from "next/font/google";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const serif = Bodoni_Moda({
   subsets: ["latin"],
@@ -24,9 +25,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
       <head>
-        {/* Set theme before paint to avoid flashing */}
         <Script id="theme-init" strategy="beforeInteractive">{`
 (function () {
   try {
@@ -42,6 +42,11 @@ export default function RootLayout({
       </head>
 
       <body className={`${sans.variable} ${serif.variable} antialiased`}>
+        {/* global toggle (every page) */}
+        <div className="fixed right-5 top-5 z-[60]">
+          <ThemeToggle />
+        </div>
+
         {children}
       </body>
     </html>
