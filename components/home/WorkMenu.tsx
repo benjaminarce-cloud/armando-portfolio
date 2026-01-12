@@ -25,7 +25,12 @@ export default function WorkMenu() {
   const cardRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
+  // vertical position of preview within the rail
   const [y, setY] = useState(0);
+
+  // micro parallax inside preview
+  const [px, setPx] = useState(0);
+  const [py, setPy] = useState(0);
 
   const recomputeY = () => {
     const rail = railRef.current;
@@ -47,6 +52,7 @@ export default function WorkMenu() {
 
   useEffect(() => {
     recomputeY();
+
     const onScroll = () => recomputeY();
     const onResize = () => recomputeY();
 
@@ -59,6 +65,24 @@ export default function WorkMenu() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active]);
+
+  const onPreviewMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = e.currentTarget;
+    const r = el.getBoundingClientRect();
+
+    // normalized [-0.5..0.5]
+    const nx = (e.clientX - r.left) / r.width - 0.5;
+    const ny = (e.clientY - r.top) / r.height - 0.5;
+
+    // subtle only
+    setPx(nx * 10);
+    setPy(ny * 10);
+  };
+
+  const onPreviewLeave = () => {
+    setPx(0);
+    setPy(0);
+  };
 
   return (
     <section className="bg-[color:var(--page-bg)] text-[color:var(--page-fg)] border-t border-[color:var(--page-border)]">
@@ -84,12 +108,10 @@ export default function WorkMenu() {
                 >
                   <div className="flex items-end justify-between gap-6">
                     <div className="min-w-0">
-                      {/* Title */}
                       <h3
                         className={[
                           "font-[var(--font-sans)]",
                           "text-[clamp(44px,5.2vw,84px)] leading-[0.93] tracking-[-0.035em]",
-                          // A24 rhythm: quiet gray -> loud black
                           idx === active
                             ? "text-[color:var(--page-fg)]"
                             : "text-[color:var(--page-muted)]",
@@ -100,7 +122,7 @@ export default function WorkMenu() {
                         {item.label}
                       </h3>
 
-                      {/* tiny underline accent on active */}
+                      {/* tiny underline accent */}
                       <div className="mt-4 h-px w-14 bg-[color:var(--page-border)]">
                         <div
                           className={[
@@ -112,7 +134,6 @@ export default function WorkMenu() {
                       </div>
                     </div>
 
-                    {/* Open */}
                     <span className="shrink-0 text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)] group-hover:text-[color:var(--page-fg)] transition-colors">
                       Open{" "}
                       <span className="inline-block translate-x-0 group-hover:translate-x-1 transition-transform">
@@ -129,23 +150,17 @@ export default function WorkMenu() {
             </p>
           </div>
 
-          {/* RIGHT: sticky preview zone */}
+          {/* RIGHT: sticky preview */}
           <div className="relative col-span-12 hidden lg:block lg:col-span-5">
             <div
               ref={railRef}
-              className="
-                sticky top-28
-                h-[calc(100vh-8rem)]
-                overflow-visible
-              "
+              className="sticky top-28 h-[calc(100vh-8rem)] overflow-visible"
             >
               <div
                 ref={cardRef}
                 className={[
                   "absolute",
-                  // overlap into left column a bit (kills template vibe)
                   "-left-10 right-0",
-                  // smaller + more poster-ish
                   "max-w-[420px]",
                   "rounded-[28px] border border-[color:var(--page-border)]",
                   "bg-[color:var(--page-card)]",
@@ -153,11 +168,48 @@ export default function WorkMenu() {
                   "overflow-hidden",
                   "will-change-transform",
                 ].join(" ")}
-                style={{ transform: `translateY(${y}px)` }}
+                style={{
+                  transform: `translateY(${y}px) translate3d(${px}px, ${py}px, 0)`,
+                  transition: "transform 220ms ease-out",
+                }}
+                onMouseMove={onPreviewMove}
+                onMouseLeave={onPreviewLeave}
               >
-                {/* Placeholder preview */}
-                <div className="aspect-[4/5] bg-gradient-to-b from-black/10 to-black/30" />
+                {/* “media” area */}
+                <div className="relative aspect-[4/5] overflow-hidden">
+                  {/* soft background placeholder */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/35" />
 
+                  {/* micro parallax inner layer (what you’ll swap with image/video later) */}
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      transform: `translate3d(${px * 0.6}px, ${py * 0.6}px, 0) scale(1.03)`,
+                      transition: "transform 220ms ease-out",
+                      willChange: "transform",
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.20),transparent_55%)]" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(0,0,0,0.18),transparent_60%)]" />
+                  </div>
+
+                  {/* huge translucent word */}
+                  <div
+                    className="
+                      absolute inset-x-0 top-8
+                      px-6
+                      font-[var(--font-sans)]
+                      text-[72px] leading-[0.9] tracking-[-0.05em]
+                      text-[color:var(--page-fg)]
+                      opacity-[0.16]
+                      select-none pointer-events-none
+                    "
+                  >
+                    {items[active]?.label}
+                  </div>
+                </div>
+
+                {/* footer bar */}
                 <div className="flex items-center justify-between px-5 py-4">
                   <span className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
                     Preview
