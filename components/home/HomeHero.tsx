@@ -1,7 +1,9 @@
 export default function HomeHero() {
   return (
-    data-hero="true"
-    <section className="relative min-h-[92vh] overflow-hidden bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
+    
+    <section
+      data-hero="true"
+      className="relative min-h-[92vh] overflow-hidden bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
       {/* Background video */}
       <div className="absolute inset-0">
         <video
