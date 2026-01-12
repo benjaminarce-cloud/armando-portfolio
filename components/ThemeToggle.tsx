@@ -23,10 +23,12 @@ export default function ThemeToggle() {
   }, []);
 
   const toggle = () => {
-    const next: Theme = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    document.documentElement.setAttribute("data-theme", next);
-    window.localStorage.setItem("theme", next);
+    setTheme((prev) => {
+      const next: Theme = prev === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      window.localStorage.setItem("theme", next);
+      return next;
+    });
   };
 
   return (
@@ -34,34 +36,12 @@ export default function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label="Toggle theme"
-      className="
-        group relative grid h-9 w-9 place-items-center
-        rounded-full border border-[color:var(--page-border)]
-        bg-[color:var(--page-card)]
-        transition
-        hover:bg-[color:var(--page-hover)]
-        focus:outline-none focus:ring-2 focus:ring-[color:var(--accent)]/40
-      "
+      className={[
+        "theme-toggle-icon",
+        theme === "dark" ? "is-dark" : "is-light",
+      ].join(" ")}
     >
-      {/* Eclipse mark */}
-      <span className="relative block h-4 w-4">
-        <span
-          className="
-            absolute inset-0 rounded-full
-            bg-[color:var(--page-fg)]
-            opacity-80 transition-opacity
-            group-hover:opacity-95
-          "
-        />
-        <span
-          className="
-            absolute inset-0 rounded-full
-            bg-[color:var(--page-bg)]
-            translate-x-[35%] transition-transform
-            group-hover:translate-x-[42%]
-          "
-        />
-      </span>
+      <span className="dot" aria-hidden="true" />
     </button>
   );
 }
