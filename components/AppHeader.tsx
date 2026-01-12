@@ -50,8 +50,18 @@ export default function AppHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Solid background should NOT appear on top of the hero video
-  const solid = !(pathname === "/" && heroInView);
+  const onHero = pathname === "/" && heroInView;
+
+  // Solid pill should NOT appear on top of the hero video
+  const solid = !onHero;
+
+  // Force-white styling when on hero (ignores theme)
+  const leftText = onHero ? "text-white/80" : "text-[color:var(--page-muted)]";
+  const centerText = onHero ? "text-white" : "text-[color:var(--page-fg)]";
+  const rightLinkText = onHero
+    ? "text-white/80 hover:text-white"
+    : "text-[color:var(--page-muted)] hover:text-[color:var(--page-fg)]";
+  const divider = onHero ? "bg-white/25" : "bg-[color:var(--page-border)]";
 
   return (
     <div
@@ -73,29 +83,35 @@ export default function AppHeader() {
           ].join(" ")}
         >
           {/* Left */}
-          <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
+          <div
+            className={[
+              "flex items-center gap-3 text-[11px] uppercase tracking-[0.32em]",
+              leftText,
+            ].join(" ")}
+          >
             <span>San Diego</span>
-            <span className="h-[1px] w-10 bg-[color:var(--page-border)]" />
+            <span className={["h-[1px] w-10", divider].join(" ")} />
             <span>Film Student</span>
           </div>
 
           {/* Center */}
           <Link
             href="/"
-            className="text-[12px] font-semibold tracking-[0.18em] text-[color:var(--page-fg)]"
+            className={["text-[12px] font-semibold tracking-[0.18em]", centerText].join(" ")}
           >
             MANDO°
           </Link>
 
           {/* Right */}
           <div className="flex items-center gap-4">
-            <Link
-              href="/contact"
-              className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)] hover:text-[color:var(--page-fg)]"
-            >
+            <Link href="/contact" className={rightLinkText}>
               Contact
             </Link>
-            <ThemeToggle />
+
+            {/* Make sure toggle stays usable on hero (white ring) */}
+            <div className={onHero ? "[&_button]:border-white/30 [&_button]:bg-white/10 [&_button]:hover:bg-white/15" : ""}>
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </div>
