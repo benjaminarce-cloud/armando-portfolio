@@ -58,7 +58,7 @@ export default function SpotlightRail() {
   }, []);
 
   return (
-    <section className="border-t border-black/10 bg-[#F3F2EE] text-[#0A0A0C]">
+    <section className="border-t border-[color:var(--page-border)] bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12">
         <div className="flex items-end justify-between gap-6">
           <div>
