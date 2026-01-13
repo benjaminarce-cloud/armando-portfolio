@@ -103,16 +103,27 @@ export default function AppHeader() {
           </Link>
 
           {/* Right */}
-          <div className="flex items-center gap-4">
-            <Link href="/contact" className={rightLinkText}>
-              Contact
-            </Link>
+          <div className="flex items-center gap-5">
+  <Link href="/work" className={rightLinkText}>
+    Work
+  </Link>
+  <Link href="/about" className={rightLinkText}>
+    About
+  </Link>
+  <Link href="/contact" className={rightLinkText}>
+    Contact
+  </Link>
 
-            {/* Make sure toggle stays usable on hero (white ring) */}
-            <div className={onHero ? "[&_button]:border-white/30 [&_button]:bg-white/10 [&_button]:hover:bg-white/15" : ""}>
-              <ThemeToggle />
-            </div>
-          </div>
+  <div
+    className={
+      onHero
+        ? "[&_button]:border-white/30 [&_button]:bg-white/10 [&_button]:hover:bg-white/15"
+        : ""
+    }
+  >
+    <ThemeToggle />
+  </div>
+</div>
         </div>
       </div>
     </div>
