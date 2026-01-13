@@ -67,11 +67,9 @@ export default function WorkMenu() {
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight;
 
-      // progress through viewport: 0..1 while section is around screen
       const t = (vh - rect.top) / (vh + rect.height);
       const clamped = Math.min(1, Math.max(0, t));
 
-      // tiny movement
       setParallax((clamped - 0.5) * 12); // px
     };
 
@@ -102,7 +100,7 @@ export default function WorkMenu() {
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12">
         <div className="grid grid-cols-12 gap-10">
           {/* LEFT: list */}
-          <div className="col-span-12 lg:col-span-7">
+          <div className="col-span-12 lg:col-span-6">
             <p className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
               Work
             </p>
@@ -126,7 +124,6 @@ export default function WorkMenu() {
                       <h3
                         className={[
                           "font-[var(--font-sans)]",
-                          // stronger + cleaner, closer to A24 impact
                           "text-[clamp(44px,5.2vw,88px)] leading-[0.94] tracking-[-0.04em]",
                           isActive
                             ? "text-[color:var(--page-fg)]"
@@ -156,14 +153,15 @@ export default function WorkMenu() {
           </div>
 
           {/* RIGHT: preview zone */}
-          <div className="relative col-span-12 hidden lg:block lg:col-span-5">
+          <div className="relative col-span-12 hidden lg:block lg:col-span-6">
             <div ref={railRef} className="relative h-full">
               <div
                 ref={cardRef}
                 className={[
                   "absolute",
-                  // Slight overlap into the list, A24-ish
-                  "-left-10 right-0",
+                  "right-0",
+                  "w-[92%]",
+                  "max-w-[560px]",
                   "rounded-3xl border border-[color:var(--page-border)]",
                   "bg-[color:var(--page-card)] shadow-[0_50px_140px_rgba(0,0,0,0.18)]",
                   "overflow-hidden",
@@ -172,7 +170,7 @@ export default function WorkMenu() {
                 ].join(" ")}
                 style={{ transform: `translateY(${y}px)` }}
               >
-                {/* Poster area (smaller than before) */}
+                {/* Poster area */}
                 <div className="relative aspect-[16/11]">
                   {/* image */}
                   <div
@@ -209,7 +207,6 @@ export default function WorkMenu() {
                         >
                           {activeGroup.label}
                         </div>
-
                         <div className="h-10" />
                       </div>
                     </div>
