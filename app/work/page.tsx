@@ -1,17 +1,29 @@
+// app/work/page.tsx
 import Image from "next/image";
 import Link from "next/link";
 import { projects } from "@/lib/projects";
-import { filterProjectsByGroup } from "@/lib/workGroups";
+import { isGroupId, WORK_GROUPS } from "@/lib/workGroups";
 
 export default async function WorkPage({
   searchParams,
 }: {
-  searchParams?: Promise<{ group?: string }>;
+  searchParams: Promise<{ group?: string }>;
 }) {
-  const sp = (await searchParams) ?? {};
-  const group = sp.group;
+  const sp = await searchParams;
+  const groupParam = sp.group ?? null;
+  const activeGroup = isGroupId(groupParam) ? groupParam : null;
 
-  const filtered = filterProjectsByGroup(projects, group);
+  const filtered = activeGroup
+    ? projects.filter((p) => p.group === activeGroup)
+    : projects;
+
+  const heading = activeGroup
+    ? WORK_GROUPS.find((g) => g.id === activeGroup)?.label ?? "Work"
+    : "Work";
+
+  const subcopy = activeGroup
+    ? `Selected projects in ${heading}.`
+    : "All films & campaigns.";
 
   return (
     <main className="min-h-screen bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
@@ -20,27 +32,53 @@ export default async function WorkPage({
         <div className="mt-10">
           <p className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
             Work
-            {group ? (
-              <span className="ml-3 text-[color:var(--page-muted)]/80">
-                / {String(group).toUpperCase()}
-              </span>
-            ) : null}
           </p>
 
-          <h1 className="editorial-title mt-4 text-[clamp(44px,6vw,84px)]">
-            Films & Campaigns
-          </h1>
+          <div className="mt-3 flex flex-wrap items-end justify-between gap-6">
+            <h1 className="editorial-title text-[clamp(44px,6vw,84px)]">
+              {heading}
+            </h1>
 
-          <p className="mt-6 max-w-2xl text-[color:var(--page-muted)]">
-            Sports marketing films, social-first edits, and run culture stories —
-            built for replay.
+            {/* Filter pills */}
+            <div className="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.28em]">
+              <Link
+                href="/work"
+                className={[
+                  "rounded-full border px-3 py-2 transition-colors",
+                  !activeGroup
+                    ? "border-[color:var(--page-border)] bg-[color:var(--page-card)] text-[color:var(--page-fg)]"
+                    : "border-[color:var(--page-border)] text-[color:var(--page-muted)] hover:text-[color:var(--page-fg)]",
+                ].join(" ")}
+              >
+                All
+              </Link>
+
+              {WORK_GROUPS.map((g) => (
+                <Link
+                  key={g.id}
+                  href={g.href}
+                  className={[
+                    "rounded-full border px-3 py-2 transition-colors",
+                    activeGroup === g.id
+                      ? "border-[color:var(--page-border)] bg-[color:var(--page-card)] text-[color:var(--page-fg)]"
+                      : "border-[color:var(--page-border)] text-[color:var(--page-muted)] hover:text-[color:var(--page-fg)]",
+                  ].join(" ")}
+                >
+                  {g.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <p className="mt-6 max-w-2xl text-sm text-[color:var(--page-muted)]">
+            {subcopy}
           </p>
         </div>
 
         {/* Grid */}
         <div className="mt-14 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((p, i) => (
-            <article key={p.slug} className={tileOffset(i)}>
+          {filtered.map((p) => (
+            <article key={p.slug}>
               <Link href={`/work/${p.slug}`} className="group block">
                 <div className="relative">
                   <div className="relative aspect-[4/5] overflow-hidden bg-black/5">
@@ -70,7 +108,7 @@ export default async function WorkPage({
 
                     <div className="mt-6 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-muted)]">
                       <span className="h-px w-10 bg-[color:var(--page-border)]" />
-                      <span className="group-hover:text-[color:var(--page-fg)]">
+                      <span className="group-hover:text-[color:var(--page-fg)] transition-colors">
                         View
                       </span>
                     </div>
@@ -83,14 +121,4 @@ export default async function WorkPage({
       </div>
     </main>
   );
-}
-
-function tileOffset(i: number) {
-  const map: Record<number, string> = {
-    1: "lg:translate-y-10",
-    2: "lg:-translate-y-4",
-    4: "lg:translate-y-6",
-    5: "lg:-translate-y-8",
-  };
-  return map[i % 6] ?? "";
 }
