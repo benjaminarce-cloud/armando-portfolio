@@ -4,11 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { projects } from "@/lib/projects";
-import { WORK_GROUPS, GroupId, groupPosterSrc } from "@/lib/workGroups";
+import { WORK_GROUPS, groupPosterSrc } from "@/lib/workGroups";
 
 export default function WorkMenu() {
   const items = useMemo(() => WORK_GROUPS, []);
-
   const [active, setActive] = useState(0);
 
   // Refs to measure positions
@@ -90,7 +89,7 @@ export default function WorkMenu() {
   }, []);
 
   const activeGroup = items[active];
-  const poster = groupPosterSrc(activeGroup.id as GroupId, projects);
+  const poster = groupPosterSrc(activeGroup.id, projects);
 
   return (
     <section
@@ -152,15 +151,17 @@ export default function WorkMenu() {
             </p>
           </div>
 
-          {/* RIGHT: preview zone */}
+          {/* RIGHT: preview zone (push it into the negative space) */}
           <div className="relative col-span-12 hidden lg:block lg:col-span-6">
             <div ref={railRef} className="relative h-full">
               <div
                 ref={cardRef}
                 className={[
                   "absolute",
+                  // push slightly more right + keep it visually centered in the empty space
                   "right-0",
-                  "w-[92%]",
+                  "translate-x-6",
+                  "w-[88%]",
                   "max-w-[560px]",
                   "rounded-3xl border border-[color:var(--page-border)]",
                   "bg-[color:var(--page-card)] shadow-[0_50px_140px_rgba(0,0,0,0.18)]",
@@ -172,7 +173,6 @@ export default function WorkMenu() {
               >
                 {/* Poster area */}
                 <div className="relative aspect-[16/11]">
-                  {/* image */}
                   <div
                     className="absolute inset-0"
                     style={{ transform: `translateY(${parallax}px)` }}
