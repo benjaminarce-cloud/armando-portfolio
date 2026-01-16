@@ -75,24 +75,25 @@ export default async function WorkPage({
           </p>
         </div>
 
-        {/* Grid */}
+        {/* A24-ish grid (curated wall offsets) */}
         <div className="mt-14 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((p) => (
-            <article key={p.slug}>
+          {filtered.map((p, i) => (
+            <article key={p.slug} className={tileOffset(i)}>
               <Link href={`/work/${p.slug}`} className="group block">
                 <div className="relative">
                   {/* Poster + hover preview */}
                   <div className="relative aspect-[4/5] overflow-hidden bg-black/5">
-                    {/* Poster image */}
+                    {/* Poster */}
                     <Image
                       src={p.coverSrc}
                       alt={p.coverAlt ?? `${p.title} cover frame`}
                       fill
                       sizes="(max-width: 1024px) 50vw, 33vw"
                       className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.02]"
+                      priority={false}
                     />
 
-                    {/* Hover preview (only if previewSrc exists) */}
+                    {/* Hover preview video */}
                     {p.previewSrc ? (
                       <video
                         className="
@@ -105,18 +106,17 @@ export default async function WorkPage({
                         playsInline
                         preload="metadata"
                         poster={p.coverSrc}
-                        // autoPlay is okay here, but some browsers only start on hover anyway
                         autoPlay
                       >
                         <source src={p.previewSrc} type="video/mp4" />
                       </video>
                     ) : null}
 
-                    {/* Subtle overlay so text area feels intentional */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                    {/* Minimal cinematic sheen */}
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                   </div>
 
-                  {/* Meta */}
+                  {/* Minimal meta */}
                   <div className="mt-6">
                     <p className="text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-muted)]">
                       {p.category} • {p.year}
@@ -147,4 +147,18 @@ export default async function WorkPage({
       </div>
     </main>
   );
+}
+
+/**
+ * Offsets mimic the “curated wall” feel (not a uniform catalog).
+ * Subtle, responsive-safe.
+ */
+function tileOffset(i: number) {
+  const map: Record<number, string> = {
+    1: "lg:translate-y-10",
+    2: "lg:-translate-y-4",
+    4: "lg:translate-y-6",
+    5: "lg:-translate-y-8",
+  };
+  return map[i % 6] ?? "";
 }
