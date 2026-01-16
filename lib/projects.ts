@@ -22,14 +22,27 @@ export type Project = {
 
 const CLOUD = "dzjcndphq";
 
-// Prefer this format: no version hardcoding + auto optimize
+// Cloudinary mp4 previews
 const preview = (publicId: string) =>
   `https://res.cloudinary.com/${CLOUD}/video/upload/f_auto,q_auto/${publicId}.mp4`;
 
-// Posters:
-// Put your poster jpg/png files in: public/img/posters/
-// And name them EXACTLY like the slug (e.g. basketball-1.jpg, freelance-rc.jpg)
-const poster = (slug: string) => `/img/posters/${slug}.jpg`;
+/**
+ * Posters are in: public/img/posters
+ * Your GitHub filenames (from your screenshot) are like:
+ *   Basketball-1-poster.jpg
+ * So we convert slug -> correct filename.
+ *
+ * - basketball-12 -> /img/posters/Basketball-12-poster.jpg
+ * - freelance-rc-2 -> /img/posters/freelance-rc-2-poster.jpg
+ * - other-track -> /img/posters/other-track-poster.jpg
+ */
+const posterFromSlug = (slug: string) => {
+  if (slug.startsWith("basketball-")) {
+    const n = slug.slice("basketball-".length); // "1", "20", etc.
+    return `/img/posters/Basketball-${n}-poster.jpg`;
+  }
+  return `/img/posters/${slug}-poster.jpg`;
+};
 
 export const projects: Project[] = [
   // --------------------
@@ -41,7 +54,7 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: poster("basketball-1"),
+    coverSrc: posterFromSlug("basketball-1"),
     coverAlt: "Basketball 1 poster",
     previewSrc: preview("Basketball-1-preview_wwfslg"),
   },
@@ -51,7 +64,7 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: poster("basketball-2"),
+    coverSrc: posterFromSlug("basketball-2"),
     coverAlt: "Basketball 2 poster",
     previewSrc: preview("Basketball-2-preview_jsuyju"),
   },
@@ -61,7 +74,7 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: poster("basketball-3"),
+    coverSrc: posterFromSlug("basketball-3"),
     coverAlt: "Basketball 3 poster",
     previewSrc: preview("Basketball-3-preview_jnkhjs"),
   },
@@ -71,7 +84,7 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: poster("basketball-4"),
+    coverSrc: posterFromSlug("basketball-4"),
     coverAlt: "Basketball 4 poster",
     previewSrc: preview("Basketball-4-preview_v0qkcc"),
   },
@@ -81,7 +94,7 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: poster("basketball-5"),
+    coverSrc: posterFromSlug("basketball-5"),
     coverAlt: "Basketball 5 poster",
     previewSrc: preview("Basketball-5-preview_jhhaeu"),
   },
@@ -91,7 +104,7 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: poster("basketball-6"),
+    coverSrc: posterFromSlug("basketball-6"),
     coverAlt: "Basketball 6 poster",
     previewSrc: preview("Basketball-6-preview_ujmwqc"),
   },
@@ -101,7 +114,7 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: poster("basketball-7"),
+    coverSrc: posterFromSlug("basketball-7"),
     coverAlt: "Basketball 7 poster",
     previewSrc: preview("Basketball-7-preview_bpxogl"),
   },
@@ -111,7 +124,7 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: poster("basketball-8"),
+    coverSrc: posterFromSlug("basketball-8"),
     coverAlt: "Basketball 8 poster",
     previewSrc: preview("Basketball-8-preview_lkfq7c"),
   },
@@ -121,7 +134,7 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: poster("basketball-9"),
+    coverSrc: posterFromSlug("basketball-9"),
     coverAlt: "Basketball 9 poster",
     previewSrc: preview("Basketball-9-preview_z96l9c"),
   },
@@ -131,7 +144,7 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: poster("basketball-10"),
+    coverSrc: posterFromSlug("basketball-10"),
     coverAlt: "Basketball 10 poster",
     previewSrc: preview("Basketball-10-preview_qku9bv"),
   },
@@ -141,17 +154,20 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: poster("basketball-11"),
+    coverSrc: posterFromSlug("basketball-11"),
     coverAlt: "Basketball 11 poster",
     previewSrc: preview("Basketball-11-preview_a3i7ei"),
   },
+
+  // note: you don't have 12 preview in your list; skip or add later if needed
+
   {
     slug: "basketball-13",
     title: "Basketball 13",
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: poster("basketball-13"),
+    coverSrc: posterFromSlug("basketball-13"),
     coverAlt: "Basketball 13 poster",
     previewSrc: preview("Basketball-13-preview_hgpzqc"),
   },
@@ -161,7 +177,7 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: poster("basketball-15"),
+    coverSrc: posterFromSlug("basketball-15"),
     coverAlt: "Basketball 15 poster",
     previewSrc: preview("Basketball-15-preview_md5hcj"),
   },
@@ -171,7 +187,7 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: poster("basketball-16"),
+    coverSrc: posterFromSlug("basketball-16"),
     coverAlt: "Basketball 16 poster",
     previewSrc: preview("Basketball-16-preview_mqtpel"),
   },
@@ -181,7 +197,7 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: poster("basketball-17"),
+    coverSrc: posterFromSlug("basketball-17"),
     coverAlt: "Basketball 17 poster",
     previewSrc: preview("Basketball-17-preview_mtmwnm"),
   },
@@ -191,7 +207,7 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: poster("basketball-18"),
+    coverSrc: posterFromSlug("basketball-18"),
     coverAlt: "Basketball 18 poster",
     previewSrc: preview("Basketball-18-preview_jbb1oi"),
   },
@@ -201,7 +217,7 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: poster("basketball-19"),
+    coverSrc: posterFromSlug("basketball-19"),
     coverAlt: "Basketball 19 poster",
     previewSrc: preview("Basketball-19-preview_ag30gn"),
   },
@@ -211,13 +227,14 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: poster("basketball-20"),
+    coverSrc: posterFromSlug("basketball-20"),
     coverAlt: "Basketball 20 poster",
-    previewSrc: preview("basketball-20-preview_tpj633"),
+    // IMPORTANT: Cloudinary publicId is case-sensitive
+    previewSrc: preview("Basketball-20-preview_tpj633"),
   },
 
   // --------------------
-  // Freelance (6)
+  // Freelance (7)
   // --------------------
   {
     slug: "freelance-1",
@@ -225,7 +242,7 @@ export const projects: Project[] = [
     category: "Freelance",
     year: 2025,
     group: "freelance",
-    coverSrc: poster("freelance-1"),
+    coverSrc: posterFromSlug("freelance-1"),
     coverAlt: "Freelance 1 poster",
     previewSrc: preview("freelance-1-preview_zxwodg"),
   },
@@ -235,7 +252,7 @@ export const projects: Project[] = [
     category: "Freelance",
     year: 2025,
     group: "freelance",
-    coverSrc: poster("freelance-coloradofb"),
+    coverSrc: posterFromSlug("freelance-coloradofb"),
     coverAlt: "Colorado FB poster",
     previewSrc: preview("freelance-coloradofb-preview_yldpnv"),
   },
@@ -245,7 +262,7 @@ export const projects: Project[] = [
     category: "Freelance",
     year: 2025,
     group: "freelance",
-    coverSrc: poster("freelance-rc"),
+    coverSrc: posterFromSlug("freelance-rc"),
     coverAlt: "Freelance run club poster",
     previewSrc: preview("freelance-rc-preview_cwskb0"),
   },
@@ -255,7 +272,7 @@ export const projects: Project[] = [
     category: "Freelance",
     year: 2025,
     group: "freelance",
-    coverSrc: poster("freelance-rc-2"),
+    coverSrc: posterFromSlug("freelance-rc-2"),
     coverAlt: "Freelance run club 2 poster",
     previewSrc: preview("freelance-rc-2-preview_wmffop"),
   },
@@ -265,7 +282,7 @@ export const projects: Project[] = [
     category: "Freelance",
     year: 2025,
     group: "freelance",
-    coverSrc: poster("freelance-rc-3"),
+    coverSrc: posterFromSlug("freelance-rc-3"),
     coverAlt: "Freelance run club 3 poster",
     previewSrc: preview("freelance-rc-3-preview_ni4bwe"),
   },
@@ -275,7 +292,7 @@ export const projects: Project[] = [
     category: "Freelance",
     year: 2025,
     group: "freelance",
-    coverSrc: poster("freelance-soccer"),
+    coverSrc: posterFromSlug("freelance-soccer"),
     coverAlt: "Freelance soccer poster",
     previewSrc: preview("freelance-soccer-preview_hz5tym"),
   },
@@ -285,7 +302,7 @@ export const projects: Project[] = [
     category: "Freelance",
     year: 2025,
     group: "freelance",
-    coverSrc: poster("freelance-soccer-2"),
+    coverSrc: posterFromSlug("freelance-soccer-2"),
     coverAlt: "Freelance soccer 2 poster",
     previewSrc: preview("freelance-soccer-2-preview_pg5u0j"),
   },
@@ -299,7 +316,7 @@ export const projects: Project[] = [
     category: "Other",
     year: 2025,
     group: "other",
-    coverSrc: poster("other-track"),
+    coverSrc: posterFromSlug("other-track"),
     coverAlt: "Track poster",
     previewSrc: preview("other-track-preview_o1vvmx"),
   },
@@ -309,7 +326,7 @@ export const projects: Project[] = [
     category: "Other",
     year: 2025,
     group: "other",
-    coverSrc: poster("other-track-2"),
+    coverSrc: posterFromSlug("other-track-2"),
     coverAlt: "Track 2 poster",
     previewSrc: preview("other-track-2-preview_dktqw2"),
   },
@@ -319,7 +336,7 @@ export const projects: Project[] = [
     category: "Other",
     year: 2025,
     group: "other",
-    coverSrc: poster("other-sorority"),
+    coverSrc: posterFromSlug("other-sorority"),
     coverAlt: "Sorority poster",
     previewSrc: preview("other-sorority-preview_znlgh8"),
   },
@@ -329,7 +346,7 @@ export const projects: Project[] = [
     category: "Other",
     year: 2025,
     group: "other",
-    coverSrc: poster("other-sor-2"),
+    coverSrc: posterFromSlug("other-sor-2"),
     coverAlt: "Sorority 2 poster",
     previewSrc: preview("other-sor-2-preview_ljjvaw"),
   },
