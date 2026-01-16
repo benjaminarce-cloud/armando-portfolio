@@ -22,17 +22,15 @@ export function isGroupId(x: string | null): x is GroupId {
 /**
  * Returns a poster/cover image for the group preview card.
  * Priority:
- * 1) first project in that group that has posterSrc
- * 2) else coverSrc
- * 3) else fallback (you can change this path)
+ * 1) first project in that group that has coverSrc
+ * 2) fallback
  */
 export function groupPosterSrc(group: GroupId, projects: Project[]) {
   const inGroup = projects.filter((p) => p.group === group);
 
-  const withPoster = inGroup.find((p) => (p as any).posterSrc);
-  if (withPoster && (withPoster as any).posterSrc) return (withPoster as any).posterSrc as string;
-
-  const withCover = inGroup.find((p) => p.coverSrc);
+  // Your projects.ts already uses coverSrc as the poster path,
+  // so this is all we need.
+  const withCover = inGroup.find((p) => !!p.coverSrc);
   if (withCover?.coverSrc) return withCover.coverSrc;
 
   return "/img/hero-poster.jpg";
