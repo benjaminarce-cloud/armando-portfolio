@@ -1,4 +1,5 @@
 // lib/projects.ts
+import type { GroupId } from "@/lib/workGroups";
 
 export type Project = {
   slug: string;
@@ -8,70 +9,17 @@ export type Project = {
   coverSrc: string;
   coverAlt?: string;
 
-  previewSrc?: string;
-posterSrc?: string;
-  
-  tags?: string[];
-  client?: string;
-  href?: string;
+  // NEW
+  group: GroupId;
+
+  // Optional (Cloudinary URLs)
+  previewSrc?: string; // hover mp4
+  videoSrc?: string;   // full mp4
   role?: string;
+  tags?: string[];
 };
 
 export const projects: Project[] = [
-  {
-    slug: "nil-campaign",
-    title: "NIL Campaign",
-    category: "Campaign",
-    year: 2025,
-    coverSrc: "/img/files/nil-campaign.jpg",
-    coverAlt: "NIL campaign still frame",
-    tags: ["Social-first", "Sports"],
-  },
-  {
-    slug: "run-club",
-    title: "Run Club",
-    category: "Run Culture",
-    year: 2025,
-    coverSrc: "/img/files/run-club.jpg",
-    coverAlt: "Run club still frame",
-    tags: ["Community", "Lifestyle"],
-  },
-  {
-    slug: "cam-ward",
-    title: "Cam Ward",
-    category: "Athlete Profile",
-    year: 2025,
-    coverSrc: "/img/files/cam-ward.jpg",
-    coverAlt: "Cam Ward still frame",
-    tags: ["Profile", "Sports"],
-  },
-  {
-    slug: "off-szn",
-    title: "Off Szn",
-    category: "Training",
-    year: 2025,
-    coverSrc: "/img/files/off-szn.jpg",
-    coverAlt: "Off season still frame",
-    tags: ["Workout", "Sports"],
-  },
-  {
-    slug: "recap",
-    title: "Recap",
-    category: "Recap",
-    year: 2025,
-    coverSrc: "/img/files/recap.jpg",
-    coverAlt: "Recap still frame",
-    tags: ["Highlights", "Edit"],
-  },
-  {
-    slug: "the-madness",
-    title: "The Madness",
-    category: "Game Day",
-    year: 2025,
-    coverSrc: "/img/files/the-madness.jpg",
-    coverAlt: "The madness still frame",
-    tags: ["Energy", "Crowd"],
-  },
   {
     slug: "basketball",
     title: "Basketball",
@@ -80,16 +28,41 @@ export const projects: Project[] = [
     coverSrc: "/img/files/basketball.png",
     coverAlt: "Basketball still frame",
     tags: ["Hoops", "Cinematic"],
+    group: "basketball",
+    // previewSrc: "https://.../basketball-preview.mp4",
+    // videoSrc: "https://.../basketball-full.mp4",
   },
-  // Optional extra card if you want it:
-  // {
-  //   slug: "soccer",
-  //   title: "Soccer",
-  //   category: "Training",
-  //   year: 2025,
-  //   coverSrc: "/img/files/soccer.jpg",
-  //   coverAlt: "Soccer still frame",
-  // },
-];
 
-export const PROJECTS = projects;
+  {
+    slug: "nil-campaign",
+    title: "NIL Campaign",
+    category: "Campaign",
+    year: 2025,
+    coverSrc: "/img/files/nil-campaign.jpg",
+    coverAlt: "NIL campaign still frame",
+    tags: ["Social-first", "Sports"],
+    group: "basketball", // <- choose the group for each project
+  },
+
+  {
+    slug: "run-club",
+    title: "Run Club",
+    category: "Run Culture",
+    year: 2025,
+    coverSrc: "/img/files/run-club.jpg",
+    coverAlt: "Run club still frame",
+    tags: ["Community", "Lifestyle"],
+    group: "freelance",
+  },
+
+  {
+    slug: "recap",
+    title: "Recap",
+    category: "Recap",
+    year: 2025,
+    coverSrc: "/img/files/recap.jpg",
+    coverAlt: "Recap still frame",
+    tags: ["Highlights", "Edit"],
+    group: "other",
+  },
+];
