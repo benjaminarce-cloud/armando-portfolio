@@ -100,8 +100,9 @@ export default function WorkMenu() {
       ref={sectionRef as any}
       className="bg-[color:var(--page-bg)] text-[color:var(--page-fg)] border-t border-[color:var(--page-border)]"
     >
-      <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12">
-        <div className="grid grid-cols-12 gap-10">
+      {/* IMPORTANT: keep the container but allow overflow so the right side can bleed */}
+      <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12 overflow-visible">
+        <div className="grid grid-cols-12 gap-10 overflow-visible">
           {/* LEFT: list */}
           <div className="col-span-12 lg:col-span-6">
             <p className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
@@ -155,16 +156,18 @@ export default function WorkMenu() {
             </p>
           </div>
 
-          {/* RIGHT: projector spill */}
-          <div className="relative col-span-12 hidden lg:block lg:col-span-6">
-            <div ref={railRef} className="relative h-full">
+          {/* RIGHT: projector spill (BLEEDS OUTSIDE CONTAINER) */}
+          <div className="relative col-span-12 hidden lg:block lg:col-span-6 overflow-visible">
+            <div ref={railRef} className="relative h-full overflow-visible">
               {/* Big translucent word behind everything */}
               <div className="pointer-events-none absolute inset-0 overflow-visible">
                 <div
                   className="
-                    absolute right-[-2vw] top-8
+                    absolute
+                    right-[-10vw] xl:right-[-16vw]
+                    top-8
                     font-[var(--font-sans)]
-                    text-[clamp(100px,8.6vw,180px)]
+                    text-[clamp(110px,9vw,190px)]
                     leading-none tracking-[-0.06em]
                     text-[color:var(--page-fg)]/10
                     select-none whitespace-nowrap
@@ -174,12 +177,15 @@ export default function WorkMenu() {
                 </div>
               </div>
 
-              {/* Projection - now fills the full right column */}
+              {/* Projection: fills column + bleeds into viewport */}
               <div
                 ref={projRef}
                 className={[
-                  "absolute right-0",
-                  "w-full", // IMPORTANT: full column width
+                  "absolute",
+                  // bleed outside the max-w container:
+                  "right-[-10vw] xl:right-[-16vw]",
+                  "w-[calc(100%+10vw)] xl:w-[calc(100%+16vw)]",
+                  // keep it feeling like light, not a “card”
                   "rounded-[28px] overflow-hidden",
                   "will-change-transform",
                   "transition-transform duration-300 ease-out",
@@ -188,7 +194,6 @@ export default function WorkMenu() {
                   transform: `translateY(${y}px)`,
                 }}
               >
-                {/* Aspect container */}
                 <div className="relative aspect-[16/9]">
                   {/* media layer */}
                   <div
@@ -210,7 +215,7 @@ export default function WorkMenu() {
                         src={poster}
                         alt={`${activeGroup.label} preview`}
                         fill
-                        sizes="(max-width: 1024px) 50vw, 40vw"
+                        sizes="(max-width: 1024px) 60vw, 50vw"
                         className="object-cover"
                         priority={false}
                       />
@@ -219,11 +224,8 @@ export default function WorkMenu() {
 
                   {/* projector vignette + spill */}
                   <div className="absolute inset-0 pointer-events-none">
-                    {/* soft edge vignette */}
                     <div className="absolute inset-0 bg-[radial-gradient(140%_120%_at_50%_40%,rgba(255,255,255,0.10),rgba(0,0,0,0.55))]" />
-                    {/* bottom fade */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-                    {/* subtle grain */}
                     <div
                       className="absolute inset-0 opacity-[0.12] mix-blend-overlay"
                       style={{
@@ -231,7 +233,6 @@ export default function WorkMenu() {
                           "url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><filter id=%22n%22 x=%220%22 y=%220%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%222%22 stitchTiles=%22stitch%22/></filter><rect width=%22200%22 height=%22200%22 filter=%22url(%23n)%22 opacity=%220.35%22/></svg>')",
                       }}
                     />
-                    {/* tiny highlight like lens flare */}
                     <div className="absolute -left-10 top-10 h-40 w-40 rounded-full bg-white/10 blur-3xl" />
                   </div>
 
