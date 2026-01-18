@@ -10,39 +10,48 @@ export default function WorkMenu() {
   const items = useMemo(() => WORK_GROUPS, []);
   const [active, setActive] = useState(0);
 
-  // Refs to measure positions
   const sectionRef = useRef<HTMLElement | null>(null);
-  const railRef = useRef<HTMLDivElement | null>(null); // right column (relative)
+  const railRef = useRef<HTMLDivElement | null>(null);
   const projRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   const [y, setY] = useState(0);
   const [parallax, setParallax] = useState(0);
+  const [projH, setProjH] = useState<number>(640);
 
-  const recomputeY = () => {
+  const recomputeLayout = () => {
     const rail = railRef.current;
     const proj = projRef.current;
     const item = itemRefs.current[active];
     if (!rail || !proj || !item) return;
 
+    // 1) Make the projection "tall ceilings"
+    //    - Target: big, but still comfortably inside the section
+    const railH = rail.getBoundingClientRect().height;
+    const target = Math.round(window.innerHeight * 0.78); // taller than before
+    const minH = 560;
+    const maxH = Math.max(minH, Math.floor(railH)); // never exceed rail
+    const nextH = Math.min(maxH, Math.max(minH, target));
+    if (Math.abs(nextH - projH) > 1) setProjH(nextH);
+
+    // 2) Keep the projection aligned to hovered row center
     const itemRect = item.getBoundingClientRect();
     const railRect = rail.getBoundingClientRect();
 
     const itemCenterY = itemRect.top - railRect.top + itemRect.height / 2;
-    const desiredTop = itemCenterY - proj.offsetHeight / 2;
+    const desiredTop = itemCenterY - nextH / 2;
 
-    const maxTop = Math.max(0, rail.offsetHeight - proj.offsetHeight);
+    const maxTop = Math.max(0, railH - nextH);
     const clamped = Math.min(Math.max(desiredTop, 0), maxTop);
 
     setY(clamped);
   };
 
-  // keep projection aligned to hovered row
   useEffect(() => {
-    recomputeY();
+    recomputeLayout();
 
-    const onScroll = () => recomputeY();
-    const onResize = () => recomputeY();
+    const onScroll = () => recomputeLayout();
+    const onResize = () => recomputeLayout();
 
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
@@ -52,7 +61,7 @@ export default function WorkMenu() {
       window.removeEventListener("resize", onResize);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active]);
+  }, [active, projH]);
 
   // micro parallax (subtle)
   useEffect(() => {
@@ -68,8 +77,7 @@ export default function WorkMenu() {
 
       const t = (vh - rect.top) / (vh + rect.height);
       const clamped = Math.min(1, Math.max(0, t));
-
-      setParallax((clamped - 0.5) * 12); // px
+      setParallax((clamped - 0.5) * 10);
     };
 
     const onScroll = () => {
@@ -90,8 +98,9 @@ export default function WorkMenu() {
 
   const activeGroup = items[active];
 
-  // Pick preview media: prefer a project's previewSrc mp4 in that group, else poster
-  const inGroup = projects.filter((p) => p.group === (activeGroup.id as GroupId));
+  const inGroup = projects.filter(
+    (p) => p.group === (activeGroup.id as GroupId)
+  );
   const video = inGroup.find((p) => p.previewSrc)?.previewSrc;
   const poster = groupPosterSrc(activeGroup.id as GroupId, projects);
 
@@ -100,7 +109,6 @@ export default function WorkMenu() {
       ref={sectionRef as any}
       className="bg-[color:var(--page-bg)] text-[color:var(--page-fg)] border-t border-[color:var(--page-border)]"
     >
-      {/* allow bleed */}
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12 overflow-visible">
         <div className="grid grid-cols-12 gap-10 overflow-visible">
           {/* LEFT: list */}
@@ -128,21 +136,20 @@ export default function WorkMenu() {
                       <h3
                         className={[
                           "font-[var(--font-sans)]",
-                          "text-[clamp(44px,5.2vw,88px)] leading-[0.94] tracking-[-0.04em]",
-                          // slower, more editorial fade
-                          "transition-colors duration-500 ease-out",
+                          "text-[clamp(44px,5.2vw,92px)] leading-[0.94] tracking-[-0.045em]",
                           isActive
                             ? "text-[color:var(--page-fg)]"
-                            : "text-[color:var(--page-fg)]/40",
+                            : "text-[color:var(--page-muted)]",
+                          "transition-colors duration-200",
                           "group-hover:text-[color:var(--page-fg)]",
                         ].join(" ")}
                       >
                         {item.label}
                       </h3>
 
-                      <span className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-fg)]/50 group-hover:text-[color:var(--page-fg)] transition-colors duration-500">
+                      <span className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)] group-hover:text-[color:var(--page-fg)] transition-colors">
                         Open{" "}
-                        <span className="inline-block translate-x-0 group-hover:translate-x-1 transition-transform duration-300">
+                        <span className="inline-block translate-x-0 group-hover:translate-x-1 transition-transform">
                           →
                         </span>
                       </span>
@@ -157,20 +164,20 @@ export default function WorkMenu() {
             </p>
           </div>
 
-          {/* RIGHT: projection wall (bleeds into viewport) */}
+          {/* RIGHT: tall projector bay */}
           <div className="relative col-span-12 hidden lg:block lg:col-span-6 overflow-visible">
-            <div ref={railRef} className="relative h-full overflow-visible">
-              {/* Big translucent word behind everything */}
+            {/* Give the right side a real “bay” height so it can feel tall */}
+            <div ref={railRef} className="relative min-h-[720px] h-full overflow-visible">
+              {/* Big translucent word (stronger + more cinematic) */}
               <div className="pointer-events-none absolute inset-0 overflow-visible">
                 <div
                   className="
-                    absolute
-                    right-[-10vw] xl:right-[-16vw]
+                    absolute right-[-8vw] xl:right-[-14vw]
                     top-6
                     font-[var(--font-sans)]
-                    text-[clamp(120px,9.2vw,210px)]
-                    leading-none tracking-[-0.06em]
-                    text-[color:var(--page-fg)]/10
+                    text-[clamp(120px,9.5vw,210px)]
+                    leading-none tracking-[-0.07em]
+                    text-[color:var(--page-fg)]/12
                     select-none whitespace-nowrap
                   "
                 >
@@ -183,33 +190,23 @@ export default function WorkMenu() {
                 ref={projRef}
                 className={[
                   "absolute",
-                  // bleed outside max-w container:
-                  "right-[-10vw] xl:right-[-16vw]",
-                  "w-[calc(100%+10vw)] xl:w-[calc(100%+16vw)]",
-                  // tall ceilings:
-                  "h-[clamp(520px,72vh,860px)]",
-                  // feel less “UI card”
-                  "rounded-[22px] overflow-hidden",
-                  // motion feel:
+                  "right-[-8vw] xl:right-[-14vw]",
+                  "w-[calc(100%+8vw)] xl:w-[calc(100%+14vw)]",
+                  "rounded-[32px] overflow-hidden",
                   "will-change-transform",
-                  // faster snap on the projection, text eases slower:
-                  "transition-transform duration-200 ease-out",
+                  "transition-transform duration-300 ease-out",
                 ].join(" ")}
                 style={{
-                  // Keystone / projector perspective:
-                  transform: `translateY(${y}px) perspective(1400px) rotateY(-7deg) rotateZ(-0.8deg) skewY(-0.8deg)`,
-                  transformOrigin: "left center",
+                  height: projH,
+                  transform: `translateY(${y}px)`,
                 }}
               >
-                {/* Media layer */}
-                <div className="absolute inset-0">
+                {/* Media fills the whole tall frame */}
+                <div className="relative h-full w-full">
                   <div
                     className="absolute inset-0"
                     style={{
                       transform: `translateY(${parallax}px) scale(1.03)`,
-                      // make it feel less “web video”, more “projected”
-                      filter:
-                        "contrast(1.08) saturate(0.92) brightness(0.92)",
                     }}
                   >
                     {video ? (
@@ -220,6 +217,7 @@ export default function WorkMenu() {
                         muted
                         loop
                         playsInline
+                        preload="metadata"
                         className="h-full w-full object-cover"
                       />
                     ) : (
@@ -227,63 +225,48 @@ export default function WorkMenu() {
                         src={poster}
                         alt={`${activeGroup.label} preview`}
                         fill
-                        sizes="(max-width: 1024px) 60vw, 50vw"
+                        sizes="(max-width: 1024px) 60vw, 54vw"
                         className="object-cover"
                         priority={false}
                       />
                     )}
                   </div>
-                </div>
 
-                {/* Projection artifacts (this is the A24 sauce) */}
-                <div className="pointer-events-none absolute inset-0">
-                  {/* edge softness + vignette */}
-                  <div className="absolute inset-0 bg-[radial-gradient(120%_110%_at_52%_45%,rgba(255,255,255,0.10),rgba(0,0,0,0.78))]" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+                  {/* projector feel: edge falloff + keystone hint + grain */}
+                  <div className="absolute inset-0 pointer-events-none">
+                    {/* subtle “keystone” vignette */}
+                    <div className="absolute inset-0 bg-[radial-gradient(130%_120%_at_50%_45%,rgba(255,255,255,0.12),rgba(0,0,0,0.62))]" />
+                    {/* stronger bottom fade (film vibe) */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                    {/* grain */}
+                    <div
+                      className="absolute inset-0 opacity-[0.12] mix-blend-overlay"
+                      style={{
+                        backgroundImage:
+                          "url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><filter id=%22n%22 x=%220%22 y=%220%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%222%22 stitchTiles=%22stitch%22/></filter><rect width=%22200%22 height=%22200%22 filter=%22url(%23n)%22 opacity=%220.35%22/></svg>')",
+                      }}
+                    />
+                    {/* lens bloom */}
+                    <div className="absolute -left-16 top-10 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
+                    {/* soft highlight rim */}
+                    <div className="absolute inset-0 ring-1 ring-inset ring-white/10" />
+                  </div>
 
-                  {/* projector spill glow (outside feel) */}
-                  <div className="absolute -inset-10 opacity-40 blur-3xl bg-[radial-gradient(closest-side,rgba(255,255,255,0.16),transparent)]" />
-
-                  {/* subtle vertical banding */}
-                  <div
-                    className="absolute inset-0 opacity-[0.10] mix-blend-overlay"
-                    style={{
-                      backgroundImage:
-                        "repeating-linear-gradient(90deg, rgba(255,255,255,0.28) 0px, rgba(255,255,255,0.00) 1px, rgba(255,255,255,0.00) 10px)",
-                    }}
-                  />
-
-                  {/* dust / grain */}
-                  <div
-                    className="absolute inset-0 opacity-[0.13] mix-blend-overlay"
-                    style={{
-                      backgroundImage:
-                        "url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><filter id=%22n%22 x=%220%22 y=%220%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%222%22 stitchTiles=%22stitch%22/></filter><rect width=%22200%22 height=%22200%22 filter=%22url(%23n)%22 opacity=%220.40%22/></svg>')",
-                    }}
-                  />
-
-                  {/* subtle inner edge darkening (makes it feel projected) */}
-                  <div className="absolute inset-0 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.06),inset_0_0_70px_rgba(0,0,0,0.55)]" />
-
-                  {/* tiny lens flare */}
-                  <div className="absolute -left-12 top-10 h-44 w-44 rounded-full bg-white/10 blur-3xl" />
-                </div>
-
-                {/* label stamp (film label, not UI) */}
-                <div className="absolute left-6 bottom-5 flex items-center gap-3">
-                  <span className="text-[10px] uppercase tracking-[0.34em] text-white/68">
-                    Preview
-                  </span>
-                  <span className="h-px w-10 bg-white/20" />
-                  <span className="text-[10px] uppercase tracking-[0.34em] text-white/68">
-                    {activeGroup.label}
-                  </span>
+                  {/* label stamp */}
+                  <div className="absolute left-7 bottom-6 flex items-center gap-3">
+                    <span className="text-[11px] uppercase tracking-[0.32em] text-white/70">
+                      Preview
+                    </span>
+                    <span className="h-px w-12 bg-white/20" />
+                    <span className="text-[11px] uppercase tracking-[0.32em] text-white/70">
+                      {activeGroup.label}
+                    </span>
+                  </div>
                 </div>
               </div>
               {/* /Projection */}
             </div>
           </div>
-          {/* /right */}
         </div>
       </div>
     </section>
