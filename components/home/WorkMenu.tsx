@@ -159,12 +159,12 @@ export default function WorkMenu() {
           <div className="relative col-span-12 hidden lg:block lg:col-span-6">
             <div ref={railRef} className="relative h-full">
               {/* Big translucent word behind everything */}
-              <div className="pointer-events-none absolute inset-0">
+              <div className="pointer-events-none absolute inset-0 overflow-visible">
                 <div
                   className="
-                    absolute right-0 top-10
+                    absolute right-[-2vw] top-8
                     font-[var(--font-sans)]
-                    text-[clamp(90px,7.8vw,150px)]
+                    text-[clamp(100px,8.6vw,180px)]
                     leading-none tracking-[-0.06em]
                     text-[color:var(--page-fg)]/10
                     select-none whitespace-nowrap
@@ -174,24 +174,22 @@ export default function WorkMenu() {
                 </div>
               </div>
 
-              {/* Projection */}
+              {/* Projection - now fills the full right column */}
               <div
                 ref={projRef}
                 className={[
                   "absolute right-0",
-                  // keep it living in the negative space
-                  "w-[92%] max-w-[640px]",
-                  // no “card” chrome:
+                  "w-full", // IMPORTANT: full column width
                   "rounded-[28px] overflow-hidden",
                   "will-change-transform",
                   "transition-transform duration-300 ease-out",
                 ].join(" ")}
                 style={{
-                  transform: `translateY(${y}px) rotate(-1.2deg)`,
+                  transform: `translateY(${y}px)`,
                 }}
               >
                 {/* Aspect container */}
-                <div className="relative aspect-[16/10]">
+                <div className="relative aspect-[16/9]">
                   {/* media layer */}
                   <div
                     className="absolute inset-0"
