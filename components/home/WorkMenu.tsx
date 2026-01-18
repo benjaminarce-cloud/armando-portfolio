@@ -10,48 +10,67 @@ export default function WorkMenu() {
   const items = useMemo(() => WORK_GROUPS, []);
   const [active, setActive] = useState(0);
 
+  // Refs to measure positions
   const sectionRef = useRef<HTMLElement | null>(null);
-  const railRef = useRef<HTMLDivElement | null>(null);
+  const railRef = useRef<HTMLDivElement | null>(null); // right column (relative)
   const projRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   const [y, setY] = useState(0);
   const [parallax, setParallax] = useState(0);
-  const [projH, setProjH] = useState<number>(640);
 
-  const recomputeLayout = () => {
+  // Taller “cathedral” projection height
+  const [projH, setProjH] = useState(760);
+
+  // subtle “projector instability”
+  const [wobble, setWobble] = useState({ r: 0.25, x: 0, y: 0 });
+
+  const recomputeY = () => {
     const rail = railRef.current;
     const proj = projRef.current;
     const item = itemRefs.current[active];
     if (!rail || !proj || !item) return;
 
-    // 1) Make the projection "tall ceilings"
-    //    - Target: big, but still comfortably inside the section
-    const railH = rail.getBoundingClientRect().height;
-    const target = Math.round(window.innerHeight * 0.78); // taller than before
-    const minH = 560;
-    const maxH = Math.max(minH, Math.floor(railH)); // never exceed rail
-    const nextH = Math.min(maxH, Math.max(minH, target));
-    if (Math.abs(nextH - projH) > 1) setProjH(nextH);
-
-    // 2) Keep the projection aligned to hovered row center
     const itemRect = item.getBoundingClientRect();
     const railRect = rail.getBoundingClientRect();
 
     const itemCenterY = itemRect.top - railRect.top + itemRect.height / 2;
-    const desiredTop = itemCenterY - nextH / 2;
+    const desiredTop = itemCenterY - proj.offsetHeight / 2;
 
-    const maxTop = Math.max(0, railH - nextH);
+    const maxTop = Math.max(0, rail.offsetHeight - proj.offsetHeight);
     const clamped = Math.min(Math.max(desiredTop, 0), maxTop);
 
     setY(clamped);
   };
 
+  // Compute projection height based on viewport, then re-align
   useEffect(() => {
-    recomputeLayout();
+    const compute = () => {
+      const vh = window.innerHeight;
 
-    const onScroll = () => recomputeLayout();
-    const onResize = () => recomputeLayout();
+      // IMPORTANT: taller
+      const target = Math.round(vh * 0.86); // taller “ceiling”
+      const minH = 640;
+
+      // If rail exists, never exceed it (keeps clamping sane)
+      const rail = railRef.current;
+      const railMax = rail ? Math.max(520, rail.offsetHeight) : Infinity;
+
+      const next = Math.min(Math.max(target, minH), railMax);
+      setProjH(next);
+    };
+
+    compute();
+    window.addEventListener("resize", compute);
+    return () => window.removeEventListener("resize", compute);
+  }, []);
+
+  // keep projection aligned to hovered row
+  useEffect(() => {
+    recomputeY();
+
+    const onScroll = () => recomputeY();
+    const onResize = () => recomputeY();
 
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
@@ -77,7 +96,8 @@ export default function WorkMenu() {
 
       const t = (vh - rect.top) / (vh + rect.height);
       const clamped = Math.min(1, Math.max(0, t));
-      setParallax((clamped - 0.5) * 10);
+
+      setParallax((clamped - 0.5) * 10); // px
     };
 
     const onScroll = () => {
@@ -96,11 +116,29 @@ export default function WorkMenu() {
     };
   }, []);
 
+  // subtle “projector instability” — tiny, slow, cinematic
+  useEffect(() => {
+    let raf = 0;
+    const start = performance.now();
+
+    const tick = (t: number) => {
+      const k = (t - start) / 1000;
+      const r = 0.35 * Math.sin(k * 0.55);
+      const x = 1.6 * Math.sin(k * 0.35);
+      const y2 = 1.2 * Math.sin(k * 0.42);
+
+      setWobble({ r, x, y: y2 });
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
   const activeGroup = items[active];
 
-  const inGroup = projects.filter(
-    (p) => p.group === (activeGroup.id as GroupId)
-  );
+  // Pick preview media: prefer a project's previewSrc mp4 in that group, else poster
+  const inGroup = projects.filter((p) => p.group === (activeGroup.id as GroupId));
   const video = inGroup.find((p) => p.previewSrc)?.previewSrc;
   const poster = groupPosterSrc(activeGroup.id as GroupId, projects);
 
@@ -109,6 +147,7 @@ export default function WorkMenu() {
       ref={sectionRef as any}
       className="bg-[color:var(--page-bg)] text-[color:var(--page-fg)] border-t border-[color:var(--page-border)]"
     >
+      {/* IMPORTANT: keep the container but allow overflow so the right side can bleed */}
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12 overflow-visible">
         <div className="grid grid-cols-12 gap-10 overflow-visible">
           {/* LEFT: list */}
@@ -136,7 +175,7 @@ export default function WorkMenu() {
                       <h3
                         className={[
                           "font-[var(--font-sans)]",
-                          "text-[clamp(44px,5.2vw,92px)] leading-[0.94] tracking-[-0.045em]",
+                          "text-[clamp(44px,5.2vw,88px)] leading-[0.94] tracking-[-0.04em]",
                           isActive
                             ? "text-[color:var(--page-fg)]"
                             : "text-[color:var(--page-muted)]",
@@ -164,20 +203,20 @@ export default function WorkMenu() {
             </p>
           </div>
 
-          {/* RIGHT: tall projector bay */}
+          {/* RIGHT: projector spill (BLEEDS OUTSIDE CONTAINER) */}
           <div className="relative col-span-12 hidden lg:block lg:col-span-6 overflow-visible">
-            {/* Give the right side a real “bay” height so it can feel tall */}
-            <div ref={railRef} className="relative min-h-[720px] h-full overflow-visible">
-              {/* Big translucent word (stronger + more cinematic) */}
+            <div ref={railRef} className="relative h-full overflow-visible">
+              {/* Big translucent word behind everything */}
               <div className="pointer-events-none absolute inset-0 overflow-visible">
                 <div
                   className="
-                    absolute right-[-8vw] xl:right-[-14vw]
-                    top-6
+                    absolute
+                    right-[-10vw] xl:right-[-16vw]
+                    top-8
                     font-[var(--font-sans)]
-                    text-[clamp(120px,9.5vw,210px)]
-                    leading-none tracking-[-0.07em]
-                    text-[color:var(--page-fg)]/12
+                    text-[clamp(110px,9vw,190px)]
+                    leading-none tracking-[-0.06em]
+                    text-[color:var(--page-fg)]/10
                     select-none whitespace-nowrap
                   "
                 >
@@ -185,29 +224,29 @@ export default function WorkMenu() {
                 </div>
               </div>
 
-              {/* Projection */}
+              {/* Projection: fills column + bleeds into viewport */}
               <div
                 ref={projRef}
                 className={[
                   "absolute",
-                  "right-[-8vw] xl:right-[-14vw]",
-                  "w-[calc(100%+8vw)] xl:w-[calc(100%+14vw)]",
-                  "rounded-[32px] overflow-hidden",
+                  "right-[-10vw] xl:right-[-16vw]",
+                  "w-[calc(100%+10vw)] xl:w-[calc(100%+16vw)]",
+                  // less “UI-card perfect”, more “projected light”
+                  "rounded-[26px] overflow-hidden",
+                  "shadow-[0_60px_160px_rgba(0,0,0,0.55)]",
                   "will-change-transform",
                   "transition-transform duration-300 ease-out",
                 ].join(" ")}
                 style={{
                   height: projH,
-                  transform: `translateY(${y}px)`,
+                  transform: `translateY(${y}px) rotate(${wobble.r}deg) translate3d(${wobble.x}px, ${wobble.y}px, 0)`,
                 }}
               >
-                {/* Media fills the whole tall frame */}
                 <div className="relative h-full w-full">
+                  {/* media layer */}
                   <div
                     className="absolute inset-0"
-                    style={{
-                      transform: `translateY(${parallax}px) scale(1.03)`,
-                    }}
+                    style={{ transform: `translateY(${parallax}px) scale(1.03)` }}
                   >
                     {video ? (
                       <video
@@ -217,7 +256,6 @@ export default function WorkMenu() {
                         muted
                         loop
                         playsInline
-                        preload="metadata"
                         className="h-full w-full object-cover"
                       />
                     ) : (
@@ -225,20 +263,20 @@ export default function WorkMenu() {
                         src={poster}
                         alt={`${activeGroup.label} preview`}
                         fill
-                        sizes="(max-width: 1024px) 60vw, 54vw"
+                        sizes="(max-width: 1024px) 60vw, 50vw"
                         className="object-cover"
                         priority={false}
                       />
                     )}
                   </div>
 
-                  {/* projector feel: edge falloff + keystone hint + grain */}
+                  {/* projector vignette + spill */}
                   <div className="absolute inset-0 pointer-events-none">
-                    {/* subtle “keystone” vignette */}
-                    <div className="absolute inset-0 bg-[radial-gradient(130%_120%_at_50%_45%,rgba(255,255,255,0.12),rgba(0,0,0,0.62))]" />
-                    {/* stronger bottom fade (film vibe) */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-                    {/* grain */}
+                    {/* stronger falloff: feels like light */}
+                    <div className="absolute inset-0 bg-[radial-gradient(135%_120%_at_50%_40%,rgba(255,255,255,0.14),rgba(0,0,0,0.72))]" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+
+                    {/* subtle grain */}
                     <div
                       className="absolute inset-0 opacity-[0.12] mix-blend-overlay"
                       style={{
@@ -246,18 +284,17 @@ export default function WorkMenu() {
                           "url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><filter id=%22n%22 x=%220%22 y=%220%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%222%22 stitchTiles=%22stitch%22/></filter><rect width=%22200%22 height=%22200%22 filter=%22url(%23n)%22 opacity=%220.35%22/></svg>')",
                       }}
                     />
-                    {/* lens bloom */}
-                    <div className="absolute -left-16 top-10 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
-                    {/* soft highlight rim */}
-                    <div className="absolute inset-0 ring-1 ring-inset ring-white/10" />
+
+                    {/* tiny lens bloom */}
+                    <div className="absolute -left-10 top-10 h-40 w-40 rounded-full bg-white/10 blur-3xl" />
                   </div>
 
-                  {/* label stamp */}
+                  {/* label stamp (minimal) */}
                   <div className="absolute left-7 bottom-6 flex items-center gap-3">
                     <span className="text-[11px] uppercase tracking-[0.32em] text-white/70">
                       Preview
                     </span>
-                    <span className="h-px w-12 bg-white/20" />
+                    <span className="h-px w-10 bg-white/20" />
                     <span className="text-[11px] uppercase tracking-[0.32em] text-white/70">
                       {activeGroup.label}
                     </span>
@@ -267,6 +304,7 @@ export default function WorkMenu() {
               {/* /Projection */}
             </div>
           </div>
+          {/* /right */}
         </div>
       </div>
     </section>
