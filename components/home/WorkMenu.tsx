@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { projects } from "@/lib/projects";
-import { WORK_GROUPS, groupPosterSrc } from "@/lib/workGroups";
+import { WORK_GROUPS, GroupId, groupPosterSrc } from "@/lib/workGroups";
 
 export default function WorkMenu() {
   const items = useMemo(() => WORK_GROUPS, []);
@@ -13,7 +13,7 @@ export default function WorkMenu() {
   // Refs to measure positions
   const sectionRef = useRef<HTMLElement | null>(null);
   const railRef = useRef<HTMLDivElement | null>(null); // right column (relative)
-  const cardRef = useRef<HTMLDivElement | null>(null);
+  const projRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   const [y, setY] = useState(0);
@@ -21,23 +21,23 @@ export default function WorkMenu() {
 
   const recomputeY = () => {
     const rail = railRef.current;
-    const card = cardRef.current;
+    const proj = projRef.current;
     const item = itemRefs.current[active];
-    if (!rail || !card || !item) return;
+    if (!rail || !proj || !item) return;
 
     const itemRect = item.getBoundingClientRect();
     const railRect = rail.getBoundingClientRect();
 
     const itemCenterY = itemRect.top - railRect.top + itemRect.height / 2;
-    const desiredTop = itemCenterY - card.offsetHeight / 2;
+    const desiredTop = itemCenterY - proj.offsetHeight / 2;
 
-    const maxTop = Math.max(0, rail.offsetHeight - card.offsetHeight);
+    const maxTop = Math.max(0, rail.offsetHeight - proj.offsetHeight);
     const clamped = Math.min(Math.max(desiredTop, 0), maxTop);
 
     setY(clamped);
   };
 
-  // keep preview aligned to hovered row
+  // keep projection aligned to hovered row
   useEffect(() => {
     recomputeY();
 
@@ -69,7 +69,7 @@ export default function WorkMenu() {
       const t = (vh - rect.top) / (vh + rect.height);
       const clamped = Math.min(1, Math.max(0, t));
 
-      setParallax((clamped - 0.5) * 12); // px
+      setParallax((clamped - 0.5) * 10); // px
     };
 
     const onScroll = () => {
@@ -89,7 +89,11 @@ export default function WorkMenu() {
   }, []);
 
   const activeGroup = items[active];
-  const poster = groupPosterSrc(activeGroup.id, projects);
+
+  // Pick preview media: prefer a project's previewSrc mp4 in that group, else poster
+  const inGroup = projects.filter((p) => p.group === (activeGroup.id as GroupId));
+  const video = inGroup.find((p) => p.previewSrc)?.previewSrc;
+  const poster = groupPosterSrc(activeGroup.id as GroupId, projects);
 
   return (
     <section
@@ -151,81 +155,104 @@ export default function WorkMenu() {
             </p>
           </div>
 
-          {/* RIGHT: preview zone (push it into the negative space) */}
+          {/* RIGHT: projector spill */}
           <div className="relative col-span-12 hidden lg:block lg:col-span-6">
             <div ref={railRef} className="relative h-full">
-              <div
-                ref={cardRef}
-                className={[
-                  "absolute",
-                  // push slightly more right + keep it visually centered in the empty space
-                  "right-0",
-                  "translate-x-6",
-                  "w-[88%]",
-                  "max-w-[560px]",
-                  "rounded-3xl border border-[color:var(--page-border)]",
-                  "bg-[color:var(--page-card)] shadow-[0_50px_140px_rgba(0,0,0,0.18)]",
-                  "overflow-hidden",
-                  "will-change-transform",
-                  "transition-transform duration-260 ease-out",
-                ].join(" ")}
-                style={{ transform: `translateY(${y}px)` }}
-              >
-                {/* Poster area */}
-                <div className="relative aspect-[16/11]">
-                  <div
-                    className="absolute inset-0"
-                    style={{ transform: `translateY(${parallax}px)` }}
-                  >
-                    <Image
-                      src={poster}
-                      alt={`${activeGroup.label} preview`}
-                      fill
-                      sizes="(max-width: 1024px) 40vw, 28vw"
-                      className="object-cover"
-                      priority={false}
-                    />
-                  </div>
-
-                  {/* big translucent word */}
-                  <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent" />
-                    <div className="absolute left-6 right-6 bottom-6">
-                      <div className="relative">
-                        <div
-                          className="
-                            absolute -top-10 left-0
-                            font-[var(--font-sans)]
-                            text-[56px]
-                            leading-none
-                            tracking-[-0.05em]
-                            text-white/25
-                            select-none
-                            whitespace-nowrap
-                            blur-[0.2px]
-                          "
-                        >
-                          {activeGroup.label}
-                        </div>
-                        <div className="h-10" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* footer */}
-                <div className="flex items-center justify-between px-5 py-4">
-                  <span className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
-                    Preview
-                  </span>
-                  <span className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
-                    {activeGroup.label}
-                  </span>
+              {/* Big translucent word behind everything */}
+              <div className="pointer-events-none absolute inset-0">
+                <div
+                  className="
+                    absolute right-0 top-10
+                    font-[var(--font-sans)]
+                    text-[clamp(90px,7.8vw,150px)]
+                    leading-none tracking-[-0.06em]
+                    text-[color:var(--page-fg)]/10
+                    select-none whitespace-nowrap
+                  "
+                >
+                  {activeGroup.label}
                 </div>
               </div>
+
+              {/* Projection */}
+              <div
+                ref={projRef}
+                className={[
+                  "absolute right-0",
+                  // keep it living in the negative space
+                  "w-[92%] max-w-[640px]",
+                  // no “card” chrome:
+                  "rounded-[28px] overflow-hidden",
+                  "will-change-transform",
+                  "transition-transform duration-300 ease-out",
+                ].join(" ")}
+                style={{
+                  transform: `translateY(${y}px) rotate(-1.2deg)`,
+                }}
+              >
+                {/* Aspect container */}
+                <div className="relative aspect-[16/10]">
+                  {/* media layer */}
+                  <div
+                    className="absolute inset-0"
+                    style={{ transform: `translateY(${parallax}px) scale(1.03)` }}
+                  >
+                    {video ? (
+                      <video
+                        key={video}
+                        src={video}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <Image
+                        src={poster}
+                        alt={`${activeGroup.label} preview`}
+                        fill
+                        sizes="(max-width: 1024px) 50vw, 40vw"
+                        className="object-cover"
+                        priority={false}
+                      />
+                    )}
+                  </div>
+
+                  {/* projector vignette + spill */}
+                  <div className="absolute inset-0 pointer-events-none">
+                    {/* soft edge vignette */}
+                    <div className="absolute inset-0 bg-[radial-gradient(140%_120%_at_50%_40%,rgba(255,255,255,0.10),rgba(0,0,0,0.55))]" />
+                    {/* bottom fade */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+                    {/* subtle grain */}
+                    <div
+                      className="absolute inset-0 opacity-[0.12] mix-blend-overlay"
+                      style={{
+                        backgroundImage:
+                          "url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><filter id=%22n%22 x=%220%22 y=%220%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%222%22 stitchTiles=%22stitch%22/></filter><rect width=%22200%22 height=%22200%22 filter=%22url(%23n)%22 opacity=%220.35%22/></svg>')",
+                      }}
+                    />
+                    {/* tiny highlight like lens flare */}
+                    <div className="absolute -left-10 top-10 h-40 w-40 rounded-full bg-white/10 blur-3xl" />
+                  </div>
+
+                  {/* label stamp (minimal) */}
+                  <div className="absolute left-6 bottom-5 flex items-center gap-3">
+                    <span className="text-[11px] uppercase tracking-[0.32em] text-white/70">
+                      Preview
+                    </span>
+                    <span className="h-px w-10 bg-white/20" />
+                    <span className="text-[11px] uppercase tracking-[0.32em] text-white/70">
+                      {activeGroup.label}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              {/* /Projection */}
             </div>
           </div>
-          {/* /preview */}
+          {/* /right */}
         </div>
       </div>
     </section>
