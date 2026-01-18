@@ -10,77 +10,13 @@ export default function WorkMenu() {
   const items = useMemo(() => WORK_GROUPS, []);
   const [active, setActive] = useState(0);
 
-  // Refs to measure positions
   const sectionRef = useRef<HTMLElement | null>(null);
-  const railRef = useRef<HTMLDivElement | null>(null); // right column (relative)
-  const projRef = useRef<HTMLDivElement | null>(null);
-  const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+  const railRef = useRef<HTMLDivElement | null>(null);
 
-  const [y, setY] = useState(0);
   const [parallax, setParallax] = useState(0);
 
-  // Taller “cathedral” projection height
-  const [projH, setProjH] = useState(760);
-
-  // subtle “projector instability”
-  const [wobble, setWobble] = useState({ r: 0.25, x: 0, y: 0 });
-
-  const recomputeY = () => {
-    const rail = railRef.current;
-    const proj = projRef.current;
-    const item = itemRefs.current[active];
-    if (!rail || !proj || !item) return;
-
-    const itemRect = item.getBoundingClientRect();
-    const railRect = rail.getBoundingClientRect();
-
-    const itemCenterY = itemRect.top - railRect.top + itemRect.height / 2;
-    const desiredTop = itemCenterY - proj.offsetHeight / 2;
-
-    const maxTop = Math.max(0, rail.offsetHeight - proj.offsetHeight);
-    const clamped = Math.min(Math.max(desiredTop, 0), maxTop);
-
-    setY(clamped);
-  };
-
-  // Compute projection height based on viewport, then re-align
-  useEffect(() => {
-    const compute = () => {
-      const vh = window.innerHeight;
-
-      // IMPORTANT: taller
-      const target = Math.round(vh * 0.86); // taller “ceiling”
-      const minH = 640;
-
-      // If rail exists, never exceed it (keeps clamping sane)
-      const rail = railRef.current;
-      const railMax = rail ? Math.max(520, rail.offsetHeight) : Infinity;
-
-      const next = Math.min(Math.max(target, minH), railMax);
-      setProjH(next);
-    };
-
-    compute();
-    window.addEventListener("resize", compute);
-    return () => window.removeEventListener("resize", compute);
-  }, []);
-
-  // keep projection aligned to hovered row
-  useEffect(() => {
-    recomputeY();
-
-    const onScroll = () => recomputeY();
-    const onResize = () => recomputeY();
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active, projH]);
+  // subtle “projector instability” (super tiny)
+  const [wobble, setWobble] = useState({ r: 0.15, x: 0.5, y: 0.3 });
 
   // micro parallax (subtle)
   useEffect(() => {
@@ -116,18 +52,18 @@ export default function WorkMenu() {
     };
   }, []);
 
-  // subtle “projector instability” — tiny, slow, cinematic
+  // subtle wobble
   useEffect(() => {
     let raf = 0;
     const start = performance.now();
 
     const tick = (t: number) => {
       const k = (t - start) / 1000;
-      const r = 0.35 * Math.sin(k * 0.55);
-      const x = 1.6 * Math.sin(k * 0.35);
-      const y2 = 1.2 * Math.sin(k * 0.42);
+      const r = 0.18 * Math.sin(k * 0.55);
+      const x = 0.9 * Math.sin(k * 0.35);
+      const y = 0.6 * Math.sin(k * 0.42);
 
-      setWobble({ r, x, y: y2 });
+      setWobble({ r, x, y });
       raf = requestAnimationFrame(tick);
     };
 
@@ -147,7 +83,7 @@ export default function WorkMenu() {
       ref={sectionRef as any}
       className="bg-[color:var(--page-bg)] text-[color:var(--page-fg)] border-t border-[color:var(--page-border)]"
     >
-      {/* IMPORTANT: keep the container but allow overflow so the right side can bleed */}
+      {/* allow bleed */}
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12 overflow-visible">
         <div className="grid grid-cols-12 gap-10 overflow-visible">
           {/* LEFT: list */}
@@ -164,9 +100,6 @@ export default function WorkMenu() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    ref={(node) => {
-                      itemRefs.current[idx] = node;
-                    }}
                     onMouseEnter={() => setActive(idx)}
                     onFocus={() => setActive(idx)}
                     className="group block border-b border-[color:var(--page-border)] py-10 focus:outline-none"
@@ -203,10 +136,14 @@ export default function WorkMenu() {
             </p>
           </div>
 
-          {/* RIGHT: projector spill (BLEEDS OUTSIDE CONTAINER) */}
+          {/* RIGHT: cathedral projection (fills the entire section height) */}
           <div className="relative col-span-12 hidden lg:block lg:col-span-6 overflow-visible">
-            <div ref={railRef} className="relative h-full overflow-visible">
-              {/* Big translucent word behind everything */}
+            {/* IMPORTANT: min-h gives the rail “height to fill” even on short content */}
+            <div
+              ref={railRef}
+              className="relative h-full min-h-[720px] overflow-visible"
+            >
+              {/* Big translucent word behind */}
               <div className="pointer-events-none absolute inset-0 overflow-visible">
                 <div
                   className="
@@ -224,29 +161,26 @@ export default function WorkMenu() {
                 </div>
               </div>
 
-              {/* Projection: fills column + bleeds into viewport */}
+              {/* Projection: pinned top/bottom = “tall ceilings” */}
               <div
-                ref={projRef}
                 className={[
                   "absolute",
+                  "top-0 bottom-0",
                   "right-[-10vw] xl:right-[-16vw]",
                   "w-[calc(100%+10vw)] xl:w-[calc(100%+16vw)]",
-                  // less “UI-card perfect”, more “projected light”
                   "rounded-[26px] overflow-hidden",
                   "shadow-[0_60px_160px_rgba(0,0,0,0.55)]",
                   "will-change-transform",
-                  "transition-transform duration-300 ease-out",
                 ].join(" ")}
                 style={{
-                  height: projH,
-                  transform: `translateY(${y}px) rotate(${wobble.r}deg) translate3d(${wobble.x}px, ${wobble.y}px, 0)`,
+                  transform: `rotate(${wobble.r}deg) translate3d(${wobble.x}px, ${wobble.y}px, 0)`,
                 }}
               >
                 <div className="relative h-full w-full">
                   {/* media layer */}
                   <div
                     className="absolute inset-0"
-                    style={{ transform: `translateY(${parallax}px) scale(1.03)` }}
+                    style={{ transform: `translateY(${parallax}px) scale(1.04)` }}
                   >
                     {video ? (
                       <video
@@ -270,13 +204,11 @@ export default function WorkMenu() {
                     )}
                   </div>
 
-                  {/* projector vignette + spill */}
+                  {/* projector vignette + grain */}
                   <div className="absolute inset-0 pointer-events-none">
-                    {/* stronger falloff: feels like light */}
                     <div className="absolute inset-0 bg-[radial-gradient(135%_120%_at_50%_40%,rgba(255,255,255,0.14),rgba(0,0,0,0.72))]" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
 
-                    {/* subtle grain */}
                     <div
                       className="absolute inset-0 opacity-[0.12] mix-blend-overlay"
                       style={{
@@ -285,11 +217,10 @@ export default function WorkMenu() {
                       }}
                     />
 
-                    {/* tiny lens bloom */}
                     <div className="absolute -left-10 top-10 h-40 w-40 rounded-full bg-white/10 blur-3xl" />
                   </div>
 
-                  {/* label stamp (minimal) */}
+                  {/* label stamp */}
                   <div className="absolute left-7 bottom-6 flex items-center gap-3">
                     <span className="text-[11px] uppercase tracking-[0.32em] text-white/70">
                       Preview
