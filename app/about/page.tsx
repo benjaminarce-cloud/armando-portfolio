@@ -34,7 +34,11 @@ export default function AboutPage() {
               </p>
 
               <p className="mt-6 text-base leading-relaxed text-[color:var(--page-muted)] sm:text-lg">
-                Produced work for Sports Illustrated. Film major, 4.0 GPA. Based in San Diego.
+                Produced work for Sports Illustrated.
+              </p>
+
+              <p className="mt-3 text-base leading-relaxed text-[color:var(--page-muted)] sm:text-lg">
+                Film major, 4.0 GPA. Based in San Diego.
               </p>
 
               <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
