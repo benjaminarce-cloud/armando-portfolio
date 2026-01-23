@@ -57,32 +57,10 @@ export default function AboutPage() {
 
             {/* Right: Portrait / still */}
             <div className="col-span-12 lg:col-span-5">
-              <div className="relative overflow-hidden rounded-3xl border border-[color:var(--page-border)] bg-[color:var(--page-card)]">
-                {/* IMPORTANT:
-                    Replace this with your actual portrait/still path.
-                    Put an image at: public/img/about/portrait.jpg
-                */}
-                <div className="relative aspect-[4/5]">
-                  <Image
-                    src="/img/about/portrait.jpg"
-                    alt="Portrait"
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 42vw"
-                    className="object-cover"
-                    priority={false}
-                  />
-                  {/* cinematic overlays */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent" />
-                  <div className="absolute inset-0 bg-[radial-gradient(900px_circle_at_50%_10%,rgba(255,255,255,0.12),transparent_55%)] opacity-70" />
-                </div>
-
-                <div className="flex items-center justify-between px-5 py-4">
-                  <span className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
-                    Credits
-                  </span>
-                  <span className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
-                    2025
-                  </span>
+              {/* Right: 2×2 Rotating Photo Grid */}
+            <div className="col-span-12 lg:col-span-5">
+              <LifePhotosGrid />
+            </div>
                 </div>
               </div>
 
