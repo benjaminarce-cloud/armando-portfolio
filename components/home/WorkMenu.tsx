@@ -13,13 +13,13 @@ const SECTIONS = [
     id: "freelance",
     title: "Freelance",
     href: "/work?group=freelance",
-    image: "https://res.cloudinary.com/dzjcndphq/image/upload/v1768945228/f-prev-1_fowge0.jpg",
+    image: "https://res.cloudinary.com/dzjcndphq/image/upload/v1768945226/soccer-prev-2_uxufs9.jpg",
   },
   {
     id: "other",
     title: "Other",
     href: "/work?group=other",
-    image: "https://res.cloudinary.com/dzjcndphq/image/upload/v1768945226/soccer-prev-2_uxufs9.jpg",
+    image: "https://res.cloudinary.com/dzjcndphq/image/upload/v1768945228/f-prev-1_fowge0.jpg",
   },
 ];
 
