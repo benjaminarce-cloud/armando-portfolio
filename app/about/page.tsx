@@ -10,57 +10,59 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
+      {/* TOP */}
       <section className="border-t border-[color:var(--page-border)]">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:px-12">
           <p className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
             About
           </p>
 
-          <div className="mt-10 grid grid-cols-12 gap-10">
-            <div className="col-span-12 lg:col-span-7">
-              <h1 className="editorial-title text-[clamp(44px,6vw,86px)] leading-[0.92] tracking-[-0.05em]">
-                Films that feel
-                <br />
-                like opening shots.
-              </h1>
+          {/* Bio - Centered */}
+          <div className="mx-auto mt-10 max-w-3xl text-center">
+            <h1 className="editorial-title text-[clamp(44px,6vw,72px)] leading-[0.92] tracking-[-0.05em]">
+              Films that feel
+              <br />
+              like opening shots.
+            </h1>
 
-              <div className="mt-10 border-t border-[color:var(--page-border)] pt-8">
-                <p className="max-w-2xl text-base leading-relaxed text-[color:var(--page-muted)] sm:text-lg">
-                  I'm a filmmaker focused on sports, culture, and documentary
-                  work—built around rhythm, texture, and restraint. I like clean
-                  compositions, strong sound design, and edits that breathe.
-                </p>
+            <div className="mt-10 border-t border-[color:var(--page-border)] pt-8">
+              <p className="text-base leading-relaxed text-[color:var(--page-muted)] sm:text-lg">
+                I'm a filmmaker focused on sports, culture, and documentary
+                work—built around rhythm, texture, and restraint. I like clean
+                compositions, strong sound design, and edits that breathe.
+              </p>
 
-                <p className="mt-6 max-w-2xl text-base leading-relaxed text-[color:var(--page-muted)] sm:text-lg">
-                  Available for short docs, campaigns, and team content. Based in
-                  San Diego—open to travel.
-                </p>
+              <p className="mt-6 text-base leading-relaxed text-[color:var(--page-muted)] sm:text-lg">
+                Available for short docs, campaigns, and team content. Based in
+                San Diego—open to travel.
+              </p>
 
-                <div className="mt-10 flex flex-wrap items-center gap-3">
-                  <Link
-                    href="/work"
-                    className="rounded-full border border-[color:var(--page-border)] bg-[color:var(--page-card)] px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-fg)] transition-colors hover:bg-transparent"
-                  >
-                    View work
-                  </Link>
+              <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+                <Link
+                  href="/work"
+                  className="rounded-full border border-[color:var(--page-border)] bg-[color:var(--page-card)] px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-fg)] transition-colors hover:bg-transparent"
+                >
+                  View work
+                </Link>
 
-                  <a
-                    href="#contact"
-                    className="rounded-full border border-[color:var(--page-border)] px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-muted)] transition-colors hover:text-[color:var(--page-fg)]"
-                  >
-                    Contact
-                  </a>
-                </div>
+                
+                  href="#contact"
+                  className="rounded-full border border-[color:var(--page-border)] px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-muted)] transition-colors hover:text-[color:var(--page-fg)]"
+                >
+                  Contact
+                </a>
               </div>
             </div>
+          </div>
 
-            <div className="col-span-12 lg:col-span-5">
-              <LifePhotosGrid />
-            </div>
+          {/* Contact Sheet Grid - Full Width */}
+          <div className="mt-16">
+            <LifePhotosGrid />
           </div>
         </div>
       </section>
 
+      {/* MIDDLE: "Credits" blocks */}
       <section className="border-t border-[color:var(--page-border)]">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:px-12">
           <div className="grid grid-cols-12 gap-10">
@@ -95,6 +97,7 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* PROCESS */}
       <section className="border-t border-[color:var(--page-border)]">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:px-12">
           <div className="grid grid-cols-12 gap-10">
@@ -132,6 +135,7 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* CONTACT */}
       <section
         id="contact"
         className="border-t border-[color:var(--page-border)]"
@@ -156,14 +160,14 @@ export default function AboutPage() {
                 </p>
 
                 <div className="mt-10 flex flex-wrap items-center gap-3">
-                  <a
+                  
                     href="mailto:hello@example.com"
                     className="rounded-full border border-[color:var(--page-border)] bg-[color:var(--page-card)] px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-fg)] transition-colors hover:bg-transparent"
                   >
                     Email
                   </a>
 
-                  <a
+                  
                     href="https://instagram.com/"
                     target="_blank"
                     rel="noreferrer"
@@ -172,7 +176,7 @@ export default function AboutPage() {
                     Instagram
                   </a>
 
-                  <a
+                  
                     href="https://vimeo.com/"
                     target="_blank"
                     rel="noreferrer"
