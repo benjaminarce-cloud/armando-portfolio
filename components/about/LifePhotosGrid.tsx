@@ -7,7 +7,7 @@ const CLOUD_NAME = "dzjcndphq";
 
 // Generate Cloudinary URLs for all 35 photos
 const PHOTOS = Array.from({ length: 35 }, (_, i) => 
-  `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,w_600/about-${i + 1}.jpg`
+  `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,w_800/about-${i + 1}.jpg`
 );
 
 function shuffleArray<T>(array: T[]): T[] {
@@ -29,10 +29,10 @@ export function LifePhotosGrid() {
   useEffect(() => {
     const shuffled = shuffleArray(PHOTOS);
     setShuffledPhotos(shuffled);
-    setCurrentBatch(shuffled.slice(0, 4));
+    setCurrentBatch(shuffled.slice(0, 6));
   }, []);
 
-  // Rotation logic
+  // Rotation logic - slower, more deliberate (8 seconds)
   useEffect(() => {
     if (shuffledPhotos.length === 0) return;
 
@@ -40,24 +40,24 @@ export function LifePhotosGrid() {
       setIsTransitioning(true);
 
       setTimeout(() => {
-        const nextIndex = currentIndex + 4;
+        const nextIndex = currentIndex + 6;
         
         // If we've shown all photos, reshuffle and start over
         if (nextIndex >= shuffledPhotos.length) {
           const reshuffled = shuffleArray(PHOTOS);
           setShuffledPhotos(reshuffled);
-          setCurrentBatch(reshuffled.slice(0, 4));
+          setCurrentBatch(reshuffled.slice(0, 6));
           setCurrentIndex(0);
         } else {
-          setCurrentBatch(shuffledPhotos.slice(nextIndex, nextIndex + 4));
+          setCurrentBatch(shuffledPhotos.slice(nextIndex, nextIndex + 6));
           setCurrentIndex(nextIndex);
         }
 
         setTimeout(() => {
           setIsTransitioning(false);
-        }, 200);
-      }, 600);
-    }, 5000);
+        }, 300);
+      }, 800);
+    }, 8000); // 8 second intervals
 
     return () => clearInterval(interval);
   }, [shuffledPhotos, currentIndex]);
@@ -65,28 +65,28 @@ export function LifePhotosGrid() {
   if (currentBatch.length === 0) return null;
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-3 gap-3 sm:gap-4">
       {currentBatch.map((photo, i) => (
         <div
           key={`${photo}-${i}`}
           className={[
-            "relative aspect-[4/3] overflow-hidden rounded-2xl border border-[color:var(--page-border)] bg-[color:var(--page-card)]",
-            "transition-opacity duration-[600ms] ease-out",
+            "relative aspect-[3/2] overflow-hidden bg-[color:var(--page-card)]",
+            "transition-opacity duration-[800ms] ease-out",
             isTransitioning ? "opacity-0" : "opacity-100",
           ].join(" ")}
         >
           <Image
             src={photo}
-            alt={`Life photo ${i + 1}`}
+            alt=""
             fill
-            sizes="(max-width: 1024px) 50vw, 20vw"
+            sizes="(max-width: 640px) 33vw, (max-width: 1024px) 25vw, 300px"
             className="object-cover"
             style={{
-              filter: "saturate(0.85)",
+              filter: "saturate(0.88) contrast(1.02)",
             }}
           />
-          {/* Subtle film grain overlay */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent opacity-40" />
+          {/* Subtle vignette */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/8 via-transparent to-black/4 opacity-60" />
         </div>
       ))}
     </div>
