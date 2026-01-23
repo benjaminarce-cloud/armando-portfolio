@@ -1,7 +1,6 @@
 // app/about/page.tsx
 import Image from "next/image";
 import Link from "next/link";
-import { LifePhotosGrid } from "@/components/about/LifePhotosGrid";
 
 export const metadata = {
   title: "About",
@@ -10,6 +9,7 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
+      {/* TOP */}
       <section className="border-t border-[color:var(--page-border)]">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:px-12">
           <p className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
@@ -17,6 +17,7 @@ export default function AboutPage() {
           </p>
 
           <div className="mt-10 grid grid-cols-12 gap-10">
+            {/* Left: Title + statement */}
             <div className="col-span-12 lg:col-span-7">
               <h1 className="editorial-title text-[clamp(44px,6vw,86px)] leading-[0.92] tracking-[-0.05em]">
                 Films that feel
@@ -26,14 +27,14 @@ export default function AboutPage() {
 
               <div className="mt-10 border-t border-[color:var(--page-border)] pt-8">
                 <p className="max-w-2xl text-base leading-relaxed text-[color:var(--page-muted)] sm:text-lg">
-                  I am a filmmaker focused on sports, culture, and documentary
-                  work built around rhythm, texture, and restraint. I like clean
+                  I'm a filmmaker focused on sports, culture, and documentary
+                  work—built around rhythm, texture, and restraint. I like clean
                   compositions, strong sound design, and edits that breathe.
                 </p>
 
                 <p className="mt-6 max-w-2xl text-base leading-relaxed text-[color:var(--page-muted)] sm:text-lg">
                   Available for short docs, campaigns, and team content. Based in
-                  San Diego open to travel.
+                  San Diego—open to travel.
                 </p>
 
                 <div className="mt-10 flex flex-wrap items-center gap-3">
@@ -54,13 +55,61 @@ export default function AboutPage() {
               </div>
             </div>
 
+            {/* Right: Portrait / still */}
             <div className="col-span-12 lg:col-span-5">
-              <LifePhotosGrid />
+              <div className="relative overflow-hidden rounded-3xl border border-[color:var(--page-border)] bg-[color:var(--page-card)]">
+                {/* IMPORTANT:
+                    Replace this with your actual portrait/still path.
+                    Put an image at: public/img/about/portrait.jpg
+                */}
+                <div className="relative aspect-[4/5]">
+                  <Image
+                    src="/img/about/portrait.jpg"
+                    alt="Portrait"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 42vw"
+                    className="object-cover"
+                    priority={false}
+                  />
+                  {/* cinematic overlays */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent" />
+                  <div className="absolute inset-0 bg-[radial-gradient(900px_circle_at_50%_10%,rgba(255,255,255,0.12),transparent_55%)] opacity-70" />
+                </div>
+
+                <div className="flex items-center justify-between px-5 py-4">
+                  <span className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
+                    Credits
+                  </span>
+                  <span className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
+                    2025
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-6 text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
+                <div className="flex items-center justify-between border-t border-[color:var(--page-border)] py-4">
+                  <span>Base</span>
+                  <span className="text-[color:var(--page-fg)]">San Diego</span>
+                </div>
+                <div className="flex items-center justify-between border-t border-[color:var(--page-border)] py-4">
+                  <span>Focus</span>
+                  <span className="text-[color:var(--page-fg)]">
+                    Sports • Culture
+                  </span>
+                </div>
+                <div className="flex items-center justify-between border-t border-[color:var(--page-border)] py-4">
+                  <span>Availability</span>
+                  <span className="text-[color:var(--page-fg)]">
+                    Limited / Seasonal
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
+      {/* MIDDLE: "Credits" blocks */}
       <section className="border-t border-[color:var(--page-border)]">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:px-12">
           <div className="grid grid-cols-12 gap-10">
@@ -86,8 +135,8 @@ export default function AboutPage() {
               </div>
 
               <p className="mt-10 max-w-3xl text-sm leading-relaxed text-[color:var(--page-muted)] sm:text-base">
-                I am happiest when the piece feels like a film with no template pacing
-                and no forced transitions. If the story is real, the style should be
+                I'm happiest when the piece feels like a film—no template pacing,
+                no forced transitions. If the story is real, the style should be
                 quiet enough to let it hit.
               </p>
             </div>
@@ -95,6 +144,7 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* PROCESS */}
       <section className="border-t border-[color:var(--page-border)]">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:px-12">
           <div className="grid grid-cols-12 gap-10">
@@ -132,6 +182,7 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* CONTACT */}
       <section
         id="contact"
         className="border-t border-[color:var(--page-border)]"
@@ -147,15 +198,16 @@ export default function AboutPage() {
             <div className="col-span-12 lg:col-span-8">
               <div className="border-t border-[color:var(--page-border)] pt-10">
                 <h2 className="editorial-title text-[clamp(28px,3.4vw,44px)] leading-[0.98] tracking-[-0.03em]">
-                  Tell me what you are making.
+                  Tell me what you're making.
                 </h2>
 
                 <p className="mt-6 max-w-2xl text-sm leading-relaxed text-[color:var(--page-muted)] sm:text-base">
                   Include timeline, location, and references if you have them.
-                  If you do not, a one-paragraph idea is enough.
+                  If you don't, a one-paragraph idea is enough.
                 </p>
 
                 <div className="mt-10 flex flex-wrap items-center gap-3">
+                  {/* Replace these with your real links */}
                   
                     href="mailto:hello@example.com"
                     className="rounded-full border border-[color:var(--page-border)] bg-[color:var(--page-card)] px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-fg)] transition-colors hover:bg-transparent"
@@ -186,7 +238,7 @@ export default function AboutPage() {
                   <div className="flex items-center justify-between">
                     <span>Availability</span>
                     <span className="text-[color:var(--page-fg)]">
-                      2 to 4 week lead
+                      2–4 week lead
                     </span>
                   </div>
                 </div>
