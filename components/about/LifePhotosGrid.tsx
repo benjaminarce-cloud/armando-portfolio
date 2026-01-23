@@ -25,6 +25,7 @@ export function LifePhotosGrid() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [imagesLoaded, setImagesLoaded] = useState<Set<number>>(new Set());
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
 
   // Initialize shuffled photos on mount
   useEffect(() => {
@@ -67,7 +68,21 @@ export function LifePhotosGrid() {
     setImagesLoaded(prev => new Set(prev).add(index));
   };
 
-  if (currentBatch.length === 0) {
+  const handleImageError = (photoUrl: string) => {
+    // Extract the photo number from URL
+    const match = photoUrl.match(/about-(\d+)\.jpg/);
+    const photoNumber = match ? match[1] : 'unknown';
+    
+    console.error(`❌ Failed to load: about-${photoNumber}.jpg`);
+    console.error(`Full URL: ${photoUrl}`);
+    
+    setFailedImages(prev => new Set(prev).add(photoUrl));
+  };
+
+  // Filter out failed images from current batch
+  const validBatch = currentBatch.filter(photo => !failedImages.has(photo));
+
+  if (validBatch.length === 0) {
     // Loading skeleton
     return (
       <div className="grid grid-cols-3 gap-3 sm:gap-4">
@@ -83,7 +98,7 @@ export function LifePhotosGrid() {
 
   return (
     <div className="grid grid-cols-3 gap-3 sm:gap-4">
-      {currentBatch.map((photo, i) => (
+      {validBatch.map((photo, i) => (
         <div
           key={`${photo}-${i}`}
           className={[
@@ -110,6 +125,7 @@ export function LifePhotosGrid() {
               filter: "saturate(0.88) contrast(1.02)",
             }}
             onLoad={() => handleImageLoad(i)}
+            onError={() => handleImageError(photo)}
             priority={i < 6} // Priority load first batch
           />
           
