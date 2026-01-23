@@ -1,6 +1,7 @@
 // app/about/page.tsx
 import Image from "next/image";
 import Link from "next/link";
+import { LifePhotosGrid } from "@/components/about/LifePhotosGrid";
 
 export const metadata = {
   title: "About",
@@ -55,33 +56,9 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* Right: Portrait / still */}
-            <div className="col-span-12 lg:col-span-5">
-              {/* Right: 2×2 Rotating Photo Grid */}
+            {/* Right: 2×2 Rotating Photo Grid */}
             <div className="col-span-12 lg:col-span-5">
               <LifePhotosGrid />
-            </div>
-                </div>
-              </div>
-
-              <div className="mt-6 text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
-                <div className="flex items-center justify-between border-t border-[color:var(--page-border)] py-4">
-                  <span>Base</span>
-                  <span className="text-[color:var(--page-fg)]">San Diego</span>
-                </div>
-                <div className="flex items-center justify-between border-t border-[color:var(--page-border)] py-4">
-                  <span>Focus</span>
-                  <span className="text-[color:var(--page-fg)]">
-                    Sports • Culture
-                  </span>
-                </div>
-                <div className="flex items-center justify-between border-t border-[color:var(--page-border)] py-4">
-                  <span>Availability</span>
-                  <span className="text-[color:var(--page-fg)]">
-                    Limited / Seasonal
-                  </span>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -185,7 +162,6 @@ export default function AboutPage() {
                 </p>
 
                 <div className="mt-10 flex flex-wrap items-center gap-3">
-                  {/* Replace these with your real links */}
                   
                     href="mailto:hello@example.com"
                     className="rounded-full border border-[color:var(--page-border)] bg-[color:var(--page-card)] px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-fg)] transition-colors hover:bg-transparent"
