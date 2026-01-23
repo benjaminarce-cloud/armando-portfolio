@@ -27,14 +27,14 @@ export default function AboutPage() {
 
             <div className="mt-10 border-t border-[color:var(--page-border)] pt-8">
               <p className="text-base leading-relaxed text-[color:var(--page-muted)] sm:text-lg">
-                I'm a filmmaker focused on sports, culture, and documentary
-                work—built around rhythm, texture, and restraint. I like clean
-                compositions, strong sound design, and edits that breathe.
+                Born in Mexico, raised between two languages. Moved to the U.S. in 7th grade 
+                and found my voice through a camera. Now lead producer for Aztec Men's Basketball 
+                and SDSU Media Relations, building stories that sit somewhere between sports 
+                and cinema.
               </p>
 
               <p className="mt-6 text-base leading-relaxed text-[color:var(--page-muted)] sm:text-lg">
-                Available for short docs, campaigns, and team content. Based in
-                San Diego—open to travel.
+                Produced work for Sports Illustrated. Film major, 4.0 GPA. Based in San Diego.
               </p>
 
               <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
@@ -62,6 +62,7 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* MIDDLE: "Credits" blocks */}
       <section className="border-t border-[color:var(--page-border)]">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:px-12">
           <div className="grid grid-cols-12 gap-10">
@@ -96,6 +97,7 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* PROCESS */}
       <section className="border-t border-[color:var(--page-border)]">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:px-12">
           <div className="grid grid-cols-12 gap-10">
@@ -133,6 +135,7 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* CONTACT */}
       <section
         id="contact"
         className="border-t border-[color:var(--page-border)]"
