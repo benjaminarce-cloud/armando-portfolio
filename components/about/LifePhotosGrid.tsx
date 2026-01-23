@@ -5,10 +5,15 @@ import Image from "next/image";
 
 const CLOUD_NAME = "dzjcndphq";
 
+// Exclude photos 6, 7, and 29 (duplicates/don't fit)
+const EXCLUDED_PHOTOS = [6, 7, 29];
+
 // Generate Cloudinary URLs with smaller size for faster loading
-const PHOTOS = Array.from({ length: 35 }, (_, i) => 
-  `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,w_400,c_fill,ar_3:2/about-${i + 1}.jpg`
-);
+const PHOTOS = Array.from({ length: 35 }, (_, i) => i + 1)
+  .filter(num => !EXCLUDED_PHOTOS.includes(num))
+  .map(num => 
+    `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,w_400,c_fill,ar_3:2/about-${num}.jpg`
+  );
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
