@@ -28,7 +28,7 @@ export default function AboutPage() {
 
               <div className="mt-10 border-t border-[color:var(--page-border)] pt-8">
                 <p className="max-w-2xl text-base leading-relaxed text-[color:var(--page-muted)] sm:text-lg">
-                  I'm a filmmaker focused on sports, culture, and documentary
+                  I&apos;m a filmmaker focused on sports, culture, and documentary
                   work—built around rhythm, texture, and restraint. I like clean
                   compositions, strong sound design, and edits that breathe.
                 </p>
@@ -90,7 +90,7 @@ export default function AboutPage() {
               </div>
 
               <p className="mt-10 max-w-3xl text-sm leading-relaxed text-[color:var(--page-muted)] sm:text-base">
-                I'm happiest when the piece feels like a film—no template pacing,
+                I&apos;m happiest when the piece feels like a film—no template pacing,
                 no forced transitions. If the story is real, the style should be
                 quiet enough to let it hit.
               </p>
@@ -153,16 +153,15 @@ export default function AboutPage() {
             <div className="col-span-12 lg:col-span-8">
               <div className="border-t border-[color:var(--page-border)] pt-10">
                 <h2 className="editorial-title text-[clamp(28px,3.4vw,44px)] leading-[0.98] tracking-[-0.03em]">
-                  Tell me what you're making.
+                  Tell me what you&apos;re making.
                 </h2>
 
                 <p className="mt-6 max-w-2xl text-sm leading-relaxed text-[color:var(--page-muted)] sm:text-base">
                   Include timeline, location, and references if you have them.
-                  If you don't, a one-paragraph idea is enough.
+                  If you don&apos;t, a one-paragraph idea is enough.
                 </p>
 
                 <div className="mt-10 flex flex-wrap items-center gap-3">
-                  {/* Replace these with your real links */}
                   
                     href="mailto:hello@example.com"
                     className="rounded-full border border-[color:var(--page-border)] bg-[color:var(--page-card)] px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-fg)] transition-colors hover:bg-transparent"
