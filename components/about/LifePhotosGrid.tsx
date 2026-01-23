@@ -5,12 +5,13 @@ import Image from "next/image";
 
 const CLOUD_NAME = "dzjcndphq";
 
-// Exclude photos 6, 7, and 29 (duplicates/don't fit)
-const EXCLUDED_PHOTOS = [6, 7, 29];
+// Exclude photos that are duplicates/don't fit
+const EXCLUDED_PHOTOS = [6, 7, 29, 31, 32];
 
-// Generate Cloudinary URLs with smaller size for faster loading
+// Generate exactly 30 photos for clean 3×2 grid rotation (5 complete cycles)
 const PHOTOS = Array.from({ length: 35 }, (_, i) => i + 1)
   .filter(num => !EXCLUDED_PHOTOS.includes(num))
+  .slice(0, 30) // Take exactly 30 photos
   .map(num => 
     `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,w_400,c_fill,ar_3:2/about-${num}.jpg`
   );
