@@ -10,7 +10,6 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
-      {/* TOP */}
       <section className="border-t border-[color:var(--page-border)]">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:px-12">
           <p className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
@@ -18,7 +17,6 @@ export default function AboutPage() {
           </p>
 
           <div className="mt-10 grid grid-cols-12 gap-10">
-            {/* Left: Title + statement */}
             <div className="col-span-12 lg:col-span-7">
               <h1 className="editorial-title text-[clamp(44px,6vw,86px)] leading-[0.92] tracking-[-0.05em]">
                 Films that feel
@@ -46,7 +44,7 @@ export default function AboutPage() {
                     View work
                   </Link>
 
-                  
+                  <a
                     href="#contact"
                     className="rounded-full border border-[color:var(--page-border)] px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-muted)] transition-colors hover:text-[color:var(--page-fg)]"
                   >
@@ -56,7 +54,6 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* Right: 2×2 Rotating Photo Grid */}
             <div className="col-span-12 lg:col-span-5">
               <LifePhotosGrid />
             </div>
@@ -64,7 +61,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* MIDDLE: "Credits" blocks */}
       <section className="border-t border-[color:var(--page-border)]">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:px-12">
           <div className="grid grid-cols-12 gap-10">
@@ -99,7 +95,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* PROCESS */}
       <section className="border-t border-[color:var(--page-border)]">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:px-12">
           <div className="grid grid-cols-12 gap-10">
@@ -137,7 +132,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CONTACT */}
       <section
         id="contact"
         className="border-t border-[color:var(--page-border)]"
@@ -162,14 +156,14 @@ export default function AboutPage() {
                 </p>
 
                 <div className="mt-10 flex flex-wrap items-center gap-3">
-                  
+                  <a
                     href="mailto:hello@example.com"
                     className="rounded-full border border-[color:var(--page-border)] bg-[color:var(--page-card)] px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-fg)] transition-colors hover:bg-transparent"
                   >
                     Email
                   </a>
 
-                  
+                  <a
                     href="https://instagram.com/"
                     target="_blank"
                     rel="noreferrer"
@@ -178,7 +172,7 @@ export default function AboutPage() {
                     Instagram
                   </a>
 
-                  
+                  <a
                     href="https://vimeo.com/"
                     target="_blank"
                     rel="noreferrer"
