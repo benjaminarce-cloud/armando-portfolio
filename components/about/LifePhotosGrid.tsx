@@ -5,9 +5,9 @@ import Image from "next/image";
 
 const CLOUD_NAME = "dzjcndphq";
 
-// Generate Cloudinary URLs for all 35 photos
+// Generate Cloudinary URLs with smaller size for faster loading
 const PHOTOS = Array.from({ length: 35 }, (_, i) => 
-  `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,w_800/about-${i + 1}.jpg`
+  `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,w_400,c_fill,ar_3:2/about-${i + 1}.jpg`
 );
 
 function shuffleArray<T>(array: T[]): T[] {
@@ -24,6 +24,7 @@ export function LifePhotosGrid() {
   const [shuffledPhotos, setShuffledPhotos] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState<Set<number>>(new Set());
 
   // Initialize shuffled photos on mount
   useEffect(() => {
@@ -38,11 +39,11 @@ export function LifePhotosGrid() {
 
     const interval = setInterval(() => {
       setIsTransitioning(true);
+      setImagesLoaded(new Set()); // Reset loaded state for new batch
 
       setTimeout(() => {
         const nextIndex = currentIndex + 6;
         
-        // If we've shown all photos, reshuffle and start over
         if (nextIndex >= shuffledPhotos.length) {
           const reshuffled = shuffleArray(PHOTOS);
           setShuffledPhotos(reshuffled);
@@ -57,12 +58,28 @@ export function LifePhotosGrid() {
           setIsTransitioning(false);
         }, 300);
       }, 800);
-    }, 8000); // 8 second intervals
+    }, 8000);
 
     return () => clearInterval(interval);
   }, [shuffledPhotos, currentIndex]);
 
-  if (currentBatch.length === 0) return null;
+  const handleImageLoad = (index: number) => {
+    setImagesLoaded(prev => new Set(prev).add(index));
+  };
+
+  if (currentBatch.length === 0) {
+    // Loading skeleton
+    return (
+      <div className="grid grid-cols-3 gap-3 sm:gap-4">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div
+            key={i}
+            className="relative aspect-[3/2] overflow-hidden bg-[color:var(--page-card)] animate-pulse"
+          />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-3 gap-3 sm:gap-4">
@@ -75,16 +92,27 @@ export function LifePhotosGrid() {
             isTransitioning ? "opacity-0" : "opacity-100",
           ].join(" ")}
         >
+          {/* Loading skeleton */}
+          {!imagesLoaded.has(i) && (
+            <div className="absolute inset-0 bg-[color:var(--page-card)] animate-pulse" />
+          )}
+          
           <Image
             src={photo}
             alt=""
             fill
             sizes="(max-width: 640px) 33vw, (max-width: 1024px) 25vw, 300px"
-            className="object-cover"
+            className={[
+              "object-cover transition-opacity duration-500",
+              imagesLoaded.has(i) ? "opacity-100" : "opacity-0",
+            ].join(" ")}
             style={{
               filter: "saturate(0.88) contrast(1.02)",
             }}
+            onLoad={() => handleImageLoad(i)}
+            priority={i < 6} // Priority load first batch
           />
+          
           {/* Subtle vignette */}
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/8 via-transparent to-black/4 opacity-60" />
         </div>
