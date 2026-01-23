@@ -3,7 +3,12 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
-const PHOTOS = Array.from({ length: 35 }, (_, i) => `/img/about/about-${i + 1}.jpg`);
+const CLOUD_NAME = "dzjcndphq";
+
+// Generate Cloudinary URLs for all 35 photos
+const PHOTOS = Array.from({ length: 35 }, (_, i) => 
+  `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,w_600/about-${i + 1}.jpg`
+);
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
