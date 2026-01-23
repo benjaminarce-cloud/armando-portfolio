@@ -76,8 +76,8 @@ export default function AboutPage() {
                 role="Lead Producer" 
               />
               <CreditRow 
-                title="SDSU Media Relations" 
-                role="Video Intern" 
+                title="Jackpot Media Agency" 
+                role="Co-Founder" 
               />
               <CreditRow 
                 title="Sports Illustrated" 
