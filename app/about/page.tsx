@@ -29,8 +29,8 @@ export default function AboutPage() {
               <p className="text-base leading-relaxed text-[color:var(--page-muted)] sm:text-lg">
                 Born in Mexico, raised between two languages. Moved to the U.S. in 7th grade 
                 and found my voice through a camera. Now lead producer for Aztec Men's Basketball 
-                and SDSU Media Relations, building stories that sit somewhere between sports 
-                and cinema.
+                and co-founder of Jackpot Media Agency, building stories that sit somewhere between 
+                sports and cinema.
               </p>
 
               <p className="mt-6 text-base leading-relaxed text-[color:var(--page-muted)] sm:text-lg">
