@@ -91,14 +91,14 @@ export default function AboutPage() {
 
             <div className="mt-16 flex flex-wrap items-center gap-3">
               <a
-                href="mailto:hello@example.com"
+                href="mailto:armandirix@gmail.com"
                 className="rounded-full border border-[color:var(--page-border)] bg-[color:var(--page-card)] px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-fg)] transition-colors hover:bg-transparent"
               >
                 Email
               </a>
 
               <a
-                href="https://instagram.com/"
+                href="https://www.instagram.com/armandoaguilare/"
                 target="_blank"
                 rel="noreferrer"
                 className="rounded-full border border-[color:var(--page-border)] px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-muted)] transition-colors hover:text-[color:var(--page-fg)]"
@@ -107,12 +107,12 @@ export default function AboutPage() {
               </a>
 
               <a
-                href="https://vimeo.com/"
+                href="https://www.tiktok.com/@armandoaguilarr"
                 target="_blank"
                 rel="noreferrer"
                 className="rounded-full border border-[color:var(--page-border)] px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-muted)] transition-colors hover:text-[color:var(--page-fg)]"
               >
-                Vimeo
+                TikTok
               </a>
             </div>
 
