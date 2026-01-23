@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 const SECTIONS = [
   {
@@ -47,11 +49,10 @@ function WorkSection({ section, index }: { section: typeof SECTIONS[0]; index: n
   }, []);
 
   return (
-    <a href={section.href} style={{ textDecoration: 'none', color: 'inherit' }}>
+    <Link href={section.href}>
       <section
         ref={sectionRef}
-        className="relative overflow-hidden cursor-pointer"
-        style={{ height: '100vh', width: '100%' }}
+        className="relative h-screen w-full overflow-hidden cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -62,51 +63,30 @@ function WorkSection({ section, index }: { section: typeof SECTIONS[0]; index: n
             transform: `translateY(${offsetY * 0.3}px) scale(${isHovered ? 1.02 : 1})`,
           }}
         >
-          <img
+          <Image
             src={section.image}
             alt={section.title}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              display: 'block',
-            }}
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority={index === 0}
+            quality={90}
           />
           
           {/* Dark overlay for text readability */}
-          <div 
-            className="absolute inset-0"
-            style={{
-              background: 'linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.3), rgba(0,0,0,0.5))',
-            }}
-          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
           
           {/* Vignette */}
-          <div 
-            className="absolute inset-0"
-            style={{
-              background: 'radial-gradient(circle at center, transparent 0%, black 100%)',
-              opacity: 0.4,
-            }}
-          />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)] opacity-40" />
         </div>
 
         {/* Content */}
-        <div 
-          className="relative flex items-center justify-center"
-          style={{ 
-            zIndex: 10,
-            height: '100%',
-          }}
-        >
+        <div className="relative z-10 flex h-full items-center justify-center">
           <div className="text-center">
             <h2 
-              className="editorial-title text-white transition-opacity duration-500"
+              className="editorial-title text-[clamp(80px,12vw,180px)] leading-[0.9] tracking-[-0.04em] text-white transition-opacity duration-500"
               style={{
-                fontSize: 'clamp(80px, 12vw, 180px)',
-                lineHeight: 0.9,
-                letterSpacing: '-0.04em',
-                textShadow: '0 4px 24px rgba(0,0,0,0.5)',
+                textShadow: "0 4px 24px rgba(0,0,0,0.5)",
                 opacity: isHovered ? 0.95 : 1,
               }}
             >
@@ -114,34 +94,27 @@ function WorkSection({ section, index }: { section: typeof SECTIONS[0]; index: n
             </h2>
             
             <div 
-              className="flex items-center justify-center gap-3 text-white transition-opacity duration-500"
+              className="mt-8 flex items-center justify-center gap-3 text-[11px] uppercase tracking-[0.32em] text-white/80 transition-opacity duration-500"
               style={{
-                marginTop: '2rem',
-                fontSize: '11px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.32em',
                 opacity: isHovered ? 1 : 0.7,
               }}
             >
-              <span style={{ height: '1px', width: '48px', background: 'rgba(255,255,255,0.6)' }} />
+              <span className="h-px w-12 bg-white/60" />
               <span>View Projects</span>
-              <span style={{ height: '1px', width: '48px', background: 'rgba(255,255,255,0.6)' }} />
+              <span className="h-px w-12 bg-white/60" />
             </div>
           </div>
         </div>
 
         {/* Subtle hover indicator */}
         <div 
-          className="absolute bottom-0 left-0 right-0 transition-transform duration-500"
+          className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 transition-transform duration-500 origin-left"
           style={{
-            height: '4px',
-            background: 'rgba(255,255,255,0.2)',
             transform: `scaleX(${isHovered ? 1 : 0})`,
-            transformOrigin: 'left',
           }}
         />
       </section>
-    </a>
+    </Link>
   );
 }
 
