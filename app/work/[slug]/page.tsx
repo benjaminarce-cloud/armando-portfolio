@@ -26,25 +26,28 @@ export default function WorkDetailPage({
     if (!autoplay || !videoRef.current) return;
 
     const video = videoRef.current;
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     // Wait for video to be ready
     const handleLoadedMetadata = async () => {
       try {
-        // Play the video
+        // Always play the video
         await video.play();
         
-        // Request fullscreen
-        if (video.requestFullscreen) {
-          await video.requestFullscreen();
-        } else if ((video as any).webkitRequestFullscreen) {
-          // Safari
-          await (video as any).webkitRequestFullscreen();
-        } else if ((video as any).mozRequestFullScreen) {
-          // Firefox
-          await (video as any).mozRequestFullScreen();
-        } else if ((video as any).msRequestFullscreen) {
-          // IE/Edge
-          await (video as any).msRequestFullscreen();
+        // Only request fullscreen on desktop
+        if (!isMobile) {
+          if (video.requestFullscreen) {
+            await video.requestFullscreen();
+          } else if ((video as any).webkitRequestFullscreen) {
+            // Safari
+            await (video as any).webkitRequestFullscreen();
+          } else if ((video as any).mozRequestFullScreen) {
+            // Firefox
+            await (video as any).mozRequestFullScreen();
+          } else if ((video as any).msRequestFullscreen) {
+            // IE/Edge
+            await (video as any).msRequestFullscreen();
+          }
         }
       } catch (err) {
         console.log("Autoplay/fullscreen failed:", err);
