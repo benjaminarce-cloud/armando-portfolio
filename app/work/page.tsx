@@ -119,7 +119,7 @@ export default async function WorkPage({
                   {/* Minimal meta */}
                   <div className="mt-6">
                     <p className="text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-muted)]">
-                      {p.category} • {p.year}
+                      {p.category}
                     </p>
 
                     <h2 className="editorial-title mt-3 text-3xl">
