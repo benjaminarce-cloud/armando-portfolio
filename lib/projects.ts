@@ -23,10 +23,72 @@ const image = (publicId: string) =>
   `https://res.cloudinary.com/${CLOUD}/image/upload/f_auto,q_auto/${publicId}.jpg`;
 
 export const projects: Project[] = [
-  // BASKETBALL
+  // BASKETBALL - Reordered by priority (1, 2, 3, 4, 5, then rest)
+  
+  // Priority 1
+  {
+    slug: "basketball-7",
+    title: "Season Hype Video",
+    category: "Basketball",
+    year: 2025,
+    group: "basketball",
+    coverSrc: "https://res.cloudinary.com/dzjcndphq/video/upload/so_2.0,f_jpg,q_auto,w_1200/Basketball-7_1080p_gmi1a2.jpg",
+    previewSrc: video("Basketball-7-preview_bpxogl"),
+    videoSrc: video("Basketball-7_1080p_gmi1a2"),
+  },
+  
+  // Priority 2
+  {
+    slug: "basketball-15",
+    title: "2024-2025 Intro Video",
+    category: "Basketball",
+    year: 2025,
+    group: "basketball",
+    coverSrc: image("Basketball-15-poster_t0jacv"),
+    previewSrc: video("Basketball-15-preview_md5hcj"),
+    videoSrc: video("Basketball-15_1080p-cld_kt3fav"),
+  },
+  
+  // Priority 3
+  {
+    slug: "basketball-8",
+    title: "Miles Byrd Spotlight",
+    category: "Basketball",
+    year: 2025,
+    group: "basketball",
+    coverSrc: image("Basketball-8-poster_urzpi3"),
+    previewSrc: video("Basketball-8-preview_lkfq7c"),
+    videoSrc: video("Basketball-8_1080p_lzfpww"),
+  },
+  
+  // Priority 4
+  {
+    slug: "basketball-6",
+    title: "Magoon Gwath Spotlight",
+    category: "Basketball",
+    year: 2025,
+    group: "basketball",
+    coverSrc: "https://res.cloudinary.com/dzjcndphq/video/upload/so_61.0,f_jpg,q_auto,w_1200/Basketball-6_1080p_mqnads.jpg",
+    previewSrc: video("Basketball-6-preview_ujmwqc"),
+    videoSrc: video("Basketball-6_1080p_mqnads"),
+  },
+  
+  // Priority 5
+  {
+    slug: "basketball-4",
+    title: "March Madness",
+    category: "Basketball",
+    year: 2025,
+    group: "basketball",
+    coverSrc: image("Basketball-4-poster_jptibu"),
+    previewSrc: video("Basketball-4-preview_v0qkcc"),
+    videoSrc: video("Basketball-4_1080p_sed2zh"),
+  },
+  
+  // Rest in original order
   {
     slug: "basketball-1",
-    title: "Basketball 1",
+    title: "Blackout Promo",
     category: "Basketball",
     year: 2025,
     group: "basketball",
@@ -36,7 +98,7 @@ export const projects: Project[] = [
   },
   {
     slug: "basketball-2",
-    title: "Basketball 2",
+    title: "Slow Dunk",
     category: "Basketball",
     year: 2025,
     group: "basketball",
@@ -46,7 +108,7 @@ export const projects: Project[] = [
   },
   {
     slug: "basketball-3",
-    title: "Basketball 3",
+    title: "Freshman Spotlight",
     category: "Basketball",
     year: 2025,
     group: "basketball",
@@ -55,18 +117,8 @@ export const projects: Project[] = [
     videoSrc: video("Basketball-3_1080p_agbxb7"),
   },
   {
-    slug: "basketball-4",
-    title: "Basketball 4",
-    category: "Basketball",
-    year: 2025,
-    group: "basketball",
-    coverSrc: image("Basketball-4-poster_jptibu"),
-    previewSrc: video("Basketball-4-preview_v0qkcc"),
-    videoSrc: video("Basketball-4_1080p_sed2zh"),
-  },
-  {
     slug: "basketball-5",
-    title: "Basketball 5",
+    title: "Basketball Stills",
     category: "Basketball",
     year: 2025,
     group: "basketball",
@@ -75,38 +127,8 @@ export const projects: Project[] = [
     videoSrc: video("Basketball-5_1080p_qfrl2n"),
   },
   {
-    slug: "basketball-6",
-    title: "Basketball 6",
-    category: "Basketball",
-    year: 2025,
-    group: "basketball",
-    coverSrc: "https://res.cloudinary.com/dzjcndphq/video/upload/so_61.0,f_jpg,q_auto,w_1200/Basketball-6_1080p_mqnads.jpg",
-    previewSrc: video("Basketball-6-preview_ujmwqc"),
-    videoSrc: video("Basketball-6_1080p_mqnads"),
-  },
-  {
-    slug: "basketball-7",
-    title: "Basketball 7",
-    category: "Basketball",
-    year: 2025,
-    group: "basketball",
-    coverSrc: "https://res.cloudinary.com/dzjcndphq/video/upload/so_2.0,f_jpg,q_auto,w_1200/Basketball-7_1080p_gmi1a2.jpg",
-    previewSrc: video("Basketball-7-preview_bpxogl"),
-    videoSrc: video("Basketball-7_1080p_gmi1a2"),
-  },
-  {
-    slug: "basketball-8",
-    title: "Basketball 8",
-    category: "Basketball",
-    year: 2025,
-    group: "basketball",
-    coverSrc: image("Basketball-8-poster_urzpi3"),
-    previewSrc: video("Basketball-8-preview_lkfq7c"),
-    videoSrc: video("Basketball-8_1080p_lzfpww"),
-  },
-  {
     slug: "basketball-9",
-    title: "Basketball 9",
+    title: "Practice Recap",
     category: "Basketball",
     year: 2025,
     group: "basketball",
@@ -116,7 +138,7 @@ export const projects: Project[] = [
   },
   {
     slug: "basketball-10",
-    title: "Basketball 10",
+    title: "The Off Season",
     category: "Basketball",
     year: 2025,
     group: "basketball",
@@ -126,7 +148,7 @@ export const projects: Project[] = [
   },
   {
     slug: "basketball-11",
-    title: "Basketball 11",
+    title: "Offszn Recap",
     category: "Basketball",
     year: 2025,
     group: "basketball",
@@ -136,7 +158,7 @@ export const projects: Project[] = [
   },
   {
     slug: "basketball-13",
-    title: "Basketball 13",
+    title: "Practice Recap",
     category: "Basketball",
     year: 2025,
     group: "basketball",
@@ -145,18 +167,8 @@ export const projects: Project[] = [
     videoSrc: video("Basketball-13_1080p_vyk24e"),
   },
   {
-    slug: "basketball-15",
-    title: "Basketball 15",
-    category: "Basketball",
-    year: 2025,
-    group: "basketball",
-    coverSrc: image("Basketball-15-poster_t0jacv"),
-    previewSrc: video("Basketball-15-preview_md5hcj"),
-    videoSrc: video("Basketball-15_1080p-cld_kt3fav"),
-  },
-  {
     slug: "basketball-16",
-    title: "Basketball 16",
+    title: "San Jose State Recap",
     category: "Basketball",
     year: 2025,
     group: "basketball",
@@ -166,7 +178,7 @@ export const projects: Project[] = [
   },
   {
     slug: "basketball-17",
-    title: "Basketball 17",
+    title: "Nevada Shoot Around",
     category: "Basketball",
     year: 2025,
     group: "basketball",
@@ -176,7 +188,7 @@ export const projects: Project[] = [
   },
   {
     slug: "basketball-18",
-    title: "Basketball 18",
+    title: "Suits NIL",
     category: "Basketball",
     year: 2025,
     group: "basketball",
@@ -186,7 +198,7 @@ export const projects: Project[] = [
   },
   {
     slug: "basketball-19",
-    title: "Basketball 19",
+    title: "VHS Practice Recap",
     category: "Basketball",
     year: 2025,
     group: "basketball",
@@ -196,7 +208,7 @@ export const projects: Project[] = [
   },
   {
     slug: "basketball-20",
-    title: "Basketball 20",
+    title: "Aztecs in the Community",
     category: "Basketball",
     year: 2025,
     group: "basketball",
@@ -205,10 +217,12 @@ export const projects: Project[] = [
     videoSrc: video("basketball-20_1080p_iscfmp"),
   },
 
-  // FREELANCE
+  // FREELANCE - Reordered with Cam Ward spotlight as priority 1
+  
+  // Priority 1
   {
     slug: "freelance-1",
-    title: "Freelance 1",
+    title: "Cam Ward Spotlight",
     category: "Freelance",
     year: 2025,
     group: "freelance",
@@ -216,9 +230,11 @@ export const projects: Project[] = [
     previewSrc: video("freelance-1-preview_zxwodg"),
     videoSrc: video("freelance-1_1080p_tu1tge"),
   },
+  
+  // Rest in original order
   {
     slug: "freelance-coloradofb",
-    title: "Colorado FB",
+    title: "Colorado FB Recap",
     category: "Freelance",
     year: 2025,
     group: "freelance",
@@ -228,7 +244,7 @@ export const projects: Project[] = [
   },
   {
     slug: "freelance-rc",
-    title: "Run Club",
+    title: "Strictly Run Club Finale",
     category: "Freelance",
     year: 2025,
     group: "freelance",
@@ -238,7 +254,7 @@ export const projects: Project[] = [
   },
   {
     slug: "freelance-rc-2",
-    title: "Run Club 2",
+    title: "Strictly Run Club Finale Year 2",
     category: "Freelance",
     year: 2025,
     group: "freelance",
@@ -248,7 +264,7 @@ export const projects: Project[] = [
   },
   {
     slug: "freelance-rc-3",
-    title: "Run Club 3",
+    title: "Run Club in the Sky",
     category: "Freelance",
     year: 2025,
     group: "freelance",
@@ -258,7 +274,7 @@ export const projects: Project[] = [
   },
   {
     slug: "freelance-soccer",
-    title: "Soccer",
+    title: "San Diego FC Game",
     category: "Freelance",
     year: 2025,
     group: "freelance",
@@ -268,7 +284,7 @@ export const projects: Project[] = [
   },
   {
     slug: "freelance-soccer-2",
-    title: "Soccer 2",
+    title: "San Diego FC Cinematics",
     category: "Freelance",
     year: 2025,
     group: "freelance",
@@ -277,10 +293,10 @@ export const projects: Project[] = [
     videoSrc: video("freelance-soccer-2_1080p_l44hnp"),
   },
 
-  // OTHER
+  // OTHER - Only 4 projects
   {
     slug: "other-track",
-    title: "Track",
+    title: "Track and Field Media Day (Director's Cut)",
     category: "Other",
     year: 2025,
     group: "other",
@@ -290,7 +306,7 @@ export const projects: Project[] = [
   },
   {
     slug: "other-track-2",
-    title: "Track 2",
+    title: "Track and Field Media Day",
     category: "Other",
     year: 2025,
     group: "other",
@@ -300,7 +316,7 @@ export const projects: Project[] = [
   },
   {
     slug: "other-sorority",
-    title: "Sorority",
+    title: "AXO Big Little Reveal",
     category: "Other",
     year: 2025,
     group: "other",
@@ -310,7 +326,7 @@ export const projects: Project[] = [
   },
   {
     slug: "other-sor-2",
-    title: "Sorority 2",
+    title: "AXO Fall Rush 2025",
     category: "Other",
     year: 2025,
     group: "other",
