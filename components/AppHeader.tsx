@@ -71,7 +71,7 @@ export default function AppHeader() {
         hidden ? "-translate-y-full" : "translate-y-0",
       ].join(" ")}
     >
-      <div className="mx-auto max-w-6xl px-5 pt-5 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-6xl px-3 pt-3 sm:px-5 sm:pt-5 lg:px-12">
         <div
           className={[
             "flex items-center justify-between",
@@ -79,13 +79,13 @@ export default function AppHeader() {
             solid
               ? "bg-[color:var(--page-bg)]/85 backdrop-blur-xl border-[color:var(--page-border)] shadow-[0_18px_60px_rgba(0,0,0,0.12)]"
               : "bg-transparent border-transparent shadow-none",
-            "px-6 py-3",
+            "px-3 py-2 sm:px-6 sm:py-3",
           ].join(" ")}
         >
           {/* Left */}
           <div
             className={[
-              "flex items-center gap-3 text-[11px] uppercase tracking-[0.32em]",
+              "hidden sm:flex items-center gap-3 text-[11px] uppercase tracking-[0.32em]",
               leftText,
             ].join(" ")}
           >
@@ -97,33 +97,33 @@ export default function AppHeader() {
           {/* Center */}
           <Link
             href="/"
-            className={["text-[12px] font-semibold tracking-[0.18em]", centerText].join(" ")}
+            className={["text-[11px] sm:text-[12px] font-semibold tracking-[0.18em]", centerText].join(" ")}
           >
             MANDO°
           </Link>
 
           {/* Right */}
-          <div className="flex items-center gap-5">
-  <Link href="/work" className={rightLinkText}>
-    Work
-  </Link>
-  <Link href="/about" className={rightLinkText}>
-    About
-  </Link>
-  <Link href="/contact" className={rightLinkText}>
-    Contact
-  </Link>
+          <div className="flex items-center gap-3 sm:gap-5 text-[11px] sm:text-[13px]">
+            <Link href="/work" className={rightLinkText}>
+              Work
+            </Link>
+            <Link href="/about" className={rightLinkText}>
+              About
+            </Link>
+            <Link href="/contact" className={rightLinkText}>
+              Contact
+            </Link>
 
-  <div
-    className={
-      onHero
-        ? "[&_button]:border-white/30 [&_button]:bg-white/10 [&_button]:hover:bg-white/15"
-        : ""
-    }
-  >
-    <ThemeToggle />
-  </div>
-</div>
+            <div
+              className={
+                onHero
+                  ? "[&_button]:border-white/30 [&_button]:bg-white/10 [&_button]:hover:bg-white/15"
+                  : ""
+              }
+            >
+              <ThemeToggle />
+            </div>
+          </div>
         </div>
       </div>
     </div>
