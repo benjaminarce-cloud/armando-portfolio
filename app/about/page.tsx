@@ -50,7 +50,7 @@ export default function AboutPage() {
                 </Link>
 
                 <a
-                  href="#contact"
+                  href="/contact"
                   className="rounded-full border border-[color:var(--page-border)] px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-muted)] transition-colors hover:text-[color:var(--page-fg)]"
                 >
                   Contact
