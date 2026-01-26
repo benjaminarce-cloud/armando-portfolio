@@ -1,20 +1,69 @@
 // app/work/[slug]/page.tsx
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { projects } from "@/lib/projects";
+"use client";
 
-export default async function WorkDetailPage({
+import Link from "next/link";
+import { notFound, useSearchParams } from "next/navigation";
+import { projects } from "@/lib/projects";
+import { useEffect, useRef } from "react";
+
+export default function WorkDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }) {
-  const { slug } = await params;
+  const searchParams = useSearchParams();
+  const autoplay = searchParams.get("autoplay") === "true";
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  const p = projects.find((x) => x.slug === slug);
+  const p = projects.find((x) => x.slug === params.slug);
   if (!p) return notFound();
 
   // Prefer full video, else preview, else nothing
   const src = p.videoSrc ?? p.previewSrc ?? null;
+
+  useEffect(() => {
+    if (!autoplay || !videoRef.current) return;
+
+    const video = videoRef.current;
+
+    // Wait for video to be ready
+    const handleLoadedMetadata = async () => {
+      try {
+        // Play the video
+        await video.play();
+        
+        // Request fullscreen
+        if (video.requestFullscreen) {
+          await video.requestFullscreen();
+        } else if ((video as any).webkitRequestFullscreen) {
+          // Safari
+          await (video as any).webkitRequestFullscreen();
+        } else if ((video as any).mozRequestFullScreen) {
+          // Firefox
+          await (video as any).mozRequestFullScreen();
+        } else if ((video as any).msRequestFullscreen) {
+          // IE/Edge
+          await (video as any).msRequestFullscreen();
+        }
+      } catch (err) {
+        console.log("Autoplay/fullscreen failed:", err);
+        // Fallback: just play without fullscreen if it fails
+        try {
+          await video.play();
+        } catch (playErr) {
+          console.log("Autoplay failed:", playErr);
+        }
+      }
+    };
+
+    if (video.readyState >= 2) {
+      // Metadata already loaded
+      handleLoadedMetadata();
+    } else {
+      video.addEventListener("loadedmetadata", handleLoadedMetadata);
+      return () => video.removeEventListener("loadedmetadata", handleLoadedMetadata);
+    }
+  }, [autoplay]);
 
   return (
     <main className="min-h-screen bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
@@ -27,24 +76,20 @@ export default async function WorkDetailPage({
           >
             Back to work
           </Link>
-
           <p className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
             {p.category} • {p.year}
           </p>
         </div>
-
         {/* Title */}
         <div className="mt-10">
           <h1 className="editorial-title text-[clamp(44px,6vw,84px)]">
             {p.title}
           </h1>
-
           {p.role ? (
             <p className="mt-4 max-w-2xl text-sm text-[color:var(--page-muted)]">
               {p.role}
             </p>
           ) : null}
-
           {p.tags?.length ? (
             <div className="mt-6 flex flex-wrap gap-2">
               {p.tags.map((t) => (
@@ -58,11 +103,11 @@ export default async function WorkDetailPage({
             </div>
           ) : null}
         </div>
-
         {/* Video */}
         <div className="mt-12 overflow-hidden rounded-3xl border border-[color:var(--page-border)] bg-[color:var(--page-card)]">
           {src ? (
             <video
+              ref={videoRef}
               className="h-full w-full"
               controls
               playsInline
