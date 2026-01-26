@@ -20,9 +20,9 @@ export default function AboutPage() {
           {/* Bio - Centered */}
           <div className="mx-auto mt-10 max-w-3xl text-center">
             <h1 className="editorial-title text-[clamp(44px,6vw,72px)] leading-[0.92] tracking-[-0.05em]">
-              Films that feel
+              Cinematic work
               <br />
-              like opening shots.
+              thoughtfully made.
             </h1>
 
             <div className="mt-10 border-t border-[color:var(--page-border)] pt-8">
