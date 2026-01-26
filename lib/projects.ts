@@ -80,9 +80,9 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: image("Basketball-4-poster_jptibu"),
-    previewSrc: video("Basketball-4-preview_v0qkcc"),
-    videoSrc: video("Basketball-4_1080p_sed2zh"),
+    coverSrc: "https://res.cloudinary.com/dzjcndphq/video/upload/so_1.0,f_jpg,q_auto,w_1200/Basketball-marchmadness_1080p_xvsg18.jpg",
+    previewSrc: video("Basketball-marchmadness-preview_qsmq56"),
+    videoSrc: video("Basketball-marchmadness_1080p_xvsg18"),
   },
   
   // Rest in original order
@@ -333,6 +333,26 @@ export const projects: Project[] = [
     coverSrc: image("other-sor-2-poster_bdbxme"),
     previewSrc: video("other-sor-2-preview_ljjvaw"),
     videoSrc: video("other-sor-2_1080p-cld_uioh2u"),
+  },
+  {
+    slug: "other-colorgrades",
+    title: "Color Grades",
+    category: "Other",
+    year: 2025,
+    group: "other",
+    coverSrc: "https://res.cloudinary.com/dzjcndphq/video/upload/so_4.0,f_jpg,q_auto,w_1200/other-colorgrades_1080p_cvjtrl.jpg",
+    previewSrc: video("other-colorgrades-preview_dgwpfx"),
+    videoSrc: video("other-colorgrades_1080p_cvjtrl"),
+  },
+  {
+    slug: "other-16mm",
+    title: "Nature on 16mm Film",
+    category: "Other",
+    year: 2025,
+    group: "other",
+    coverSrc: "https://res.cloudinary.com/dzjcndphq/video/upload/so_19.0,f_jpg,q_auto,w_1200/other-16mm_1080p_o2sv74.jpg",
+    previewSrc: video("other-16mm-preview_ppcxg9"),
+    videoSrc: video("other-16mm_1080p_o2sv74"),
   },
 ];
 
