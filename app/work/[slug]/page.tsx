@@ -4,18 +4,19 @@
 import Link from "next/link";
 import { notFound, useSearchParams } from "next/navigation";
 import { projects } from "@/lib/projects";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, use } from "react";
 
 export default function WorkDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = use(params);
   const searchParams = useSearchParams();
   const autoplay = searchParams.get("autoplay") === "true";
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const p = projects.find((x) => x.slug === params.slug);
+  const p = projects.find((x) => x.slug === slug);
   if (!p) return notFound();
 
   // Prefer full video, else preview, else nothing
