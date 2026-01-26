@@ -79,7 +79,7 @@ export default async function WorkPage({
         <div className="mt-14 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((p, i) => (
             <article key={p.slug} className={tileOffset(i)}>
-              <Link href={`/work/${p.slug}`} className="group block">
+              <Link href={`/work/${p.slug}?autoplay=true`} className="group block">
                 <div className="relative">
                   {/* Poster + hover preview */}
                   <div className="relative aspect-[4/5] overflow-hidden bg-black/5">
@@ -150,7 +150,7 @@ export default async function WorkPage({
 }
 
 /**
- * Offsets mimic the “curated wall” feel (not a uniform catalog).
+ * Offsets mimic the "curated wall" feel (not a uniform catalog).
  * Subtle, responsive-safe.
  */
 function tileOffset(i: number) {
