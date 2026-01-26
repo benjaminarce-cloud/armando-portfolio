@@ -2,7 +2,7 @@ export default function HomeHero() {
   return (
     <section
       data-hero="true"
-      className="relative min-h-[92vh] overflow-hidden bg-[#0A0A0C] text-[#F3F2EE]"
+      className="relative h-screen overflow-hidden bg-[#0A0A0C] text-[#F3F2EE]"
     >
       {/* Background video */}
       <div className="absolute inset-0">
@@ -20,20 +20,16 @@ export default function HomeHero() {
             type="video/mp4"
           />
         </video>
-
         <div className="hero-lids" aria-hidden="true" />
-
         <div
           className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent"
           aria-hidden="true"
         />
       </div>
-
       {/* Foreground */}
-      <div className="relative z-10 flex min-h-[92vh] flex-col">
+      <div className="relative z-10 flex h-screen flex-col">
         {/* leave room for fixed header */}
         <div className="h-20 sm:h-24" />
-
         {/* Bottom-left title card */}
         <div className="mt-auto">
           <div className="mx-auto max-w-6xl px-5 pb-10 sm:px-8 sm:pb-12 lg:px-12 lg:pb-16">
@@ -53,7 +49,6 @@ export default function HomeHero() {
               >
                 Armando Aguilar
               </div>
-
               {/* main layer */}
               <h1
                 className="
