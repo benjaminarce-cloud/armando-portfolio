@@ -7,19 +7,19 @@ const SECTIONS = [
     id: "basketball",
     title: "Basketball",
     href: "/work?group=basketball",
-    image: "https://res.cloudinary.com/dzjcndphq/image/upload/v1768945221/b-prev_raijrl.jpg",
+    image: "https://res.cloudinary.com/dzjcndphq/image/upload/v1775770311/b-prev_drr7pf.jpg",
   },
   {
     id: "freelance",
     title: "Freelance",
     href: "/work?group=freelance",
-    image: "https://res.cloudinary.com/dzjcndphq/image/upload/v1768945226/soccer-prev-2_uxufs9.jpg",
+    image: "https://res.cloudinary.com/dzjcndphq/image/upload/v1775770313/soccer-prev-2_ml5i3p.jpg",
   },
   {
     id: "other",
     title: "Other",
     href: "/work?group=other",
-    image: "https://res.cloudinary.com/dzjcndphq/image/upload/v1768945228/f-prev-1_fowge0.jpg",
+    image: "https://res.cloudinary.com/dzjcndphq/image/upload/v1775770310/f-prev-1_idvwds.jpg",
   },
 ];
 
