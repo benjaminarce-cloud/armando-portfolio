@@ -94,17 +94,23 @@ export default function WorkDetailPage({
         </div>
 
         {p.fullVideoUrl ? (
-          <div className="mt-6 rounded-2xl border border-[color:var(--page-border)] bg-[color:var(--page-card)] p-5 sm:p-6">
-            <p className="text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-muted)]">
+          <div className="mt-8 border-t border-[color:var(--page-border)] pt-6">
+            <p className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
               Full Version
             </p>
             <a
               href={p.fullVideoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-3 inline-flex items-center rounded-full border border-[color:var(--page-fg)] px-5 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-[color:var(--page-fg)] transition-colors hover:bg-[color:var(--page-fg)] hover:text-[color:var(--page-bg)]"
+              className="group mt-3 inline-flex flex-wrap items-end gap-x-4 gap-y-2"
             >
-              Watch Full Video on YouTube
+              <span className="editorial-title text-[clamp(28px,3.8vw,48px)] leading-[0.9] tracking-[-0.03em] text-[color:var(--page-fg)]">
+                Watch the full film on YouTube
+              </span>
+              <span className="mb-1 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-muted)] transition-colors group-hover:text-[color:var(--page-fg)]">
+                <span className="h-px w-10 bg-[color:var(--page-border)] transition-colors group-hover:bg-[color:var(--page-fg)]" />
+                <span>Open</span>
+              </span>
             </a>
           </div>
         ) : null}
