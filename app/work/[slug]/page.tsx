@@ -94,18 +94,19 @@ export default function WorkDetailPage({
         </div>
 
         {p.fullVideoUrl ? (
-          <p className="mt-4 text-sm text-[color:var(--page-muted)]">
-            Check out the full video on{" "}
+          <div className="mt-6 rounded-2xl border border-[color:var(--page-border)] bg-[color:var(--page-card)] p-5 sm:p-6">
+            <p className="text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-muted)]">
+              Full Version
+            </p>
             <a
               href={p.fullVideoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="underline underline-offset-4 hover:text-[color:var(--page-fg)] transition-colors"
+              className="mt-3 inline-flex items-center rounded-full border border-[color:var(--page-fg)] px-5 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-[color:var(--page-fg)] transition-colors hover:bg-[color:var(--page-fg)] hover:text-[color:var(--page-bg)]"
             >
-              YouTube
+              Watch Full Video on YouTube
             </a>
-            .
-          </p>
+          </div>
         ) : null}
       </div>
     </main>
