@@ -44,9 +44,9 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: image("Basketball-15-poster_t0jacv"),
-    previewSrc: video("Basketball-15-preview_md5hcj"),
-    videoSrc: video("Basketball-15_1080p-cld_kt3fav"),
+    coverSrc: "https://res.cloudinary.com/dzjcndphq/video/upload/so_44.0,f_jpg,q_auto,w_1200/Basketball-16_1080p_mntob2.jpg",
+    previewSrc: video("Basketball-16-preview_mqtpel"),
+    videoSrc: video("Basketball-16_1080p_mntob2"),
   },
   
   // Priority 3
@@ -172,9 +172,9 @@ export const projects: Project[] = [
     category: "Basketball",
     year: 2025,
     group: "basketball",
-    coverSrc: "https://res.cloudinary.com/dzjcndphq/video/upload/so_44.0,f_jpg,q_auto,w_1200/Basketball-16_1080p_mntob2.jpg",
-    previewSrc: video("Basketball-16-preview_mqtpel"),
-    videoSrc: video("Basketball-16_1080p_mntob2"),
+    coverSrc: image("Basketball-15-poster_t0jacv"),
+    previewSrc: video("Basketball-15-preview_md5hcj"),
+    videoSrc: video("Basketball-15_1080p-cld_kt3fav"),
   },
   {
     slug: "basketball-17",
