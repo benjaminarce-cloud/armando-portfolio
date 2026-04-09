@@ -24,8 +24,20 @@ const image = (publicId: string) =>
 
 export const projects: Project[] = [
   // BASKETBALL - Reordered by priority (1, 2, 3, 4, 5, then rest)
-  
+
   // Priority 1
+  {
+    slug: "basketball-beyond-the-jersey-miles-byrd-doc",
+    title: "BEYOND THE JERSEY | MILES BYRD DOC",
+    category: "Basketball",
+    year: 2026,
+    group: "basketball",
+    coverSrc: "https://res.cloudinary.com/dzjcndphq/video/upload/so_1.0,f_jpg,q_auto,w_1200/BYRDTRAILERMANDOINGGG_qm56iy.jpg",
+    previewSrc: "https://res.cloudinary.com/dzjcndphq/video/upload/f_auto,q_auto,so_0,du_15/BYRDTRAILERMANDOINGGG_qm56iy.mp4",
+    videoSrc: video("BYRDTRAILERMANDOINGGG_qm56iy"),
+  },
+  
+  // Priority 2
   {
     slug: "basketball-7",
     title: "Season Hype Video",
@@ -37,7 +49,7 @@ export const projects: Project[] = [
     videoSrc: video("Basketball-7_1080p_gmi1a2"),
   },
   
-  // Priority 2
+  // Priority 3
   {
     slug: "basketball-15",
     title: "2024-2025 Intro Video",
@@ -49,7 +61,7 @@ export const projects: Project[] = [
     videoSrc: video("Basketball-16_1080p_mntob2"),
   },
   
-  // Priority 3
+  // Priority 4
   {
     slug: "basketball-8",
     title: "Miles Byrd Spotlight",
@@ -61,7 +73,7 @@ export const projects: Project[] = [
     videoSrc: video("Basketball-8_1080p_lzfpww"),
   },
   
-  // Priority 4
+  // Priority 5
   {
     slug: "basketball-6",
     title: "Magoon Gwath Spotlight",
@@ -73,7 +85,7 @@ export const projects: Project[] = [
     videoSrc: video("Basketball-6_1080p_mqnads"),
   },
   
-  // Priority 5
+  // Priority 6
   {
     slug: "basketball-4",
     title: "March Madness",
