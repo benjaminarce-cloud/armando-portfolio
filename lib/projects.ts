@@ -10,6 +10,7 @@ export type Project = {
   group: GroupId;
   previewSrc?: string;
   videoSrc?: string;
+  fullVideoUrl?: string;
   role?: string;
   tags?: string[];
 };
@@ -35,6 +36,7 @@ export const projects: Project[] = [
     coverSrc: "https://res.cloudinary.com/dzjcndphq/video/upload/so_1.0,f_jpg,q_auto,w_1200/BYRDTRAILERMANDOINGGG_qm56iy.jpg",
     previewSrc: "https://res.cloudinary.com/dzjcndphq/video/upload/f_auto,q_auto,so_0,du_15/BYRDTRAILERMANDOINGGG_qm56iy.mp4",
     videoSrc: video("BYRDTRAILERMANDOINGGG_qm56iy"),
+    fullVideoUrl: "https://www.youtube.com/watch?v=PEtrScv564s",
   },
   
   // Priority 2

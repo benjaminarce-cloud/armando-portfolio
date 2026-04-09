@@ -92,6 +92,21 @@ export default function WorkDetailPage({
             </div>
           )}
         </div>
+
+        {p.fullVideoUrl ? (
+          <p className="mt-4 text-sm text-[color:var(--page-muted)]">
+            Check out the full video on{" "}
+            <a
+              href={p.fullVideoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-4 hover:text-[color:var(--page-fg)] transition-colors"
+            >
+              YouTube
+            </a>
+            .
+          </p>
+        ) : null}
       </div>
     </main>
   );
