@@ -58,6 +58,11 @@ select,
   outline-offset: 3px;
 }
 
+/* These live in @layer components so Tailwind utilities can override them.
+   Unlayered rules beat anything in a layer, so an unlayered `.hud { color }`
+   would silently win over a `text-white/60` on the same element. */
+@layer components {
+
 /* -----------------------------
    HUD readouts
 ------------------------------ */
@@ -252,3 +257,6 @@ select,
     transform: none;
   }
 }
+
+}
+/* end @layer components */

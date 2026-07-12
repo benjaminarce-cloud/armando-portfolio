@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import FilmPlayer from "@/components/FilmPlayer";
 import PageHeader from "@/components/PageHeader";
 import { projects } from "@/lib/projects";
 
@@ -32,7 +33,7 @@ export default async function VideoDetailPage({
     <>
       <PageHeader />
 
-      <main className="min-h-screen px-14 pb-32 pt-[168px]">
+      <main className="min-h-screen px-6 pb-32 pt-[212px] sm:px-14 sm:pt-[168px]">
         <Link
           href="/video"
           className="hud lock inline-block px-2 py-1 text-[color:var(--dim)] transition-colors hover:text-white"
@@ -49,15 +50,7 @@ export default async function VideoDetailPage({
 
         <div className="mt-10 border border-[color:var(--line)] bg-black">
           {src ? (
-            <video
-              className="h-full w-full"
-              controls
-              playsInline
-              preload="metadata"
-              poster={film.coverSrc}
-            >
-              <source src={src} type="video/mp4" />
-            </video>
+            <FilmPlayer src={src} poster={film.coverSrc} />
           ) : (
             <div className="grid aspect-video place-items-center">
               <p className="hud text-[color:var(--dim)]">No feed</p>
