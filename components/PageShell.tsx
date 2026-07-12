@@ -19,7 +19,8 @@ export default function PageShell({
     <>
       <PageHeader />
 
-      <main className="min-h-screen px-14 pb-32 pt-[168px]">
+      {/* Extra top padding on phones: the header stacks into two rows there. */}
+      <main className="min-h-screen px-6 pb-32 pt-[212px] sm:px-14 sm:pt-[168px]">
         <div className="flex items-baseline justify-between gap-6 border-b border-[color:var(--line)] pb-5">
           <h1 className="mark text-[clamp(28px,4vw,44px)]">{title}</h1>
           <p className="hud text-[color:var(--dim)]">{slate}</p>

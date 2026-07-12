@@ -72,7 +72,7 @@ export default function MonitorChrome() {
 
       {/* Scrims: content scrolls under the HUD, so darken behind it — the
           readouts have to stay legible over a moving image. */}
-      <div className="pointer-events-none fixed inset-x-0 top-0 z-[35] h-[150px] bg-gradient-to-b from-[color:var(--bg)] via-[color:var(--bg)]/85 to-transparent" />
+      <div className="pointer-events-none fixed inset-x-0 top-0 z-[35] h-[195px] bg-gradient-to-b from-[color:var(--bg)] via-[color:var(--bg)]/85 to-transparent sm:h-[150px]" />
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[35] h-[80px] bg-gradient-to-t from-[color:var(--bg)] to-transparent" />
 
       <span className="af af-tl" />
