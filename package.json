@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "cloudinary:list": "node --env-file=.env.local scripts/list-cloudinary.js",
+    "cloudinary:upload-about": "node --env-file=.env.local upload.js"
   },
   "dependencies": {
     "next": "16.1.1",
@@ -15,6 +17,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
+    "cloudinary": "^2.9.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

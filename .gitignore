@@ -32,6 +32,12 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# ...except the credential-free template.
+!.env.example
+
+# Raw source footage and photo originals (~36GB). These live on Cloudinary;
+# the site only ever references them by URL. Never commit them.
+/media
 
 # vercel
 .vercel

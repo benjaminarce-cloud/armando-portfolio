@@ -1,13 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Bodoni_Moda, Inter } from "next/font/google";
-import AppHeader from "@/components/AppHeader";
-
-const serif = Bodoni_Moda({
-  subsets: ["latin"],
-  variable: "--font-serif",
-  display: "swap",
-});
+import { Inter } from "next/font/google";
+import MonitorChrome from "@/components/MonitorChrome";
 
 const sans = Inter({
   subsets: ["latin"],
@@ -17,7 +11,7 @@ const sans = Inter({
 
 export const metadata: Metadata = {
   title: "Armando Aguilar",
-  description: "Sports filmmaker • San Diego",
+  description: "Photographer and filmmaker. San Diego.",
 };
 
 export default function RootLayout({
@@ -25,8 +19,8 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${sans.variable} ${serif.variable} antialiased`}>
-        <AppHeader />
+      <body className={`${sans.variable} antialiased`}>
+        <MonitorChrome />
         {children}
       </body>
     </html>

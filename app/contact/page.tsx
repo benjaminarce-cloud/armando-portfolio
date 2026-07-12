@@ -1,68 +1,84 @@
-const CONTACT_LINKS = [
-  { label: "Instagram", href: "https://instagram.com/armandoaguilare" },
-  { label: "Email", href: "mailto:armandirix@gmail.com" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/armandoaguilarr/" },
-  { label: "TikTok", href: "https://www.tiktok.com/@armandoaguilarr" },
+import Image from "next/image";
+import PageShell from "@/components/PageShell";
+import { lifePhotos } from "@/lib/lifePhotos";
+
+export const metadata = {
+  title: "Contact — Armando Aguilar",
+};
+
+const BIO = [
+  "Born in Mexico, raised between two languages.",
+  "Found my voice through a camera.",
+  "Lead producer for Aztec Men's Basketball and a freelance filmmaker making high-end, cinematic work.",
+  "Film major, based in San Diego.",
 ];
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen pt-24 bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
-      {/* Spacer for fixed global header */}
-      <div className="h-20 sm:h-24" />
+    <PageShell title="Contact" slate="Serious inquiries only">
+      <div className="grid gap-16 lg:grid-cols-[1fr_1fr] lg:gap-24">
+        {/* Bio */}
+        <div>
+          <p className="hud mb-6 text-[color:var(--dim)]">Who&apos;s shooting</p>
+          <div className="flex max-w-[52ch] flex-col gap-5">
+            {BIO.map((line) => (
+              <p key={line} className="text-[17px] leading-relaxed text-white/85">
+                {line}
+              </p>
+            ))}
+          </div>
+        </div>
 
-      <div className="mx-auto max-w-6xl px-5 pb-12 sm:px-8 lg:px-12">
-        {/* headline */}
-        <div className="mt-10">
-          <h1 className="font-[var(--font-serif)] text-[clamp(48px,6.6vw,96px)] leading-[0.95] tracking-[-0.03em]">
-            Let&apos;s talk.
-          </h1>
-          <p className="mt-4 max-w-xl text-sm text-[color:var(--page-muted)]">
-            Serious inquiries only.
+        {/* Reach him */}
+        <div>
+          <p className="hud mb-6 text-[color:var(--dim)]">Get in touch</p>
+
+          <a
+            href="mailto:armandirix@gmail.com"
+            className="lock group inline-flex items-baseline gap-5 px-3 py-2"
+          >
+            <span className="text-[clamp(20px,2.4vw,30px)] text-white">
+              armandirix@gmail.com
+            </span>
+            <span className="hud text-[color:var(--rec)]">Email ↗</span>
+          </a>
+
+          <p className="mt-10 max-w-[42ch] text-[14px] leading-relaxed text-[color:var(--dim)]">
+            Available for documentary, sports, and commercial work — shooting,
+            directing, and edit.
+          </p>
+        </div>
+      </div>
+
+      {/* Personal contact sheet — his own photos, run as a strip of frames. */}
+      <section className="mt-28">
+        <div className="flex items-baseline justify-between gap-6 border-b border-[color:var(--line)] pb-4">
+          <h2 className="hud text-white">B-Roll</h2>
+          <p className="hud text-[color:var(--dim)]">
+            {lifePhotos.length} frames · personal
           </p>
         </div>
 
-        {/* rows */}
-        <div className="mt-12 border-t border-[color:var(--page-border)]">
-          {CONTACT_LINKS.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              target="_blank"
-              rel="noreferrer"
-              className="group relative block border-b border-[color:var(--page-border)] py-6"
+        <div className="mt-6 grid grid-cols-3 gap-px bg-[color:var(--line-soft)] sm:grid-cols-5 lg:grid-cols-6">
+          {lifePhotos.map((src, i) => (
+            <div
+              key={src}
+              className="lock lock-tile group relative aspect-[3/2] overflow-hidden bg-black"
             >
-              {/* inset hover slab */}
-              <span
-                aria-hidden="true"
-                className="
-                  pointer-events-none absolute inset-x-0 inset-y-2
-                  rounded-2xl bg-transparent
-                  transition-colors duration-200
-                  group-hover:bg-[color:var(--page-fg)]
-                "
+              <Image
+                src={src}
+                alt=""
+                fill
+                sizes="(max-width: 640px) 33vw, (max-width: 1024px) 20vw, 16vw"
+                className="object-cover opacity-75 saturate-[0.85] transition-all duration-500 group-hover:opacity-100 group-hover:saturate-100"
               />
-
-              <div className="relative flex items-center justify-between gap-6 px-6">
-                <div className="font-[var(--font-sans)] text-[22px] leading-tight tracking-[-0.01em] transition-colors group-hover:text-[color:var(--page-bg)] sm:text-[26px]">
-                  <span className="opacity-85 transition-opacity group-hover:opacity-100">
-                    {item.label}
-                  </span>
-                </div>
-
-                <div className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)] transition-colors group-hover:text-[color:var(--page-bg)]">
-                  <span className="inline-flex items-center gap-2">
-                    Open
-                    <span className="translate-x-0 transition-transform duration-200 group-hover:translate-x-1">
-                      →
-                    </span>
-                  </span>
-                </div>
-              </div>
-            </a>
+              <span className="hud-num absolute bottom-2 left-2 z-10 text-[9px] tracking-[0.1em] text-white/0 transition-colors group-hover:text-white/70">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+            </div>
           ))}
         </div>
-      </div>
-    </main>
+      </section>
+    </PageShell>
   );
 }
