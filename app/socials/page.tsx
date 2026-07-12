@@ -8,31 +8,26 @@ export const metadata = {
 export default function SocialsPage() {
   return (
     <PageShell title="Socials" slate={`${socials.length} channels`}>
-      {/* Each account reads as an input channel on the monitor: CH 01–04, a
-          mark, and nothing else until you hover it. */}
-      <div className="grid max-w-5xl grid-cols-2 gap-px bg-[color:var(--line-soft)] lg:grid-cols-4">
-        {socials.map((social, i) => (
+      <div className="flex flex-wrap items-center gap-x-12 gap-y-10">
+        {socials.map((social) => (
           <a
             key={social.name}
             href={social.href}
             target="_blank"
             rel="noreferrer"
             aria-label={`${social.name} — ${social.handle}`}
-            className="lock lock-tile group relative grid aspect-square place-items-center bg-[color:var(--bg)]"
+            className="group relative block"
           >
-            <span className="hud-num absolute left-4 top-4 text-[10px] tracking-[0.16em] text-[color:var(--dimmer)] transition-colors group-hover:text-[color:var(--rec)]">
-              CH {String(i + 1).padStart(2, "0")}
-            </span>
-
             <svg
               viewBox="0 0 24 24"
               aria-hidden="true"
-              className="h-11 w-11 fill-[color:var(--dim)] transition-colors duration-300 group-hover:fill-white"
+              className="h-8 w-8 fill-[color:var(--dim)] transition-colors duration-300 group-hover:fill-white"
             >
               <path d={social.path} />
             </svg>
 
-            <span className="hud absolute bottom-4 left-0 right-0 text-center text-[10px] text-white/0 transition-colors duration-300 group-hover:text-white/60">
+            {/* Handle only shows up when you're actually on the mark. */}
+            <span className="hud absolute left-1/2 top-full mt-3 -translate-x-1/2 whitespace-nowrap text-[10px] text-white/0 transition-colors duration-300 group-hover:text-white/60">
               {social.handle}
             </span>
           </a>
