@@ -1,82 +1,74 @@
 // app/work/[slug]/page.tsx
-"use client";
-
-import { notFound, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 import { projects } from "@/lib/projects";
-import { useEffect, useRef, use } from "react";
+import { WORK_GROUPS } from "@/lib/workGroups";
 
-export default function WorkDetailPage({
+export function generateStaticParams() {
+  return projects.map((p) => ({ slug: p.slug }));
+}
+
+export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = use(params);
-  const searchParams = useSearchParams();
-  const autoplay = searchParams.get("autoplay") === "true";
-  const videoRef = useRef<HTMLVideoElement>(null);
-
+  const { slug } = await params;
   const p = projects.find((x) => x.slug === slug);
-  if (!p) return notFound();
+  return { title: p ? `${p.title} — Armando Aguilar` : "Work" };
+}
 
-  // Prefer full video, else preview, else nothing
+export default async function WorkDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const p = projects.find((x) => x.slug === slug);
+  if (!p) notFound();
+
   const src = p.videoSrc ?? p.previewSrc ?? null;
-
-  useEffect(() => {
-    if (!autoplay || !videoRef.current) return;
-
-    const video = videoRef.current;
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-    // Wait for video to be ready
-    const handleLoadedMetadata = async () => {
-      try {
-        // Always play the video
-        await video.play();
-        
-        // Only request fullscreen on desktop
-        if (!isMobile) {
-          if (video.requestFullscreen) {
-            await video.requestFullscreen();
-          } else if ((video as any).webkitRequestFullscreen) {
-            // Safari
-            await (video as any).webkitRequestFullscreen();
-          } else if ((video as any).mozRequestFullScreen) {
-            // Firefox
-            await (video as any).mozRequestFullScreen();
-          } else if ((video as any).msRequestFullscreen) {
-            // IE/Edge
-            await (video as any).msRequestFullscreen();
-          }
-        }
-      } catch (err) {
-        console.log("Autoplay/fullscreen failed:", err);
-        // Fallback: just play without fullscreen if it fails
-        try {
-          await video.play();
-        } catch (playErr) {
-          console.log("Autoplay failed:", playErr);
-        }
-      }
-    };
-
-    if (video.readyState >= 2) {
-      // Metadata already loaded
-      handleLoadedMetadata();
-    } else {
-      video.addEventListener("loadedmetadata", handleLoadedMetadata);
-      return () => video.removeEventListener("loadedmetadata", handleLoadedMetadata);
-    }
-  }, [autoplay]);
+  const group = WORK_GROUPS.find((g) => g.id === p.group);
 
   return (
-    <main className="min-h-screen bg-[color:var(--page-bg)] text-[color:var(--page-fg)]">
-      <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:px-12">
-        {/* Video */}
-        <div className="mt-12 overflow-hidden rounded-3xl border border-[color:var(--page-border)] bg-[color:var(--page-card)]">
+    <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
+      {/* Meta */}
+      <div className="lg:col-span-2">
+        <Link
+          href={group?.href ?? "/work"}
+          className="u text-[13px] text-[color:var(--muted)] transition-colors hover:text-[color:var(--fg)]"
+        >
+          Back
+        </Link>
+
+        <dl className="mt-12 space-y-6">
+          <div>
+            <dt className="label">Category</dt>
+            <dd className="mt-1 text-[13px] italic">{p.category}</dd>
+          </div>
+          <div>
+            <dt className="label">Year</dt>
+            <dd className="mt-1 text-[13px] italic tabular-nums">{p.year}</dd>
+          </div>
+          {p.role ? (
+            <div>
+              <dt className="label">Role</dt>
+              <dd className="mt-1 text-[13px] italic">{p.role}</dd>
+            </div>
+          ) : null}
+        </dl>
+      </div>
+
+      {/* Film */}
+      <div className="lg:col-span-8 lg:col-start-4">
+        <h1 className="max-w-[24ch] text-[22px] leading-tight sm:text-[26px]">
+          {p.title}
+        </h1>
+
+        <div className="mt-8">
           {src ? (
             <video
-              ref={videoRef}
-              className="h-full w-full"
+              className="w-full bg-[color:var(--rule)]"
               controls
               playsInline
               preload="metadata"
@@ -85,8 +77,8 @@ export default function WorkDetailPage({
               <source src={src} type="video/mp4" />
             </video>
           ) : (
-            <div className="aspect-video grid place-items-center">
-              <p className="text-sm text-[color:var(--page-muted)]">
+            <div className="grid aspect-video place-items-center bg-[color:var(--rule)]">
+              <p className="text-[13px] text-[color:var(--muted)]">
                 Video coming soon.
               </p>
             </div>
@@ -94,27 +86,16 @@ export default function WorkDetailPage({
         </div>
 
         {p.fullVideoUrl ? (
-          <div className="mt-8 border-t border-[color:var(--page-border)] pt-6">
-            <p className="text-[11px] uppercase tracking-[0.32em] text-[color:var(--page-muted)]">
-              Full Version
-            </p>
-            <a
-              href={p.fullVideoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group mt-3 inline-flex flex-wrap items-end gap-x-4 gap-y-2"
-            >
-              <span className="editorial-title text-[clamp(28px,3.8vw,48px)] leading-[0.9] tracking-[-0.03em] text-[color:var(--page-fg)]">
-                Watch the full film on YouTube
-              </span>
-              <span className="mb-1 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.28em] text-[color:var(--page-muted)] transition-colors group-hover:text-[color:var(--page-fg)]">
-                <span className="h-px w-10 bg-[color:var(--page-border)] transition-colors group-hover:bg-[color:var(--page-fg)]" />
-                <span>Open</span>
-              </span>
-            </a>
-          </div>
+          <a
+            href={p.fullVideoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="u mt-6 inline-block text-[13px] transition-colors hover:text-[color:var(--muted)]"
+          >
+            Watch the full film on YouTube
+          </a>
         ) : null}
       </div>
-    </main>
+    </div>
   );
 }

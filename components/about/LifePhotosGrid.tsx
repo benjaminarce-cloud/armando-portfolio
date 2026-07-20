@@ -91,11 +91,11 @@ export function LifePhotosGrid() {
   if (validBatch.length === 0) {
     // Loading skeleton
     return (
-      <div className="grid grid-cols-3 gap-3 sm:gap-4">
+      <div className="grid grid-cols-3 gap-2">
         {Array.from({ length: 6 }).map((_, i) => (
           <div
             key={i}
-            className="relative aspect-[3/2] overflow-hidden bg-[color:var(--page-card)] animate-pulse"
+            className="relative aspect-[3/2] overflow-hidden bg-[color:var(--rule)]"
           />
         ))}
       </div>
@@ -103,21 +103,16 @@ export function LifePhotosGrid() {
   }
 
   return (
-    <div className="grid grid-cols-3 gap-3 sm:gap-4">
+    <div className="grid grid-cols-3 gap-2">
       {validBatch.map((photo, i) => (
         <div
           key={`${photo}-${i}`}
           className={[
-            "relative aspect-[3/2] overflow-hidden bg-[color:var(--page-card)]",
+            "relative aspect-[3/2] overflow-hidden bg-[color:var(--rule)]",
             "transition-opacity duration-[800ms] ease-out",
             isTransitioning ? "opacity-0" : "opacity-100",
           ].join(" ")}
         >
-          {/* Loading skeleton */}
-          {!imagesLoaded.has(i) && (
-            <div className="absolute inset-0 bg-[color:var(--page-card)] animate-pulse" />
-          )}
-          
           <Image
             src={photo}
             alt=""
@@ -127,16 +122,10 @@ export function LifePhotosGrid() {
               "object-cover transition-opacity duration-500",
               imagesLoaded.has(i) ? "opacity-100" : "opacity-0",
             ].join(" ")}
-            style={{
-              filter: "saturate(0.88) contrast(1.02)",
-            }}
             onLoad={() => handleImageLoad(i)}
             onError={() => handleImageError(photo)}
             priority={i < 6} // Priority load first batch
           />
-          
-          {/* Subtle vignette */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/8 via-transparent to-black/4 opacity-60" />
         </div>
       ))}
     </div>

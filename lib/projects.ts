@@ -29,7 +29,7 @@ export const projects: Project[] = [
   // Priority 1
   {
     slug: "basketball-beyond-the-jersey-miles-byrd-doc",
-    title: "BEYOND THE JERSEY | MILES BYRD DOC",
+    title: "Beyond the Jersey | Miles Byrd Doc",
     category: "Basketball",
     year: 2026,
     group: "basketball",

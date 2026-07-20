@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# raw footage — source masters live locally, delivery is via Cloudinary
+/media
+
+# one-off Cloudinary scripts: these hold API secrets in plaintext
+/upload.js
+/scripts
