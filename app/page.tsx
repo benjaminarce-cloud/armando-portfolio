@@ -1,85 +1,95 @@
 import Image from "next/image";
+import Link from "next/link";
 
-const CLIENTS = [
-  "San Diego State Athletics",
-  "San Diego FC",
-  "University of Colorado",
-  "Strictly Run Club",
+const HERO =
+  "https://res.cloudinary.com/dzjcndphq/video/upload/so_1.0,f_jpg,q_auto,w_2000/BYRDTRAILERMANDOINGGG_qm56iy.jpg";
+
+const FACTS = [
+  { label: "Based in", values: ["San Diego, California"] },
+  {
+    label: "Disciplines",
+    values: ["Direction", "Cinematography", "Edit", "Color"],
+  },
+  {
+    label: "Selected Clients",
+    values: [
+      "San Diego State Athletics",
+      "San Diego FC",
+      "University of Colorado",
+      "Strictly Run Club",
+    ],
+  },
 ];
-
-const DISCIPLINES = ["Direction", "Cinematography", "Edit", "Color"];
-
-const PORTRAIT =
-  "https://res.cloudinary.com/dzjcndphq/video/upload/so_1.0,f_jpg,q_auto,w_1200/BYRDTRAILERMANDOINGGG_qm56iy.jpg";
 
 export default function Page() {
   return (
-    <div className="grid gap-16 lg:grid-cols-12 lg:gap-10">
-      {/* Left column — info */}
-      <div className="lg:col-span-4 xl:col-span-3">
-        <p className="prose-justify max-w-[34ch] text-[13px] leading-[1.65]">
-          Armando Aguilar is a filmmaker and cinematographer working out of San
-          Diego. He is lead producer for Aztec Men&apos;s Basketball and works
-          freelance across sport, brand and documentary.
+    <div>
+      {/* Statement */}
+      <section className="mx-auto max-w-4xl text-center">
+        <p className="caps text-[color:var(--muted)]">
+          Filmmaker &middot; Cinematographer
         </p>
 
-        <p className="prose-justify mt-4 max-w-[34ch] text-[13px] leading-[1.65]">
-          Born in Mexico, raised between two languages. Film major.
-        </p>
+        <h1 className="display mt-7 text-[clamp(30px,4.4vw,56px)]">
+          Cinematic work,
+          <br />
+          thoughtfully made.
+        </h1>
+      </section>
 
-        <section className="mt-14">
-          <h2 className="label">Selected Clients</h2>
-          <ul className="mt-4 space-y-1">
-            {CLIENTS.map((client) => (
-              <li key={client} className="text-[13px] italic">
-                {client}
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section className="mt-12">
-          <h2 className="label">Disciplines</h2>
-          <ul className="mt-4 space-y-1">
-            {DISCIPLINES.map((discipline) => (
-              <li key={discipline} className="text-[13px] italic">
-                {discipline}
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section className="mt-20">
-          <a
-            href="mailto:armandirix@gmail.com"
-            className="block text-[13px] transition-colors hover:text-[color:var(--muted)]"
-          >
-            armandirix@gmail.com
-          </a>
-          <a
-            href="https://instagram.com/armandoaguilare"
-            target="_blank"
-            rel="noreferrer"
-            className="mt-1 block text-[13px] text-[color:var(--muted)] transition-colors hover:text-[color:var(--fg)]"
-          >
-            @armandoaguilare
-          </a>
-        </section>
-      </div>
-
-      {/* Right column — single still */}
-      <div className="lg:col-span-5 lg:col-start-7 xl:col-span-4 xl:col-start-8">
-        <div className="relative aspect-[4/5] w-full max-w-[420px]">
+      {/* Hero still */}
+      <section className="mt-12 lg:mt-16">
+        <div className="relative aspect-[21/9] w-full overflow-hidden">
           <Image
-            src={PORTRAIT}
+            src={HERO}
             alt="Frame from Beyond the Jersey"
             fill
-            sizes="(max-width: 1024px) 100vw, 420px"
+            sizes="100vw"
             className="object-cover"
             priority
           />
         </div>
-      </div>
+
+        <div className="mt-4 flex items-baseline justify-between gap-6 border-t border-[color:var(--rule)] pt-4">
+          <p className="caps text-[color:var(--muted)]">
+            Beyond the Jersey &mdash; Miles Byrd Doc
+          </p>
+          <p className="caps tabular-nums text-[color:var(--muted)]">2026</p>
+        </div>
+      </section>
+
+      {/* Facts */}
+      <section className="mt-24 grid gap-12 border-t border-[color:var(--rule)] pt-10 sm:grid-cols-3 lg:mt-32">
+        {FACTS.map((fact) => (
+          <div key={fact.label}>
+            <h2 className="caps text-[color:var(--muted)]">{fact.label}</h2>
+            <ul className="mt-5 space-y-1.5">
+              {fact.values.map((value) => (
+                <li key={value} className="caps-sm">
+                  {value}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </section>
+
+      {/* Bio */}
+      <section className="mx-auto mt-24 max-w-xl text-center lg:mt-32">
+        <p className="text-[14px] leading-[1.85]">
+          Armando Aguilar is a filmmaker and cinematographer working out of San
+          Diego. Lead producer for Aztec Men&apos;s Basketball and freelance
+          across sport, brand and documentary. Born in Mexico, raised between
+          two languages.
+        </p>
+
+        <Link
+          href="/work"
+          className="caps mt-10 inline-block border-b border-[color:var(--fg)] pb-1 transition-opacity hover:opacity-55"
+        >
+          View the work
+        </Link>
+      </section>
     </div>
   );
 }

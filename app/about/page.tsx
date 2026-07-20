@@ -7,25 +7,31 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
-      <div className="lg:col-span-3">
-        <h1 className="label">About</h1>
+    <div>
+      <div className="mx-auto max-w-3xl text-center">
+        <p className="caps text-[color:var(--muted)]">About</p>
 
-        <div className="mt-6 space-y-4 text-[13px] leading-[1.65]">
-          <p className="prose-justify max-w-[36ch]">
-            Born in Mexico, raised between two languages. Found my voice through
-            a camera.
+        <h1 className="display mt-6 text-[clamp(30px,4.4vw,54px)]">
+          Found my voice
+          <br />
+          through a camera.
+        </h1>
+
+        <div className="mx-auto mt-12 max-w-xl space-y-5 text-[14px] leading-[1.85]">
+          <p>
+            Born in Mexico, raised between two languages. Lead producer for
+            Aztec Men&apos;s Basketball and freelance filmmaker creating
+            high-end, cinematic visuals.
           </p>
-          <p className="prose-justify max-w-[36ch]">
-            Lead producer for Aztec Men&apos;s Basketball and freelance
-            filmmaker creating high-end, cinematic visuals. Film major, based in
-            San Diego.
-          </p>
+          <p>Film major, based in San Diego.</p>
         </div>
       </div>
 
-      <div className="lg:col-span-8 lg:col-start-5">
-        <LifePhotosGrid />
+      <div className="mt-24 border-t border-[color:var(--rule)] pt-10 lg:mt-32">
+        <h2 className="caps text-[color:var(--muted)]">Off the clock</h2>
+        <div className="mt-8">
+          <LifePhotosGrid />
+        </div>
       </div>
     </div>
   );

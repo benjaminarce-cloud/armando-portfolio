@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 /* -----------------------------
-   Tokens — white paper, black ink
+   Tokens
 ------------------------------ */
 
 :root {
   --bg: #ffffff;
-  --fg: #0d0d0d;
-  --muted: #8c8c8c;
-  --rule: #e4e4e4;
+  --fg: #0f0f0f;
+  --muted: #9a9a9a;
+  --rule: #e6e6e6;
 }
 
 html {
@@ -22,8 +22,7 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-size: 13px;
-  line-height: 1.55;
-  letter-spacing: 0.01em;
+  line-height: 1.6;
 }
 
 a {
@@ -32,44 +31,76 @@ a {
 }
 
 /* -----------------------------
-   Primitives
+   Type — a Didone for display,
+   wide-tracked caps for everything structural
 ------------------------------ */
 
-/* Underlined nav / inline links, reference-style */
-.u {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
-}
-
-/* Small uppercase section label */
-.label {
-  font-size: 11px;
-  line-height: 1.4;
+/* The name. Widest tracking on the page — nothing else competes. */
+.wordmark {
+  font-family: var(--font-serif), Didot, "Bodoni MT", serif;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--muted);
+  letter-spacing: 0.34em;
+  font-weight: 400;
+  /* tracking adds trailing space; pull it back so the mark optically aligns right */
+  margin-right: -0.34em;
 }
 
-/* Justified body copy — the reference sets its bio this way */
-.prose-justify {
-  text-align: justify;
-  text-justify: inter-word;
-  hyphens: auto;
+/* Didone display for headlines */
+.display {
+  font-family: var(--font-serif), Didot, "Bodoni MT", serif;
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: 0.005em;
 }
 
-/* Index row: title nudges on hover, nothing else moves */
-.row-title {
-  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+/* Structural caps: nav, labels, index rows, meta */
+.caps {
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 10px;
+  line-height: 1.5;
 }
 
+.caps-sm {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.rule {
+  border-color: var(--rule);
+}
+
+/* -----------------------------
+   Index rows
+------------------------------ */
+
+.index-title {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  transition: opacity 200ms ease;
+}
+
+/* Dim the whole list on hover, undim the row under the cursor. Reads as
+   focus rather than as a highlight — no fills, no color. */
 @media (hover: hover) {
-  .row:hover .row-title {
-    transform: translateX(8px);
+  .index:hover .row {
+    opacity: 0.35;
+  }
+  .index:hover .row:hover {
+    opacity: 1;
   }
 }
 
-/* Cursor-following preview */
+.row {
+  transition: opacity 220ms ease;
+}
+
+/* -----------------------------
+   Cursor-following preview
+------------------------------ */
+
 .preview {
   position: fixed;
   top: 0;
@@ -77,7 +108,7 @@ a {
   z-index: 40;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 180ms ease;
+  transition: opacity 220ms ease;
   will-change: transform;
 }
 
@@ -85,7 +116,6 @@ a {
   opacity: 1;
 }
 
-/* Preview is a hover affordance — never show it on touch */
 @media (hover: none), (pointer: coarse) {
   .preview {
     display: none;
@@ -93,12 +123,10 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .row-title,
+  .index-title,
+  .row,
   .preview {
     transition: none;
-  }
-  .row:hover .row-title {
-    transform: none;
   }
 }
 

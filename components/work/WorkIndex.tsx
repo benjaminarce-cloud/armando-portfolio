@@ -12,8 +12,8 @@ export type IndexGroup = {
 
 // 16:9 matches the source footage, so the poster and the video both fill the
 // frame — any other ratio letterboxes the poster before playback starts.
-const PREVIEW_W = 320;
-const PREVIEW_H = 180;
+const PREVIEW_W = 340;
+const PREVIEW_H = 191;
 
 export default function WorkIndex({ groups }: { groups: IndexGroup[] }) {
   const [active, setActive] = useState<Project | null>(null);
@@ -25,10 +25,10 @@ export default function WorkIndex({ groups }: { groups: IndexGroup[] }) {
     const el = previewRef.current;
     if (!el) return;
 
-    const x = Math.min(event.clientX + 28, window.innerWidth - PREVIEW_W - 16);
+    const x = Math.min(event.clientX + 32, window.innerWidth - PREVIEW_W - 20);
     const y = Math.min(
-      Math.max(event.clientY - PREVIEW_H / 2, 16),
-      window.innerHeight - PREVIEW_H - 16
+      Math.max(event.clientY - PREVIEW_H / 2, 20),
+      window.innerHeight - PREVIEW_H - 20
     );
 
     el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
@@ -37,22 +37,32 @@ export default function WorkIndex({ groups }: { groups: IndexGroup[] }) {
   return (
     <div onMouseMove={handleMove} onMouseLeave={() => setActive(null)}>
       {groups.map((group) => (
-        <section key={group.id} className="mb-20 last:mb-0">
-          <h2 className="label">{group.label}</h2>
+        <section key={group.id} className="mb-24 last:mb-0">
+          <div className="flex items-baseline justify-between border-b border-[color:var(--rule)] pb-4">
+            <h2 className="caps">{group.label}</h2>
+            <span className="caps tabular-nums text-[color:var(--muted)]">
+              {String(group.items.length).padStart(2, "0")}
+            </span>
+          </div>
 
-          <ul className="mt-6 border-t border-[color:var(--rule)]">
-            {group.items.map((project) => (
+          <ul className="index">
+            {group.items.map((project, i) => (
               <li key={project.slug}>
                 <Link
                   href={`/work/${project.slug}`}
-                  className="row flex items-baseline justify-between gap-8 border-b border-[color:var(--rule)] py-3"
+                  className="row grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-4 border-b border-[color:var(--rule)] py-6 sm:gap-8"
                   onMouseEnter={() => setActive(project)}
                   onFocus={() => setActive(project)}
                 >
-                  <span className="row-title text-[15px] leading-snug sm:text-[17px]">
+                  <span className="caps tabular-nums text-[color:var(--muted)]">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+
+                  <span className="index-title text-[13px] sm:text-[15px]">
                     {project.title}
                   </span>
-                  <span className="shrink-0 text-[11px] tabular-nums text-[color:var(--muted)]">
+
+                  <span className="caps tabular-nums text-[color:var(--muted)]">
                     {project.year}
                   </span>
                 </Link>

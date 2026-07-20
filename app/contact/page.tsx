@@ -11,33 +11,38 @@ export const metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
-      <div className="lg:col-span-2">
-        <h1 className="label">Contact</h1>
-        <p className="mt-4 max-w-[24ch] text-[13px] text-[color:var(--muted)]">
-          Available for commissions.
+    <div>
+      <div className="mx-auto max-w-3xl text-center">
+        <p className="caps text-[color:var(--muted)]">Contact</p>
+
+        <h1 className="display mt-6 text-[clamp(30px,4.4vw,54px)]">
+          Let&apos;s talk.
+        </h1>
+
+        <p className="caps-sm mt-8 text-[color:var(--muted)]">
+          Available for commissions worldwide
         </p>
       </div>
 
-      <div className="lg:col-span-6 lg:col-start-4">
-        <ul className="border-t border-[color:var(--rule)]">
-          {CONTACT_LINKS.map((item) => (
-            <li key={item.label}>
-              <a
-                href={item.href}
-                target={item.href.startsWith("http") ? "_blank" : undefined}
-                rel={item.href.startsWith("http") ? "noreferrer" : undefined}
-                className="row flex items-baseline justify-between gap-8 border-b border-[color:var(--rule)] py-3"
-              >
-                <span className="row-title text-[15px] sm:text-[17px]">
-                  {item.value}
-                </span>
-                <span className="label shrink-0">{item.label}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ul className="index mx-auto mt-20 max-w-3xl border-t border-[color:var(--rule)]">
+        {CONTACT_LINKS.map((item) => (
+          <li key={item.label}>
+            <a
+              href={item.href}
+              target={item.href.startsWith("http") ? "_blank" : undefined}
+              rel={item.href.startsWith("http") ? "noreferrer" : undefined}
+              className="row flex items-baseline justify-between gap-8 border-b border-[color:var(--rule)] py-6"
+            >
+              <span className="caps text-[color:var(--muted)]">
+                {item.label}
+              </span>
+              <span className="index-title text-[13px] sm:text-[15px]">
+                {item.value}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

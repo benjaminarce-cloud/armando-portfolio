@@ -30,72 +30,72 @@ export default async function WorkDetailPage({
   const src = p.videoSrc ?? p.previewSrc ?? null;
   const group = WORK_GROUPS.find((g) => g.id === p.group);
 
-  return (
-    <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
-      {/* Meta */}
-      <div className="lg:col-span-2">
-        <Link
-          href={group?.href ?? "/work"}
-          className="u text-[13px] text-[color:var(--muted)] transition-colors hover:text-[color:var(--fg)]"
-        >
-          Back
-        </Link>
+  const meta = [
+    { label: "Category", value: p.category },
+    { label: "Year", value: String(p.year) },
+    ...(p.role ? [{ label: "Role", value: p.role }] : []),
+  ];
 
-        <dl className="mt-12 space-y-6">
-          <div>
-            <dt className="label">Category</dt>
-            <dd className="mt-1 text-[13px] italic">{p.category}</dd>
-          </div>
-          <div>
-            <dt className="label">Year</dt>
-            <dd className="mt-1 text-[13px] italic tabular-nums">{p.year}</dd>
-          </div>
-          {p.role ? (
-            <div>
-              <dt className="label">Role</dt>
-              <dd className="mt-1 text-[13px] italic">{p.role}</dd>
-            </div>
-          ) : null}
-        </dl>
+  return (
+    <article className="mx-auto max-w-6xl">
+      {/* Title block */}
+      <div className="text-center">
+        <p className="caps text-[color:var(--muted)]">{p.category}</p>
+        <h1 className="display mx-auto mt-6 max-w-3xl text-[clamp(28px,4.2vw,52px)]">
+          {p.title}
+        </h1>
       </div>
 
       {/* Film */}
-      <div className="lg:col-span-8 lg:col-start-4">
-        <h1 className="max-w-[24ch] text-[22px] leading-tight sm:text-[26px]">
-          {p.title}
-        </h1>
+      <div className="mt-14">
+        {src ? (
+          <video
+            className="w-full bg-[color:var(--rule)]"
+            controls
+            playsInline
+            preload="metadata"
+            poster={p.coverSrc}
+          >
+            <source src={src} type="video/mp4" />
+          </video>
+        ) : (
+          <div className="grid aspect-video place-items-center bg-[color:var(--rule)]">
+            <p className="caps text-[color:var(--muted)]">Video coming soon</p>
+          </div>
+        )}
+      </div>
 
-        <div className="mt-8">
-          {src ? (
-            <video
-              className="w-full bg-[color:var(--rule)]"
-              controls
-              playsInline
-              preload="metadata"
-              poster={p.coverSrc}
-            >
-              <source src={src} type="video/mp4" />
-            </video>
-          ) : (
-            <div className="grid aspect-video place-items-center bg-[color:var(--rule)]">
-              <p className="text-[13px] text-[color:var(--muted)]">
-                Video coming soon.
-              </p>
-            </div>
-          )}
-        </div>
+      {/* Meta */}
+      <dl className="mt-10 grid gap-8 border-t border-[color:var(--rule)] pt-8 sm:grid-cols-3">
+        {meta.map((item) => (
+          <div key={item.label}>
+            <dt className="caps text-[color:var(--muted)]">{item.label}</dt>
+            <dd className="caps-sm mt-3">{item.value}</dd>
+          </div>
+        ))}
+      </dl>
 
-        {p.fullVideoUrl ? (
+      {p.fullVideoUrl ? (
+        <div className="mt-12 text-center">
           <a
             href={p.fullVideoUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="u mt-6 inline-block text-[13px] transition-colors hover:text-[color:var(--muted)]"
+            className="caps inline-block border-b border-[color:var(--fg)] pb-1 transition-opacity hover:opacity-55"
           >
-            Watch the full film on YouTube
+            Watch the full film
           </a>
-        ) : null}
+        </div>
+      ) : null}
+
+      <div className="mt-20 border-t border-[color:var(--rule)] pt-6">
+        <Link
+          href={group?.href ?? "/work"}
+          className="caps text-[color:var(--muted)] transition-colors hover:text-[color:var(--fg)]"
+        >
+          &larr; Back to {group?.label ?? "Work"}
+        </Link>
       </div>
-    </div>
+    </article>
   );
 }

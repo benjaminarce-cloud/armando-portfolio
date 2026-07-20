@@ -14,55 +14,60 @@ export default async function WorkPage({
   searchParams: Promise<{ group?: string }>;
 }) {
   const sp = await searchParams;
-  const activeGroup = isGroupId(sp.group ?? null) ? sp.group! : null;
+  const groupParam = sp.group ?? null;
+  const activeGroup = isGroupId(groupParam) ? groupParam : null;
 
   const groups: IndexGroup[] = WORK_GROUPS.filter(
     (g) => !activeGroup || g.id === activeGroup
-  ).map((g) => ({
-    id: g.id,
-    label: g.label,
-    items: projects.filter((p) => p.group === g.id),
-  })).filter((g) => g.items.length > 0);
+  )
+    .map((g) => ({
+      id: g.id,
+      label: g.label,
+      items: projects.filter((p) => p.group === g.id),
+    }))
+    .filter((g) => g.items.length > 0);
 
   return (
-    <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
-      {/* Filters */}
-      <div className="lg:col-span-2">
-        <h1 className="label">Index</h1>
-        <ul className="mt-4 space-y-1">
-          <li>
-            <Link
-              href="/work"
-              className={[
-                "text-[13px] transition-colors",
-                !activeGroup
-                  ? "u text-[color:var(--fg)]"
-                  : "text-[color:var(--muted)] hover:text-[color:var(--fg)]",
-              ].join(" ")}
-            >
-              All
-            </Link>
-          </li>
-          {WORK_GROUPS.map((g) => (
-            <li key={g.id}>
-              <Link
-                href={g.href}
-                className={[
-                  "text-[13px] transition-colors",
-                  activeGroup === g.id
-                    ? "u text-[color:var(--fg)]"
-                    : "text-[color:var(--muted)] hover:text-[color:var(--fg)]",
-                ].join(" ")}
-              >
-                {g.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
+    <div>
+      {/* Masthead */}
+      <div className="text-center">
+        <p className="caps text-[color:var(--muted)]">Index</p>
+        <h1 className="display mt-6 text-[clamp(30px,4.4vw,54px)]">
+          Selected Work
+        </h1>
       </div>
 
-      {/* Index */}
-      <div className="lg:col-span-8 lg:col-start-4">
+      {/* Filters */}
+      <div className="mt-12 flex flex-wrap items-baseline justify-center gap-x-8 gap-y-3">
+        <Link
+          href="/work"
+          className={[
+            "caps transition-opacity",
+            !activeGroup
+              ? "border-b border-[color:var(--fg)] pb-1"
+              : "text-[color:var(--muted)] hover:text-[color:var(--fg)]",
+          ].join(" ")}
+        >
+          All
+        </Link>
+
+        {WORK_GROUPS.map((g) => (
+          <Link
+            key={g.id}
+            href={g.href}
+            className={[
+              "caps transition-opacity",
+              activeGroup === g.id
+                ? "border-b border-[color:var(--fg)] pb-1"
+                : "text-[color:var(--muted)] hover:text-[color:var(--fg)]",
+            ].join(" ")}
+          >
+            {g.label}
+          </Link>
+        ))}
+      </div>
+
+      <div className="mx-auto mt-20 max-w-5xl">
         <WorkIndex groups={groups} />
       </div>
     </div>

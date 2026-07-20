@@ -1,7 +1,14 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import SiteNav from "@/components/SiteNav";
+import { Bodoni_Moda, Inter } from "next/font/google";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
+
+const serif = Bodoni_Moda({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  display: "swap",
+});
 
 const sans = Inter({
   subsets: ["latin"],
@@ -19,10 +26,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={sans.variable}>
-        <div className="mx-auto min-h-screen w-full max-w-[1600px] px-6 py-14 sm:px-10 lg:px-16 lg:py-20">
-          <SiteNav />
-          <main className="mt-16 lg:mt-24">{children}</main>
+      <body className={`${sans.variable} ${serif.variable}`}>
+        <div className="mx-auto flex min-h-screen w-full max-w-[1500px] flex-col px-6 py-8 sm:px-10 lg:px-14">
+          <SiteHeader />
+          <main className="flex-1 pt-12 lg:pt-16">{children}</main>
+          <SiteFooter />
         </div>
       </body>
     </html>
