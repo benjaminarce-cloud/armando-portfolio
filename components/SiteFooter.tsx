@@ -8,7 +8,7 @@ export default function SiteFooter() {
 
         <div className="flex items-baseline gap-7">
           <a
-            href="mailto:armandirix@gmail.com"
+            href="mailto:a.mando.film@gmail.com"
             className="caps text-[color:var(--muted)] transition-colors hover:text-[color:var(--fg)]"
           >
             Email

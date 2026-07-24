@@ -53,10 +53,10 @@ export default function Page() {
               <p className="caps text-[color:var(--muted)]">Get in touch</p>
               <div className="mt-5 space-y-2">
                 <a
-                  href="mailto:armandirix@gmail.com"
+                  href="mailto:a.mando.film@gmail.com"
                   className="block text-[15px] transition-opacity hover:opacity-55"
                 >
-                  armandirix@gmail.com
+                  a.mando.film@gmail.com
                 </a>
                 <a
                   href="https://instagram.com/armandoaguilare"
