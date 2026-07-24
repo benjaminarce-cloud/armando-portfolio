@@ -7,8 +7,8 @@ export const metadata = {
 
 export default function SocialsPage() {
   return (
-    <PageShell title="Socials" slate={`${socials.length} channels`}>
-      <div className="flex flex-wrap items-center gap-x-12 gap-y-10">
+    <PageShell title="Socials" slate={`${socials.length} Channels`}>
+      <div className="mx-auto flex max-w-2xl flex-wrap items-start justify-center gap-x-16 gap-y-12">
         {socials.map((social) => (
           <a
             key={social.name}
@@ -16,18 +16,17 @@ export default function SocialsPage() {
             target="_blank"
             rel="noreferrer"
             aria-label={`${social.name} — ${social.handle}`}
-            className="group relative block"
+            className="group flex flex-col items-center gap-4"
           >
             <svg
               viewBox="0 0 24 24"
               aria-hidden="true"
-              className="h-8 w-8 fill-[color:var(--dim)] transition-colors duration-300 group-hover:fill-white"
+              className="h-7 w-7 fill-[color:var(--muted)] transition-colors duration-300 group-hover:fill-[color:var(--fg)]"
             >
               <path d={social.path} />
             </svg>
 
-            {/* Handle only shows up when you're actually on the mark. */}
-            <span className="hud absolute left-1/2 top-full mt-3 -translate-x-1/2 whitespace-nowrap text-[10px] text-white/0 transition-colors duration-300 group-hover:text-white/60">
+            <span className="caps text-[color:var(--muted)] transition-colors duration-300 group-hover:text-[color:var(--fg)]">
               {social.handle}
             </span>
           </a>

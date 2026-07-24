@@ -15,66 +15,51 @@ const BIO = [
 
 export default function ContactPage() {
   return (
-    <PageShell title="Contact" slate="Serious inquiries only">
-      <div className="grid gap-16 lg:grid-cols-[1fr_1fr] lg:gap-24">
-        {/* Bio */}
-        <div>
-          <p className="hud mb-6 text-[color:var(--dim)]">Who&apos;s shooting</p>
-          <div className="flex max-w-[52ch] flex-col gap-5">
-            {BIO.map((line) => (
-              <p key={line} className="text-[17px] leading-relaxed text-white/85">
-                {line}
-              </p>
-            ))}
-          </div>
+    <PageShell title="Contact" slate="Serious Inquiries Only">
+      {/* Bio */}
+      <div className="mx-auto max-w-xl text-center">
+        <div className="space-y-4 text-[14px] leading-[1.85]">
+          {BIO.map((line) => (
+            <p key={line}>{line}</p>
+          ))}
         </div>
 
-        {/* Reach him */}
-        <div>
-          <p className="hud mb-6 text-[color:var(--dim)]">Get in touch</p>
+        <a
+          href="mailto:armandirix@gmail.com"
+          className="display mt-12 inline-block text-[clamp(22px,3vw,36px)] transition-opacity hover:opacity-55"
+        >
+          armandirix@gmail.com
+        </a>
 
-          <a
-            href="mailto:armandirix@gmail.com"
-            className="lock group inline-flex items-baseline gap-5 px-3 py-2"
-          >
-            <span className="text-[clamp(20px,2.4vw,30px)] text-white">
-              armandirix@gmail.com
-            </span>
-            <span className="hud text-[color:var(--rec)]">Email ↗</span>
-          </a>
-
-          <p className="mt-10 max-w-[42ch] text-[14px] leading-relaxed text-[color:var(--dim)]">
-            Available for documentary, sports, and commercial work — shooting,
-            directing, and edit.
-          </p>
-        </div>
+        <p className="caps-sm mx-auto mt-8 max-w-[44ch] text-[color:var(--muted)]">
+          Available for documentary, sports and commercial work &mdash;
+          shooting, directing and edit.
+        </p>
       </div>
 
       {/* Personal contact sheet — his own photos, run as a strip of frames. */}
       <section className="mt-28">
-        <div className="flex items-baseline justify-between gap-6 border-b border-[color:var(--line)] pb-4">
-          <h2 className="hud text-white">B-Roll</h2>
-          <p className="hud text-[color:var(--dim)]">
-            {lifePhotos.length} frames · personal
+        <div className="flex items-baseline justify-between gap-6 border-b border-[color:var(--rule)] pb-4">
+          <h2 className="caps">Off the Clock</h2>
+          <p className="caps text-[color:var(--muted)]">
+            {lifePhotos.length} Frames
           </p>
         </div>
 
-        <div className="mt-6 grid grid-cols-3 gap-px bg-[color:var(--line-soft)] sm:grid-cols-5 lg:grid-cols-6">
+        <div className="mt-6 grid grid-cols-3 gap-2 sm:grid-cols-5 lg:grid-cols-6">
           {lifePhotos.map((src, i) => (
             <div
               key={src}
-              className="lock lock-tile group relative aspect-[3/2] overflow-hidden bg-black"
+              className="group relative aspect-[3/2] overflow-hidden bg-[color:var(--rule)]"
             >
               <Image
                 src={src}
                 alt=""
                 fill
                 sizes="(max-width: 640px) 33vw, (max-width: 1024px) 20vw, 16vw"
-                className="object-cover opacity-75 saturate-[0.85] transition-all duration-500 group-hover:opacity-100 group-hover:saturate-100"
+                className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                priority={i < 6}
               />
-              <span className="hud-num absolute bottom-2 left-2 z-10 text-[9px] tracking-[0.1em] text-white/0 transition-colors group-hover:text-white/70">
-                {String(i + 1).padStart(2, "0")}
-              </span>
             </div>
           ))}
         </div>

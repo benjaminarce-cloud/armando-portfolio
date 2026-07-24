@@ -1,25 +1,17 @@
 @import "tailwindcss";
 
 /* -----------------------------------------------------------
-   Armando Aguilar — "Live Monitor"
-   The site is framed as a camera's monitor: AF brackets at the
-   corners, a running timecode, a REC light. It commits to one
-   visual world (a lit screen in a dark room), so there is no
-   light theme.
+   Armando Aguilar
+   White paper, black ink. A luxury-fashion register: a Didone
+   for display, wide-tracked caps for anything structural,
+   symmetry and air. One light world — no dark theme.
 ------------------------------------------------------------ */
 
 :root {
-  --bg: #0a0a0a;
-  --fg: #ffffff;
-  /* neutrals carry a faint red bias so they sit with the REC light */
-  --dim: #8b8785;
-  --dimmer: #5c5957;
-  --line: rgba(255, 255, 255, 0.14);
-  --line-soft: rgba(255, 255, 255, 0.07);
-  --rec: #e2483a;
-
-  --hud: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, "Courier New",
-    monospace;
+  --bg: #ffffff;
+  --fg: #101010;
+  --muted: #9a9a9a;
+  --rule: #e6e6e6;
 }
 
 html {
@@ -36,227 +28,86 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
+  font-size: 13px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  cursor: crosshair;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Anything you can actually operate gets a normal pointer back. */
-a,
-button,
-select,
-[role="button"] {
-  cursor: pointer;
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
 ::selection {
-  background: var(--rec);
-  color: #fff;
+  background: var(--fg);
+  color: var(--bg);
 }
 
-:focus-visible {
-  outline: 1px solid var(--rec);
-  outline-offset: 3px;
-}
-
-/* These live in @layer components so Tailwind utilities can override them.
-   Unlayered rules beat anything in a layer, so an unlayered `.hud { color }`
-   would silently win over a `text-white/60` on the same element. */
+/* Layered so Tailwind utilities can always override a base class. */
 @layer components {
-
-/* -----------------------------
-   HUD readouts
------------------------------- */
-
-.hud {
-  font-family: var(--hud);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-
-.hud-num {
-  font-family: var(--hud);
-  font-variant-numeric: tabular-nums;
-}
-
-/* Wordmark */
-.mark {
-  font-weight: 900;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
-  line-height: 1;
-}
-
-/* -----------------------------
-   Monitor chrome
------------------------------- */
-
-.af {
-  position: fixed;
-  z-index: 40;
-  width: 16px;
-  height: 16px;
-  pointer-events: none;
-}
-.af-tl {
-  top: 26px;
-  left: 26px;
-  border-top: 1px solid var(--fg);
-  border-left: 1px solid var(--fg);
-}
-.af-tr {
-  top: 26px;
-  right: 26px;
-  border-top: 1px solid var(--fg);
-  border-right: 1px solid var(--fg);
-}
-.af-bl {
-  bottom: 26px;
-  left: 26px;
-  border-bottom: 1px solid var(--fg);
-  border-left: 1px solid var(--fg);
-}
-.af-br {
-  bottom: 26px;
-  right: 26px;
-  border-bottom: 1px solid var(--fg);
-  border-right: 1px solid var(--fg);
-}
-
-.vignette {
-  position: fixed;
-  inset: 0;
-  z-index: 30;
-  pointer-events: none;
-  background: radial-gradient(
-    120% 100% at 50% 50%,
-    transparent 55%,
-    rgba(0, 0, 0, 0.55) 100%
-  );
-}
-
-.rec-dot {
-  height: 6px;
-  width: 6px;
-  border-radius: 999px;
-  background: var(--rec);
-  animation: recPulse 1.4s ease-in-out infinite;
-}
-
-@keyframes recPulse {
-  0%,
-  100% {
-    opacity: 1;
+  /* The name. Widest tracking on the page; nothing competes with it.
+     Tracking adds trailing space, so pull it back to align optically right. */
+  .wordmark {
+    font-family: var(--font-serif), Didot, "Bodoni MT", serif;
+    text-transform: uppercase;
+    letter-spacing: 0.34em;
+    font-weight: 400;
+    margin-right: -0.34em;
+    line-height: 1;
   }
-  50% {
-    opacity: 0.2;
+
+  /* Didone display for headlines. */
+  .display {
+    font-family: var(--font-serif), Didot, "Bodoni MT", serif;
+    font-weight: 400;
+    line-height: 1.06;
+    letter-spacing: 0.005em;
+  }
+
+  /* Structural caps: nav, labels, meta, filters. */
+  .caps {
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    font-size: 10px;
+    line-height: 1.5;
+  }
+
+  .caps-sm {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  /* Underline that sits a little below the baseline. */
+  .u {
+    border-bottom: 1px solid var(--fg);
+    padding-bottom: 2px;
+  }
+
+  /* -----------------------------
+     Hover-dim index
+     Dim the whole list on hover, undim the item under the cursor.
+     Reads as focus rather than as a highlight — no fills, no colour.
+  ------------------------------ */
+
+  .row {
+    transition: opacity 220ms ease;
+  }
+
+  @media (hover: hover) {
+    .index:hover .row {
+      opacity: 0.32;
+    }
+    .index:hover .row:hover {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .row {
+      transition: none;
+    }
   }
 }
-
-/* Timecode drops a frame now and then, like a real feed. */
-.tc-glitch {
-  animation: tcGlitch 0.18s steps(2, end) 2;
-}
-
-@keyframes tcGlitch {
-  0% {
-    transform: translate(0, 0);
-    text-shadow: none;
-  }
-  30% {
-    transform: translate(-1.5px, 0.5px);
-    text-shadow: 1px 0 var(--rec), -1px 0 #3ad0ff;
-  }
-  60% {
-    transform: translate(1.5px, -0.5px);
-    text-shadow: -1px 0 var(--rec), 1px 0 #3ad0ff;
-  }
-  100% {
-    transform: translate(0, 0);
-    text-shadow: none;
-  }
-}
-
-/* -----------------------------
-   Focus-lock: hovering a target snaps AF brackets onto it,
-   the way a viewfinder locks focus. Used for every nav item
-   and every tile.
------------------------------- */
-
-.lock {
-  position: relative;
-}
-
-.lock::before,
-.lock::after {
-  content: "";
-  position: absolute;
-  width: 9px;
-  height: 9px;
-  opacity: 0;
-  transition: opacity 180ms ease, transform 180ms ease;
-  pointer-events: none;
-}
-
-.lock::before {
-  top: -2px;
-  left: -2px;
-  border-top: 1px solid var(--fg);
-  border-left: 1px solid var(--fg);
-  transform: translate(5px, 5px);
-}
-
-.lock::after {
-  bottom: -2px;
-  right: -2px;
-  border-bottom: 1px solid var(--fg);
-  border-right: 1px solid var(--fg);
-  transform: translate(-5px, -5px);
-}
-
-.lock:hover::before,
-.lock:hover::after,
-.lock:focus-visible::before,
-.lock:focus-visible::after {
-  opacity: 1;
-  transform: translate(0, 0);
-}
-
-/* Active tab locks in red and stays locked. */
-.lock-on::before,
-.lock-on::after {
-  opacity: 1;
-  transform: translate(0, 0);
-  border-color: var(--rec);
-}
-
-/* Tiles get a larger bracket inset so they read at image scale. */
-.lock-tile::before,
-.lock-tile::after {
-  width: 14px;
-  height: 14px;
-}
-.lock-tile::before {
-  top: 8px;
-  left: 8px;
-}
-.lock-tile::after {
-  bottom: 8px;
-  right: 8px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .rec-dot,
-  .tc-glitch {
-    animation: none !important;
-  }
-  .lock::before,
-  .lock::after {
-    transition: opacity 180ms ease;
-    transform: none;
-  }
-}
-
-}
-/* end @layer components */

@@ -20,19 +20,19 @@ export default async function VideoPage({
     ? projects.filter((p) => p.group === activeGroup)
     : projects;
 
+  const filterClass = (active: boolean) =>
+    [
+      "caps transition-opacity",
+      active
+        ? "u text-[color:var(--fg)]"
+        : "text-[color:var(--muted)] hover:text-[color:var(--fg)]",
+    ].join(" ");
+
   return (
-    <PageShell title="Video" slate={`${films.length} films`}>
+    <PageShell title="Video" slate={`${films.length} Films`}>
       {/* Reel select */}
-      <div className="-mt-4 mb-10 flex flex-wrap items-center gap-1">
-        <Link
-          href="/video"
-          className={[
-            "lock px-4 py-1 text-[11px] uppercase tracking-[0.16em] transition-colors",
-            !activeGroup
-              ? "lock-on text-white"
-              : "text-[color:var(--dim)] hover:text-white",
-          ].join(" ")}
-        >
+      <div className="-mt-4 mb-14 flex flex-wrap items-baseline justify-center gap-x-8 gap-y-3">
+        <Link href="/video" className={filterClass(!activeGroup)}>
           All
         </Link>
 
@@ -40,23 +40,18 @@ export default async function VideoPage({
           <Link
             key={group.id}
             href={`/video?group=${group.id}`}
-            className={[
-              "lock px-4 py-1 text-[11px] uppercase tracking-[0.16em] transition-colors",
-              activeGroup === group.id
-                ? "lock-on text-white"
-                : "text-[color:var(--dim)] hover:text-white",
-            ].join(" ")}
+            className={filterClass(activeGroup === group.id)}
           >
             {group.label}
           </Link>
         ))}
       </div>
 
-      <div className="grid gap-x-10 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
         {films.map((film) => (
           <article key={film.slug}>
             <Link href={`/video/${film.slug}`} className="group block">
-              <div className="lock lock-tile relative aspect-[4/5] overflow-hidden bg-black">
+              <div className="relative aspect-[4/5] overflow-hidden bg-[color:var(--rule)]">
                 <Image
                   src={film.coverSrc}
                   alt={film.coverAlt ?? `${film.title} cover frame`}
@@ -78,17 +73,20 @@ export default async function VideoPage({
                     <source src={film.previewSrc} type="video/mp4" />
                   </video>
                 ) : null}
-
-                <span className="hud-num absolute left-3 top-3 z-10 text-[10px] uppercase tracking-[0.14em] text-white/70">
-                  {film.year}
-                </span>
               </div>
 
-              <div className="mt-5">
-                <p className="hud text-[color:var(--dim)]">{film.category}</p>
-                <h2 className="mt-2 text-[15px] uppercase tracking-[0.04em] text-white transition-colors">
-                  {film.title}
-                </h2>
+              <div className="mt-5 flex items-baseline justify-between gap-4 border-t border-[color:var(--rule)] pt-4">
+                <div>
+                  <p className="caps text-[color:var(--muted)]">
+                    {film.category}
+                  </p>
+                  <h2 className="mt-2 text-[13px] uppercase tracking-[0.1em]">
+                    {film.title}
+                  </h2>
+                </div>
+                <span className="caps tabular-nums text-[color:var(--muted)]">
+                  {film.year}
+                </span>
               </div>
             </Link>
           </article>

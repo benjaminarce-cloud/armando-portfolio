@@ -1,7 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import MonitorChrome from "@/components/MonitorChrome";
+import { Bodoni_Moda, Inter } from "next/font/google";
+
+const serif = Bodoni_Moda({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  display: "swap",
+});
 
 const sans = Inter({
   subsets: ["latin"],
@@ -19,8 +24,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${sans.variable} antialiased`}>
-        <MonitorChrome />
+      <body className={`${sans.variable} ${serif.variable} antialiased`}>
         {children}
       </body>
     </html>

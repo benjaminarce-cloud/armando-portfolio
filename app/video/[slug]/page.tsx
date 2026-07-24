@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import FilmPlayer from "@/components/FilmPlayer";
 import PageHeader from "@/components/PageHeader";
+import SiteFooter from "@/components/SiteFooter";
 import { projects } from "@/lib/projects";
 
 export function generateStaticParams() {
@@ -30,48 +31,51 @@ export default async function VideoDetailPage({
   const src = film.videoSrc ?? film.previewSrc ?? null;
 
   return (
-    <>
+    <div className="mx-auto flex min-h-screen w-full max-w-[1500px] flex-col px-6 py-8 sm:px-10 lg:px-14">
       <PageHeader />
 
-      <main className="min-h-screen px-6 pb-32 pt-[212px] sm:px-14 sm:pt-[168px]">
-        <Link
-          href="/video"
-          className="hud lock inline-block px-2 py-1 text-[color:var(--dim)] transition-colors hover:text-white"
-        >
-          ← All films
-        </Link>
-
-        <div className="mt-8 flex flex-wrap items-baseline justify-between gap-6 border-b border-[color:var(--line)] pb-5">
-          <h1 className="mark text-[clamp(24px,3.4vw,40px)]">{film.title}</h1>
-          <p className="hud text-[color:var(--dim)]">
-            {film.category} · {film.year}
-          </p>
+      <main className="flex-1 pt-16 lg:pt-24">
+        {/* Masthead */}
+        <div className="mx-auto max-w-4xl text-center">
+          <p className="caps text-[color:var(--muted)]">{film.category}</p>
+          <h1 className="display mt-6 text-[clamp(28px,4.2vw,52px)]">
+            {film.title}
+          </h1>
         </div>
 
-        <div className="mt-10 border border-[color:var(--line)] bg-black">
+        {/* Film */}
+        <div className="mx-auto mt-14 max-w-6xl border border-[color:var(--rule)] bg-black">
           {src ? (
             <FilmPlayer src={src} poster={film.coverSrc} />
           ) : (
             <div className="grid aspect-video place-items-center">
-              <p className="hud text-[color:var(--dim)]">No feed</p>
+              <p className="caps text-[color:var(--muted)]">No feed</p>
             </div>
           )}
         </div>
 
-        {film.fullVideoUrl ? (
-          <a
-            href={film.fullVideoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="lock group mt-10 inline-flex items-baseline gap-5 px-3 py-2"
+        <div className="mx-auto mt-12 flex max-w-6xl flex-col items-center gap-8">
+          {film.fullVideoUrl ? (
+            <a
+              href={film.fullVideoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="caps u transition-opacity hover:opacity-55"
+            >
+              Watch the full film on YouTube
+            </a>
+          ) : null}
+
+          <Link
+            href="/video"
+            className="caps text-[color:var(--muted)] transition-colors hover:text-[color:var(--fg)]"
           >
-            <span className="text-[clamp(20px,2.6vw,32px)] uppercase tracking-[-0.01em] text-white">
-              Watch the full film
-            </span>
-            <span className="hud text-[color:var(--rec)]">YouTube ↗</span>
-          </a>
-        ) : null}
+            &larr; All films
+          </Link>
+        </div>
       </main>
-    </>
+
+      <SiteFooter />
+    </div>
   );
 }

@@ -6,20 +6,29 @@ import { TABS } from "@/lib/tabs";
  */
 export default function Page() {
   return (
-    <main className="grid h-screen place-items-center overflow-hidden">
-      <div className="-translate-y-[8vh] text-center">
-        <h1 className="mark text-[clamp(22px,3vw,34px)]">Armando Aguilar</h1>
+    <main className="grid min-h-screen place-items-center px-6">
+      <div className="-translate-y-[6vh] text-center">
+        <p className="caps text-[color:var(--muted)]">
+          Photographer &middot; Filmmaker
+        </p>
 
-        <nav className="mt-10 inline-flex flex-col items-center gap-[22px]">
-          {TABS.map((tab) => (
-            <Link
-              key={tab.href}
-              href={tab.href}
-              className="lock w-[150px] px-[14px] py-[6px] text-[12px] uppercase tracking-[0.16em] text-white"
-            >
-              {tab.label}
-            </Link>
-          ))}
+        <h1 className="display mt-7 text-[clamp(34px,6vw,72px)]">
+          Armando Aguilar
+        </h1>
+
+        <nav className="mt-14">
+          <ul className="index inline-flex flex-col items-center gap-5">
+            {TABS.map((tab) => (
+              <li key={tab.href}>
+                <Link
+                  href={tab.href}
+                  className="row caps-sm text-[color:var(--fg)]"
+                >
+                  {tab.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </nav>
       </div>
     </main>

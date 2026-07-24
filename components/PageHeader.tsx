@@ -5,42 +5,48 @@ import { usePathname } from "next/navigation";
 import { TABS } from "@/lib/tabs";
 
 /**
- * Inner-page nav. Sits below the monitor chrome's top row so the
- * timecode and REC light stay clear.
- *
- * On a phone there isn't room for the wordmark and four tabs on one line —
- * the last tab ran off the edge — so it stacks: name centered on top, tabs
- * centered underneath. One row again from `sm` up.
+ * Inner-page header: the four tabs at top left, the wordmark at top right,
+ * under a full-width rule. Static — the page scrolls beneath it. On a phone
+ * it stacks: wordmark centred on top, tabs centred underneath.
  */
 export default function PageHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="fixed left-0 right-0 top-[88px] z-40 flex flex-col items-center gap-3 px-6 sm:flex-row sm:items-center sm:justify-between sm:gap-0 sm:px-14">
-      <Link href="/" className="lock mark px-2 py-1 text-[13px] text-white">
-        Armando Aguilar
-      </Link>
+    <header className="border-b border-[color:var(--rule)] pb-5">
+      <div className="flex flex-col-reverse items-center gap-5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8">
+        <nav aria-label="Primary">
+          <ul className="flex items-baseline gap-6 sm:gap-8">
+            {TABS.map((tab) => {
+              const active = pathname.startsWith(tab.href);
+              return (
+                <li key={tab.href}>
+                  <Link
+                    href={tab.href}
+                    aria-current={active ? "page" : undefined}
+                    className={[
+                      "caps transition-colors",
+                      active
+                        ? "text-[color:var(--fg)]"
+                        : "text-[color:var(--muted)] hover:text-[color:var(--fg)]",
+                    ].join(" ")}
+                  >
+                    {tab.label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
 
-      <nav className="flex items-center justify-center gap-1">
-        {TABS.map((tab) => {
-          const active = pathname.startsWith(tab.href);
-          return (
-            <Link
-              key={tab.href}
-              href={tab.href}
-              aria-current={active ? "page" : undefined}
-              className={[
-                "lock px-2 py-1 text-[11px] uppercase tracking-[0.16em] transition-colors sm:px-4",
-                active
-                  ? "lock-on text-white"
-                  : "text-[color:var(--dim)] hover:text-white",
-              ].join(" ")}
-            >
-              {tab.label}
-            </Link>
-          );
-        })}
-      </nav>
+        <Link
+          href="/"
+          className="wordmark text-[13px] sm:text-[15px]"
+          aria-label="Armando Aguilar — home"
+        >
+          Armando Aguilar
+        </Link>
+      </div>
     </header>
   );
 }
