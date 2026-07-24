@@ -3,10 +3,9 @@ export type Tab = {
   href: string;
 };
 
-/** The whole site. The landing page is nothing but this list. */
+/** The content sections. The home page is his info — reached via the wordmark. */
 export const TABS: Tab[] = [
   { label: "Photo", href: "/photo" },
   { label: "Video", href: "/video" },
-  { label: "Contact", href: "/contact" },
   { label: "Socials", href: "/socials" },
 ];

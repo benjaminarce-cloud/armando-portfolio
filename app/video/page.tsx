@@ -1,12 +1,71 @@
 import Image from "next/image";
 import Link from "next/link";
 import PageShell from "@/components/PageShell";
-import { projects } from "@/lib/projects";
+import { projects, type Project } from "@/lib/projects";
 import { isGroupId, WORK_GROUPS } from "@/lib/workGroups";
 
 export const metadata = {
   title: "Video — Armando Aguilar",
 };
+
+function Tile({ film, feature = false }: { film: Project; feature?: boolean }) {
+  return (
+    <article>
+      <Link href={`/video/${film.slug}`} className="group block">
+        <div
+          className={[
+            "relative overflow-hidden bg-[color:var(--rule)]",
+            feature ? "aspect-[16/9]" : "aspect-[4/5]",
+          ].join(" ")}
+        >
+          <Image
+            src={film.coverSrc}
+            alt={film.coverAlt ?? `${film.title} cover frame`}
+            fill
+            sizes={
+              feature
+                ? "(max-width: 1024px) 100vw, 1400px"
+                : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            }
+            className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.02]"
+            priority={feature}
+          />
+
+          {film.previewSrc ? (
+            <video
+              className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+              muted
+              loop
+              playsInline
+              preload="none"
+              poster={film.coverSrc}
+              autoPlay
+            >
+              <source src={film.previewSrc} type="video/mp4" />
+            </video>
+          ) : null}
+        </div>
+
+        <div className="mt-5 flex items-baseline justify-between gap-4 border-t border-[color:var(--rule)] pt-4">
+          <div>
+            <p className="caps text-[color:var(--muted)]">{film.category}</p>
+            <h2
+              className={[
+                "mt-2 uppercase tracking-[0.1em]",
+                feature ? "text-[15px]" : "text-[13px]",
+              ].join(" ")}
+            >
+              {film.title}
+            </h2>
+          </div>
+          <span className="caps tabular-nums text-[color:var(--muted)]">
+            {film.year}
+          </span>
+        </div>
+      </Link>
+    </article>
+  );
+}
 
 export default async function VideoPage({
   searchParams,
@@ -19,6 +78,8 @@ export default async function VideoPage({
   const films = activeGroup
     ? projects.filter((p) => p.group === activeGroup)
     : projects;
+
+  const [feature, ...rest] = films;
 
   const filterClass = (active: boolean) =>
     [
@@ -35,7 +96,6 @@ export default async function VideoPage({
         <Link href="/video" className={filterClass(!activeGroup)}>
           All
         </Link>
-
         {WORK_GROUPS.map((group) => (
           <Link
             key={group.id}
@@ -47,51 +107,19 @@ export default async function VideoPage({
         ))}
       </div>
 
-      <div className="grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-        {films.map((film) => (
-          <article key={film.slug}>
-            <Link href={`/video/${film.slug}`} className="group block">
-              <div className="relative aspect-[4/5] overflow-hidden bg-[color:var(--rule)]">
-                <Image
-                  src={film.coverSrc}
-                  alt={film.coverAlt ?? `${film.title} cover frame`}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.02]"
-                />
+      {feature ? (
+        <div className="mx-auto max-w-5xl">
+          <Tile film={feature} feature />
+        </div>
+      ) : null}
 
-                {film.previewSrc ? (
-                  <video
-                    className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                    muted
-                    loop
-                    playsInline
-                    preload="none"
-                    poster={film.coverSrc}
-                    autoPlay
-                  >
-                    <source src={film.previewSrc} type="video/mp4" />
-                  </video>
-                ) : null}
-              </div>
-
-              <div className="mt-5 flex items-baseline justify-between gap-4 border-t border-[color:var(--rule)] pt-4">
-                <div>
-                  <p className="caps text-[color:var(--muted)]">
-                    {film.category}
-                  </p>
-                  <h2 className="mt-2 text-[13px] uppercase tracking-[0.1em]">
-                    {film.title}
-                  </h2>
-                </div>
-                <span className="caps tabular-nums text-[color:var(--muted)]">
-                  {film.year}
-                </span>
-              </div>
-            </Link>
-          </article>
-        ))}
-      </div>
+      {rest.length ? (
+        <div className="mt-16 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
+          {rest.map((film) => (
+            <Tile key={film.slug} film={film} />
+          ))}
+        </div>
+      ) : null}
     </PageShell>
   );
 }
