@@ -16,7 +16,7 @@ const sans = Inter({
 
 export const metadata: Metadata = {
   title: "Armando Aguilar",
-  description: "Photographer and filmmaker. San Diego.",
+  description: "Videographer, post production editor, photographer. San Diego.",
 };
 
 export default function RootLayout({

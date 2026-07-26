@@ -7,12 +7,15 @@ import { lifePhotos } from "@/lib/lifePhotos";
 /**
  * The home page is his info: who he is, how he shoots, and how to reach him,
  * all on one screen. Contact lives here rather than on its own tab.
+ *
+ * The name is set once, as the headline — the wordmark up top already carries
+ * it — and the roles are stated once, under it. The bio never repeats either.
  */
 
-const BIO = [
-  "Armando Aguilar is a photographer and filmmaker working out of San Diego. Lead producer for Aztec Men's Basketball and a freelance filmmaker making high-end, cinematic work.",
-  "Born in Mexico, raised between two languages. Found his voice through a camera. Film major, shooting, directing and cutting across sport, brand and documentary.",
-];
+const ROLES = ["Videographer", "Post Production Editor", "Photographer"];
+
+const BIO =
+  "Born in Mexico, raised between two languages. Lead producer for Aztec Men's Basketball, freelance across sport, brand and documentary.";
 
 export default function Page() {
   // A portrait cluster on the right, and a wider strip of frames below.
@@ -27,26 +30,23 @@ export default function Page() {
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-10">
           {/* Identity + bio + contact */}
           <div className="lg:col-span-5 xl:col-span-4">
-            <p className="caps text-[color:var(--muted)]">
-              Photographer &middot; Filmmaker
-            </p>
-
-            <h1 className="display mt-6 text-[clamp(40px,5.6vw,84px)] leading-[0.98]">
+            <h1 className="display text-[clamp(40px,5.6vw,84px)] leading-[0.98]">
               Armando
               <br />
               Aguilar
             </h1>
 
-            <div className="mt-10 max-w-[42ch] space-y-4">
-              {BIO.map((line) => (
-                <p
-                  key={line}
-                  className="prose-justify text-[13px] leading-[1.75]"
-                >
-                  {line}
-                </p>
+            <ul className="mt-8 space-y-1.5">
+              {ROLES.map((role) => (
+                <li key={role} className="caps text-[color:var(--muted)]">
+                  {role}
+                </li>
               ))}
-            </div>
+            </ul>
+
+            <p className="mt-10 max-w-[42ch] text-[13px] leading-[1.75]">
+              {BIO}
+            </p>
 
             {/* Contact, folded into the info page */}
             <div className="mt-14 border-t border-[color:var(--rule)] pt-8">
@@ -79,7 +79,7 @@ export default function Page() {
               <div className="relative col-span-2 aspect-[3/2] overflow-hidden bg-[color:var(--rule)]">
                 <Image
                   src={cluster[0]}
-                  alt="Frame from Armando Aguilar's work"
+                  alt=""
                   fill
                   sizes="(max-width: 1024px) 100vw, 45vw"
                   className="object-cover"
