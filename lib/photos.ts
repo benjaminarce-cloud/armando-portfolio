@@ -5,7 +5,8 @@ import { imageUrl } from "@/lib/media";
  *
  * One or two frames per shoot, never the whole take — the point is that the
  * range reads at a glance: a jersey signing, a hospital essay, brand work,
- * grads, the weight room, 35mm scans, game night. Twelve shoots, twenty frames.
+ * grads, the weight room, 35mm scans, game night. Thirteen shoots, twenty
+ * frames; the count under the masthead is derived, so it follows this list.
  *
  * `span` (of 12 columns) is what makes it editorial. Nearly every master is
  * 4:5, so variety has to come from how large each frame is set, not from its
