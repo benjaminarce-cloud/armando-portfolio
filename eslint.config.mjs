@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The media pipeline: plain CommonJS run by node, never bundled. The
+    // app-code rules (ESM-only imports in particular) don't apply to it.
+    "scripts/**",
   ]),
 ]);
 

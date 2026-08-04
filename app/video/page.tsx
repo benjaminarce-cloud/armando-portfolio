@@ -1,64 +1,39 @@
-import Image from "next/image";
 import Link from "next/link";
+import HoverPreview from "@/components/HoverPreview";
 import PageShell from "@/components/PageShell";
-import { projects, type Project } from "@/lib/projects";
-import { isGroupId, WORK_GROUPS } from "@/lib/workGroups";
+import { films, filmSources, RATIO_CLASS, type Film } from "@/lib/films";
+import { SPAN_CLASS, toRows } from "@/lib/layout";
 
 export const metadata = {
-  title: "Video — Armando Aguilar",
+  title: "Video — Mando",
 };
 
-function Tile({ film, feature = false }: { film: Project; feature?: boolean }) {
-  return (
-    <article>
-      <Link href={`/video/${film.slug}`} className="group block">
-        <div
-          className={[
-            "relative overflow-hidden bg-[color:var(--rule)]",
-            feature ? "aspect-[16/9]" : "aspect-[4/5]",
-          ].join(" ")}
-        >
-          <Image
-            src={film.coverSrc}
-            alt={film.coverAlt ?? `${film.title} cover frame`}
-            fill
-            sizes={
-              feature
-                ? "(max-width: 1024px) 100vw, 1400px"
-                : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            }
-            className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.02]"
-            priority={feature}
-          />
+function Tile({ film, priority = false }: { film: Film; priority?: boolean }) {
+  const { poster, preview } = filmSources(film);
 
-          {film.previewSrc ? (
-            <video
-              className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-              muted
-              loop
-              playsInline
-              preload="none"
-              poster={film.coverSrc}
-              autoPlay
-            >
-              <source src={film.previewSrc} type="video/mp4" />
-            </video>
-          ) : null}
+  return (
+    <article className={`row ${SPAN_CLASS[film.span]} ${film.drop ? "lg:mt-20" : ""}`}>
+      <Link href={`/video/${film.slug}`} className="group block">
+        <div className={RATIO_CLASS[film.ratio]}>
+          <HoverPreview
+            poster={poster}
+            preview={preview}
+            alt={`${film.title} — cover frame`}
+            sizes={`(max-width: 1024px) 100vw, ${Math.round((film.span / 12) * 100)}vw`}
+            priority={priority}
+          />
         </div>
 
-        <div className="mt-5 flex items-baseline justify-between gap-4 border-t border-[color:var(--rule)] pt-4">
-          <div>
-            <p className="caps text-[color:var(--muted)]">{film.category}</p>
-            <h2
-              className={[
-                "mt-2 uppercase tracking-[0.1em]",
-                feature ? "text-[15px]" : "text-[13px]",
-              ].join(" ")}
-            >
-              {film.title}
-            </h2>
+        <div className="mt-3 flex items-baseline justify-between gap-4 border-t border-[color:var(--rule)] pt-2">
+          <div className="min-w-0">
+            {film.subject ? (
+              <p className="caps-xs truncate text-[color:var(--muted)]">
+                {film.subject}
+              </p>
+            ) : null}
+            <h2 className="caps mt-1 truncate">{film.title}</h2>
           </div>
-          <span className="caps tabular-nums text-[color:var(--muted)]">
+          <span className="caps-xs shrink-0 tabular-nums text-[color:var(--muted)]">
             {film.year}
           </span>
         </div>
@@ -67,59 +42,23 @@ function Tile({ film, feature = false }: { film: Project; feature?: boolean }) {
   );
 }
 
-export default async function VideoPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ group?: string }>;
-}) {
-  const sp = await searchParams;
-  const activeGroup = isGroupId(sp.group ?? null) ? sp.group : null;
-
-  const films = activeGroup
-    ? projects.filter((p) => p.group === activeGroup)
-    : projects;
-
-  const [feature, ...rest] = films;
-
-  const filterClass = (active: boolean) =>
-    [
-      "caps transition-opacity",
-      active
-        ? "u text-[color:var(--fg)]"
-        : "text-[color:var(--muted)] hover:text-[color:var(--fg)]",
-    ].join(" ");
+export default function VideoPage() {
+  const rows = toRows(films);
 
   return (
     <PageShell title="Video" slate={`${films.length} Films`}>
-      {/* Reel select */}
-      <div className="-mt-4 mb-14 flex flex-wrap items-baseline justify-center gap-x-8 gap-y-3">
-        <Link href="/video" className={filterClass(!activeGroup)}>
-          All
-        </Link>
-        {WORK_GROUPS.map((group) => (
-          <Link
-            key={group.id}
-            href={`/video?group=${group.id}`}
-            className={filterClass(activeGroup === group.id)}
+      <div className="index space-y-16 lg:space-y-24">
+        {rows.map((row, i) => (
+          <div
+            key={row[0].slug}
+            className="grid grid-cols-1 items-start gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-12 lg:gap-y-0"
           >
-            {group.label}
-          </Link>
+            {row.map((film, j) => (
+              <Tile key={film.slug} film={film} priority={i === 0 && j === 0} />
+            ))}
+          </div>
         ))}
       </div>
-
-      {feature ? (
-        <div className="mx-auto max-w-5xl">
-          <Tile film={feature} feature />
-        </div>
-      ) : null}
-
-      {rest.length ? (
-        <div className="mt-16 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-          {rest.map((film) => (
-            <Tile key={film.slug} film={film} />
-          ))}
-        </div>
-      ) : null}
     </PageShell>
   );
 }

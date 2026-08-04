@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mando — Armando Aguilar
 
-## Getting Started
-
-First, run the development server:
+Portfolio site. Next.js (App Router) on Vercel, media on Cloudinary.
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+`lib/` holds the content, `app/` only renders it — to change what is on the
+site, edit the data, not the pages.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Route      | Content source                 |
+| ---------- | ------------------------------ |
+| `/`        | `lib/films.ts`, `lib/photos.ts` |
+| `/video`   | `lib/films.ts`                 |
+| `/photo`   | `lib/photos.ts`                |
+| `/me`      | `lib/photos.ts` (`mePhotos`)   |
+| `/socials` | `lib/socials.ts`               |
 
-## Learn More
+Nav is `lib/tabs.ts` — three tabs, Video / Photo / Me. Socials keeps a page but
+is reached from the footer and from `/me`.
 
-To learn more about Next.js, take a look at the following resources:
+### Layout
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`films` and `photos` each carry a `span` (columns out of 12) and an optional
+`drop`. `lib/layout.ts` cuts the flat list into explicit rows, so a wide piece
+sits beside a tall one with air left over instead of CSS grid auto-filling
+every gap and flattening the page back into a uniform grid. Recomposing an
+index means changing `span`/`drop`, not the JSX.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Media pipeline
 
-## Deploy on Vercel
+Masters are 4K-ish `.mov` files up to ~1 GB — past what Cloudinary accepts and
+unstreamable in a browser. Two steps:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+# 1. Transcode + resize into build/media (needs ffmpeg and imagemagick)
+npm run media:build
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# 2. Point .env.local at Cloudinary (see .env.example), then upload
+npm run cloudinary:upload
+```
+
+`scripts/transcode.sh` writes three files per clip — a 1080p H.264 film, a ~6s
+muted 720p hover preview, and a poster frame — and never changes the aspect
+ratio, because the mix of 16:9 / 4:3 / 4:5 / 9:16 is what the layout is built
+on. `scripts/prep-photos.sh` caps stills at 2600px.
+
+`scripts/upload.js` pushes `build/media` into the `mando/` folder, so
+`build/media/reel.mp4` becomes public id `mando/reel` — exactly what
+`lib/media.ts` builds URLs for. It skips assets already present unless given
+`--force`, and takes a substring to push one clip:
+
+```bash
+npm run cloudinary:upload -- reel --force
+```
+
+`build/` and `UPDATEDMANDOCONTENT/` are gitignored; only Cloudinary ids live in
+the repo.
+
+### Previewing before upload
+
+```bash
+ln -s ../build/media public/mando
+NEXT_PUBLIC_LOCAL_MEDIA=1 npm run dev
+```
+
+Serves the local transcodes instead of the CDN.
+
+## Playback
+
+Two things keep video smooth, and both are easy to undo by accident:
+
+- **Previews load on hover only.** `components/HoverPreview.tsx` renders no
+  `<video>` until a pointer enters the tile, and drops the src on leave. An
+  earlier build put an `autoPlay` video on every tile, which started ~30
+  simultaneous downloads on `/video` and made all of them stutter.
+- **Images are not double-optimized.** `next.config.ts` sets
+  `images.unoptimized` because `lib/media.ts` already requests `f_auto,q_auto`
+  at a capped width. Turning the Next optimizer back on re-encodes an
+  already-optimal file and bills for it.

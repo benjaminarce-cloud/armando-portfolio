@@ -3,10 +3,10 @@ import { notFound } from "next/navigation";
 import FilmPlayer from "@/components/FilmPlayer";
 import PageHeader from "@/components/PageHeader";
 import SiteFooter from "@/components/SiteFooter";
-import { projects } from "@/lib/projects";
+import { films, filmBySlug, filmSources, RATIO_CLASS } from "@/lib/films";
 
 export function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.slug }));
+  return films.map((f) => ({ slug: f.slug }));
 }
 
 export async function generateMetadata({
@@ -15,8 +15,8 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const film = projects.find((p) => p.slug === slug);
-  return { title: film ? `${film.title} — Armando Aguilar` : "Armando Aguilar" };
+  const film = filmBySlug(slug);
+  return { title: film ? `${film.title} — Mando` : "Mando" };
 }
 
 export default async function VideoDetailPage({
@@ -25,36 +25,79 @@ export default async function VideoDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const film = projects.find((p) => p.slug === slug);
+  const film = filmBySlug(slug);
   if (!film) notFound();
 
-  const src = film.videoSrc ?? film.previewSrc ?? null;
+  const { poster, src } = filmSources(film);
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-[1500px] flex-col px-6 py-8 sm:px-10 lg:px-14">
+    <div className="mx-auto flex min-h-screen w-full max-w-[1600px] flex-col px-5 py-6 sm:px-8 lg:px-12">
       <PageHeader />
 
-      <main className="flex-1 pt-16 lg:pt-24">
+      <main className="flex-1 pt-14 lg:pt-20">
         {/* Masthead */}
-        <div className="mx-auto max-w-4xl text-center">
-          <p className="caps text-[color:var(--muted)]">{film.category}</p>
-          <h1 className="display mt-6 text-[clamp(28px,4.2vw,52px)]">
-            {film.title}
-          </h1>
+        <div className="flex items-end justify-between gap-6 border-b border-[color:var(--rule)] pb-4">
+          <div className="min-w-0">
+            {film.subject ? (
+              <p className="caps-xs text-[color:var(--muted)]">{film.subject}</p>
+            ) : null}
+            <h1 className="display mt-2 text-[clamp(30px,6vw,80px)]">
+              {film.title}
+            </h1>
+          </div>
+          <p className="caps-xs shrink-0 pb-1 tabular-nums text-[color:var(--muted)]">
+            {film.year}
+          </p>
         </div>
 
-        {/* Film */}
-        <div className="mx-auto mt-14 max-w-6xl border border-[color:var(--rule)] bg-black">
-          {src ? (
-            <FilmPlayer src={src} poster={film.coverSrc} />
-          ) : (
-            <div className="grid aspect-video place-items-center">
-              <p className="caps text-[color:var(--muted)]">No feed</p>
-            </div>
-          )}
-        </div>
+        {film.clips ? (
+          /* A postcard set: every clip in sequence, none of them auto-starting.
+             They are seconds long each, so they read as a spread of moving
+             stills rather than as a film you sit through. */
+          <div className="mt-10 space-y-10 lg:mt-14 lg:space-y-16">
+            {film.clips.map((clip, i) => {
+              const clipSrc = filmSources(clip);
+              return (
+                <figure key={clip.slug}>
+                  <div
+                    className={`bg-black ${RATIO_CLASS[clip.ratio]} overflow-hidden`}
+                  >
+                    <FilmPlayer
+                      src={clipSrc.src}
+                      poster={clipSrc.poster}
+                      autoStart={false}
+                    />
+                  </div>
+                  <figcaption className="mt-2 flex items-baseline justify-between border-t border-[color:var(--rule)] pt-2">
+                    <span className="caps">{clip.title}</span>
+                    <span className="caps-xs tabular-nums text-[color:var(--muted)]">
+                      {String(i + 1).padStart(2, "0")} / {String(film.clips!.length).padStart(2, "0")}
+                    </span>
+                  </figcaption>
+                </figure>
+              );
+            })}
+          </div>
+        ) : (
+          <div
+            className={`mx-auto mt-10 bg-black lg:mt-14 ${RATIO_CLASS[film.ratio]} ${
+              film.ratio === "9:16" || film.ratio === "4:5"
+                ? "max-w-[min(100%,420px)]"
+                : "max-w-6xl"
+            } overflow-hidden`}
+          >
+            <FilmPlayer src={src} poster={poster} />
+          </div>
+        )}
 
-        <div className="mx-auto mt-12 flex max-w-6xl flex-col items-center gap-8">
+        <div className="mt-12 flex flex-col items-start gap-5 border-t border-[color:var(--rule)] pt-5 sm:flex-row sm:items-baseline sm:justify-between">
+          <Link
+            href="/video"
+            className="caps text-[color:var(--muted)] transition-colors hover:text-[color:var(--fg)]"
+          >
+            &larr; All Films
+          </Link>
+
           {film.fullVideoUrl ? (
             <a
               href={film.fullVideoUrl}
@@ -65,13 +108,6 @@ export default async function VideoDetailPage({
               Watch the full film on YouTube
             </a>
           ) : null}
-
-          <Link
-            href="/video"
-            className="caps text-[color:var(--muted)] transition-colors hover:text-[color:var(--fg)]"
-          >
-            &larr; All films
-          </Link>
         </div>
       </main>
 

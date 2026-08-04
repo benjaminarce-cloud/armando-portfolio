@@ -1,21 +1,30 @@
 @import "tailwindcss";
 
 /* -----------------------------------------------------------
-   Armando Aguilar
-   White paper, black ink. A luxury-fashion register: a Didone
-   for display, wide-tracked caps for anything structural,
-   symmetry and air. One light world — no dark theme.
+   MANDO — Armando Aguilar
+
+   White paper, black ink, and a neo-grotesque set small.
+   The register is Off-White's: Helvetica Neue in uppercase,
+   10-12px, tracking pulled in tight, structure carried by
+   rules and whitespace rather than by size or weight.
+
+   Nothing here is a Didone and nothing is set wide. The old
+   build ran display serif at 0.24em tracking, which is what
+   read as corporate.
 ------------------------------------------------------------ */
 
 :root {
   --bg: #ffffff;
-  --fg: #101010;
-  --muted: #9a9a9a;
-  --rule: #e6e6e6;
+  --fg: #0a0a0a;
+  --muted: #8c8c8c;
+  --rule: #e2e2e2;
 }
 
 html {
-  font-family: var(--font-sans), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* Helvetica Neue where it exists (this is the reference face), Inter as the
+     web fallback everywhere else. Both are neutral grotesques, so the page
+     holds its shape either way. */
+  font-family: "Helvetica Neue", Helvetica, var(--font-sans), Arial, sans-serif;
   background: var(--bg);
 }
 
@@ -28,8 +37,9 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -44,59 +54,64 @@ a {
   color: var(--bg);
 }
 
-/* Layered so Tailwind utilities can always override a base class. */
 @layer components {
-  /* The name. Widest tracking on the page; nothing competes with it.
-     Tracking adds trailing space, so pull it back to align optically right. */
+  /* -----------------------------
+     Type
+  ------------------------------ */
+
+  /* The brand. Uppercase, tight, optically flush left — the tracking is
+     negative so the letters close up the way a logotype does. */
   .wordmark {
-    font-family: var(--font-serif), Didot, "Bodoni MT", serif;
     text-transform: uppercase;
-    letter-spacing: 0.34em;
-    font-weight: 400;
-    margin-right: -0.34em;
-    line-height: 1;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
   }
 
-  /* Didone display for headlines. */
+  /* The legal name, set under the brand at a fraction of the size. */
+  .byline {
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+  }
+
+  /* Headlines. Same face as everything else — scale does the work. */
   .display {
-    font-family: var(--font-serif), Didot, "Bodoni MT", serif;
-    font-weight: 400;
-    line-height: 1.06;
-    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    font-weight: 500;
+    line-height: 0.94;
+    letter-spacing: -0.015em;
   }
 
-  /* Structural caps: nav, labels, meta, filters. */
+  /* Structural caps: nav, labels, meta, captions. Tight, not spread. */
   .caps {
     text-transform: uppercase;
-    letter-spacing: 0.24em;
+    font-weight: 500;
+    letter-spacing: 0.03em;
     font-size: 10px;
-    line-height: 1.5;
+    line-height: 1.4;
   }
 
-  .caps-sm {
+  .caps-xs {
     text-transform: uppercase;
-    letter-spacing: 0.18em;
-    font-size: 11px;
-    line-height: 1.5;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    font-size: 9px;
+    line-height: 1.4;
   }
 
-  /* Underline that sits a little below the baseline. */
+  /* Underline that sits just below the baseline. */
   .u {
-    border-bottom: 1px solid var(--fg);
+    border-bottom: 1px solid currentColor;
     padding-bottom: 2px;
-  }
-
-  /* Justified body copy, the way the reference sets its bio. */
-  .prose-justify {
-    text-align: justify;
-    text-justify: inter-word;
-    hyphens: auto;
   }
 
   /* -----------------------------
      Hover-dim index
-     Dim the whole list on hover, undim the item under the cursor.
-     Reads as focus rather than as a highlight — no fills, no colour.
+     Dim the set, undim the one under the cursor. Reads as focus
+     rather than as a highlight — no fills, no colour.
   ------------------------------ */
 
   .row {
@@ -105,7 +120,7 @@ a {
 
   @media (hover: hover) {
     .index:hover .row {
-      opacity: 0.32;
+      opacity: 0.35;
     }
     .index:hover .row:hover {
       opacity: 1;

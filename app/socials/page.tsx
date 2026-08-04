@@ -2,7 +2,7 @@ import PageShell from "@/components/PageShell";
 import { socials } from "@/lib/socials";
 
 export const metadata = {
-  title: "Socials — Armando Aguilar",
+  title: "Socials — Mando",
 };
 
 export default function SocialsPage() {

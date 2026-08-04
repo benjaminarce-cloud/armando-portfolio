@@ -3,9 +3,12 @@ export type Tab = {
   href: string;
 };
 
-/** The content sections. The home page is his info — reached via the wordmark. */
+/**
+ * Three tabs, as asked: Video, Photo, Me. Socials keeps its page but is
+ * reached from the footer and from /me rather than taking a fourth slot.
+ */
 export const TABS: Tab[] = [
-  { label: "Photo", href: "/photo" },
   { label: "Video", href: "/video" },
-  { label: "Socials", href: "/socials" },
+  { label: "Photo", href: "/photo" },
+  { label: "Me", href: "/me" },
 ];

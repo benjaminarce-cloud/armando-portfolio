@@ -2,21 +2,21 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Wordmark from "@/components/Wordmark";
 import { TABS } from "@/lib/tabs";
 
 /**
- * Inner-page header: the four tabs at top left, the wordmark at top right,
- * under a full-width rule. Static — the page scrolls beneath it. On a phone
- * it stacks: wordmark centred on top, tabs centred underneath.
+ * Three tabs at top left, the mark at top right, a rule under both. Static —
+ * the page scrolls beneath it. On a phone it stacks: mark on top, tabs under.
  */
 export default function PageHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="border-b border-[color:var(--rule)] pb-5">
-      <div className="flex flex-col-reverse items-center gap-5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8">
+    <header className="border-b border-[color:var(--rule)] pb-4">
+      <div className="flex flex-col-reverse items-center gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
         <nav aria-label="Primary">
-          <ul className="flex items-baseline gap-6 sm:gap-8">
+          <ul className="flex items-baseline gap-5 sm:gap-7">
             {TABS.map((tab) => {
               const active = pathname.startsWith(tab.href);
               return (
@@ -27,7 +27,7 @@ export default function PageHeader() {
                     className={[
                       "caps transition-colors",
                       active
-                        ? "text-[color:var(--fg)]"
+                        ? "u text-[color:var(--fg)]"
                         : "text-[color:var(--muted)] hover:text-[color:var(--fg)]",
                     ].join(" ")}
                   >
@@ -39,13 +39,9 @@ export default function PageHeader() {
           </ul>
         </nav>
 
-        <Link
-          href="/"
-          className="wordmark text-[13px] sm:text-[15px]"
-          aria-label="Armando Aguilar — home"
-        >
-          Armando Aguilar
-        </Link>
+        <div className="text-center sm:text-right">
+          <Wordmark />
+        </div>
       </div>
     </header>
   );

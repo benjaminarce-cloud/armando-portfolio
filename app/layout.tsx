@@ -1,13 +1,13 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Bodoni_Moda, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 
-const serif = Bodoni_Moda({
-  subsets: ["latin"],
-  variable: "--font-serif",
-  display: "swap",
-});
-
+/**
+ * The reference face is Helvetica Neue, which every Mac already has. Inter is
+ * loaded as the fallback for everything else — the closest grotesque on Google
+ * Fonts, and near-indistinguishable at the sizes this site sets type. The
+ * Didone that used to run here is gone.
+ */
 const sans = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -15,8 +15,9 @@ const sans = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Armando Aguilar",
-  description: "Videographer, post production editor, photographer. San Diego.",
+  title: "Mando — Armando Aguilar",
+  description:
+    "Armando Aguilar. Videographer, editor, photographer. San Diego.",
 };
 
 export default function RootLayout({
@@ -24,9 +25,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${sans.variable} ${serif.variable} antialiased`}>
-        {children}
-      </body>
+      <body className={`${sans.variable} antialiased`}>{children}</body>
     </html>
   );
 }

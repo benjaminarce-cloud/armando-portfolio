@@ -12,15 +12,18 @@ import { useEffect, useRef } from "react";
 export default function FilmPlayer({
   src,
   poster,
+  /** A postcard set is a sequence you scroll, so it stays inline and waits. */
+  autoStart = true,
 }: {
   src: string;
   poster: string;
+  autoStart?: boolean;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const video = ref.current;
-    if (!video) return;
+    if (!video || !autoStart) return;
 
     let cancelled = false;
 
@@ -69,7 +72,7 @@ export default function FilmPlayer({
       cancelled = true;
       video.removeEventListener("loadedmetadata", start);
     };
-  }, []);
+  }, [autoStart]);
 
   return (
     <video

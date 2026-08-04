@@ -45,3 +45,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+build/
+UPDATEDMANDOCONTENT/
+UPDATEDMANDOCONTENT.zip
+
+# Local media preview symlink (see README)
+public/mando
