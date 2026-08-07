@@ -32,7 +32,9 @@ POSTERS=(
   # read as scope.
   "west-coast-final::4.20"
   "trell-mic-up::56.36"            # he's actually on camera here
-  "cam-ward::24.37"
+  # 24.37s was a back-turned figure small in frame — no subject for a piece
+  # carrying a person's name. 18s is the closest thing to a portrait in it.
+  "cam-ward::18.00"
   "elzie-20::25.27"
   "strictly-finale::15.82"         # the overhead of the pack
   "practice-727::23.77"            # jump shot under I BELIEVE THAT

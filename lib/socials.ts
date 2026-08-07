@@ -6,6 +6,9 @@ export type Social = {
   path: string;
 };
 
+/** The three that run as marks in the header. TikTok stays on /socials only. */
+export const HEADER_SOCIALS = ["Instagram", "YouTube", "LinkedIn"] as const;
+
 export const socials: Social[] = [
   {
     name: "Instagram",

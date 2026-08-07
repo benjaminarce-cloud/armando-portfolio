@@ -43,12 +43,32 @@ export type Film = {
   clips?: Clip[];
 };
 
+/** True shape. Used wherever a real player has to fit the frame. */
 export const RATIO_CLASS: Record<Ratio, string> = {
   "16:9": "aspect-[16/9]",
   "4:3": "aspect-[4/3]",
   "1:1": "aspect-square",
   "4:5": "aspect-[4/5]",
   "9:16": "aspect-[9/16]",
+};
+
+/**
+ * Shape on the index.
+ *
+ * Below `lg` every tile is a full-width row, so a 9:16 piece would stand 178%
+ * of the screen's width tall and a phone would show one and a half films per
+ * scroll. Small screens therefore hold every tile to the horizontal 4:3 the
+ * rest of the page is built on, and the poster is cropped to it; the true
+ * shape comes back at `lg`, where tiles sit side by side and a tall piece is
+ * the point. Detail pages keep RATIO_CLASS at every width — a video letterboxes
+ * rather than crops, so there is nothing to gain by reshaping its container.
+ */
+export const TILE_RATIO_CLASS: Record<Ratio, string> = {
+  "16:9": "aspect-[16/9]",
+  "4:3": "aspect-[4/3]",
+  "1:1": "aspect-[4/3] lg:aspect-square",
+  "4:5": "aspect-[4/3] lg:aspect-[4/5]",
+  "9:16": "aspect-[4/3] lg:aspect-[9/16]",
 };
 
 const golfClips: Clip[] = [
@@ -123,9 +143,11 @@ export const films: Film[] = [
     drop: true,
   }),
 
+  // Subject is what the signage in the film actually says; the name comes from
+  // the source filename (CAMWARD-UA) and is unconfirmed on screen.
   drop("cam-ward", {
     title: "Cam Ward",
-    subject: "Under Armour",
+    subject: "Under Armour QB Academy",
     year: 2025,
     ratio: "4:3",
     span: 6,
@@ -256,8 +278,8 @@ export const films: Film[] = [
   }),
 
   drop("byrd-intro-clip", {
-    title: "Intro",
-    subject: "Miles Byrd",
+    title: "Starting Lineup",
+    subject: "Color Grade",
     year: 2026,
     ratio: "16:9",
     span: 6,

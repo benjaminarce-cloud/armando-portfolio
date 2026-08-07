@@ -58,12 +58,16 @@ export default function HoverPreview({
       onPointerEnter={enter}
       onPointerLeave={leave}
     >
+      {/* Below lg the tall tiles are reshaped to a horizontal 4:3 (see
+          TILE_RATIO_CLASS), so the crop is biased above centre — subjects stand
+          in the upper half of a vertical frame and a centred crop takes their
+          heads off. At lg the tile matches its source and this is a no-op. */}
       <Image
         src={poster}
         alt={alt}
         fill
         sizes={sizes}
-        className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.02]"
+        className="object-cover object-[50%_28%] transition-transform duration-[900ms] ease-out group-hover:scale-[1.02] lg:object-center"
         priority={priority}
       />
 
@@ -72,7 +76,7 @@ export default function HoverPreview({
           ref={videoRef}
           src={preview}
           poster={poster}
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover object-[50%_28%] lg:object-center"
           autoPlay
           muted
           loop

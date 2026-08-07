@@ -36,8 +36,8 @@ export default function Page() {
       <PageHeader />
 
       <main className="flex-1">
-        {/* Mark */}
-        <section className="pt-16 lg:pt-24">
+        {/* Mark — sits straight under the header rule, no lead-in space. */}
+        <section className="pt-4">
           <Wordmark hero />
 
           <div className="mt-8 flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-[color:var(--rule)] pt-4">

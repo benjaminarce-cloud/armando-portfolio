@@ -1,7 +1,7 @@
 import Link from "next/link";
 import HoverPreview from "@/components/HoverPreview";
 import PageShell from "@/components/PageShell";
-import { films, filmSources, RATIO_CLASS, type Film } from "@/lib/films";
+import { films, filmSources, TILE_RATIO_CLASS, type Film } from "@/lib/films";
 import { SPAN_CLASS, toRows } from "@/lib/layout";
 
 export const metadata = {
@@ -14,7 +14,7 @@ function Tile({ film, priority = false }: { film: Film; priority?: boolean }) {
   return (
     <article className={`row ${SPAN_CLASS[film.span]} ${film.drop ? "lg:mt-20" : ""}`}>
       <Link href={`/video/${film.slug}`} className="group block">
-        <div className={RATIO_CLASS[film.ratio]}>
+        <div className={TILE_RATIO_CLASS[film.ratio]}>
           <HoverPreview
             poster={poster}
             preview={preview}
