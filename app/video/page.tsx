@@ -1,64 +1,23 @@
-import Link from "next/link";
-import HoverPreview from "@/components/HoverPreview";
-import PageShell from "@/components/PageShell";
-import { films, filmSources, TILE_RATIO_CLASS, type Film } from "@/lib/films";
-import { SPAN_CLASS, toRows } from "@/lib/layout";
+import Mosaic from "@/components/Mosaic";
+import SiteFooter from "@/components/SiteFooter";
+import SiteMark from "@/components/SiteMark";
+import { projectsOfKind } from "@/lib/projects";
 
 export const metadata = {
   title: "Video — Mando",
 };
 
-function Tile({ film, priority = false }: { film: Film; priority?: boolean }) {
-  const { poster, preview } = filmSources(film);
-
-  return (
-    <article className={`row ${SPAN_CLASS[film.span]} ${film.drop ? "lg:mt-20" : ""}`}>
-      <Link href={`/video/${film.slug}`} className="group block">
-        <div className={TILE_RATIO_CLASS[film.ratio]}>
-          <HoverPreview
-            poster={poster}
-            preview={preview}
-            alt={`${film.title} — cover frame`}
-            sizes={`(max-width: 1024px) 100vw, ${Math.round((film.span / 12) * 100)}vw`}
-            priority={priority}
-          />
-        </div>
-
-        <div className="mt-3 flex items-baseline justify-between gap-4 border-t border-[color:var(--rule)] pt-2">
-          <div className="min-w-0">
-            {film.subject ? (
-              <p className="caps-xs truncate text-[color:var(--muted)]">
-                {film.subject}
-              </p>
-            ) : null}
-            <h2 className="caps mt-1 truncate">{film.title}</h2>
-          </div>
-          <span className="caps-xs shrink-0 tabular-nums text-[color:var(--muted)]">
-            {film.year}
-          </span>
-        </div>
-      </Link>
-    </article>
-  );
-}
-
+/** The same mosaic, filtered. A route rather than client-side state. */
 export default function VideoPage() {
-  const rows = toRows(films);
-
   return (
-    <PageShell title="Video" slate={`${films.length} Films`}>
-      <div className="index space-y-16 lg:space-y-24">
-        {rows.map((row, i) => (
-          <div
-            key={row[0].slug}
-            className="grid grid-cols-1 items-start gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-12 lg:gap-y-0"
-          >
-            {row.map((film, j) => (
-              <Tile key={film.slug} film={film} priority={i === 0 && j === 0} />
-            ))}
-          </div>
-        ))}
-      </div>
-    </PageShell>
+    <div className="flex min-h-screen flex-col">
+      <SiteMark />
+
+      <main className="mt-5 flex-1">
+        <Mosaic projects={projectsOfKind("video")} />
+      </main>
+
+      <SiteFooter />
+    </div>
   );
 }

@@ -1,43 +1,64 @@
 import Link from "next/link";
+import { HEADER_SOCIALS, socials } from "@/lib/socials";
 
 export const EMAIL = "a.mando.film@gmail.com";
 
+const marks = HEADER_SOCIALS.map((name) =>
+  socials.find((s) => s.name === name)
+).filter((s): s is (typeof socials)[number] => Boolean(s));
+
 /**
- * The bottom of every page. Email Me is the point of it — set at display
- * scale so it reads as the call, with the address spelled out underneath so
- * it can be copied without opening a mail client.
+ * The bottom of every page: the address, the marks, and the way to /me.
+ *
+ * The old footer set "Email Me" at 86px, which was the largest type on the
+ * site and sat under every page of work shouting past it. The address is the
+ * whole point and it fits on one line, so it gets one line.
  */
 export default function SiteFooter() {
   return (
-    <footer className="mt-28 border-t border-[color:var(--rule)] pt-10 lg:mt-40">
-      <a
-        href={`mailto:${EMAIL}`}
-        className="block transition-opacity hover:opacity-55"
-      >
-        <span className="display block text-[clamp(30px,6.5vw,86px)]">
-          Email Me
-        </span>
-        <span className="caps mt-3 block text-[color:var(--muted)]">
+    <footer className="mt-20 border-t border-[color:var(--rule)] px-5 py-8 sm:px-6 lg:mt-28">
+      <div className="flex flex-col gap-6 sm:flex-row sm:items-baseline sm:justify-between">
+        <a
+          href={`mailto:${EMAIL}`}
+          className="caps u w-fit transition-opacity hover:opacity-55"
+        >
           {EMAIL}
-        </span>
-      </a>
+        </a>
 
-      <div className="mt-12 flex flex-col items-start gap-3 border-t border-[color:var(--rule)] pt-5 sm:flex-row sm:items-baseline sm:justify-between">
-        <p className="caps-xs text-[color:var(--muted)]">
-          San Diego, California
-        </p>
+        <div className="flex items-center gap-5">
+          {marks.map((social) => (
+            <a
+              key={social.name}
+              href={social.href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`${social.name} — ${social.handle}`}
+              className="block"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                className="h-[15px] w-[15px] fill-[color:var(--muted)] transition-colors hover:fill-[color:var(--fg)]"
+              >
+                <path d={social.path} />
+              </svg>
+            </a>
+          ))}
 
-        <div className="flex items-baseline gap-6">
           <Link
             href="/socials"
             className="caps-xs text-[color:var(--muted)] transition-colors hover:text-[color:var(--fg)]"
           >
-            Socials
+            All
           </Link>
-          <span className="caps-xs text-[color:var(--muted)]">
-            &copy; 2026 Mando
-          </span>
         </div>
+      </div>
+
+      <div className="mt-8 flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+        <p className="caps-xs text-[color:var(--muted)]">
+          San Diego, California
+        </p>
+        <p className="caps-xs text-[color:var(--muted)]">&copy; 2026 Mando</p>
       </div>
     </footer>
   );

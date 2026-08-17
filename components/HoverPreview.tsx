@@ -58,16 +58,16 @@ export default function HoverPreview({
       onPointerEnter={enter}
       onPointerLeave={leave}
     >
-      {/* Below lg the tall tiles are reshaped to a horizontal 4:3 (see
-          TILE_RATIO_CLASS), so the crop is biased above centre — subjects stand
-          in the upper half of a vertical frame and a centred crop takes their
-          heads off. At lg the tile matches its source and this is a no-op. */}
+      {/* The tile is always the piece's own shape now — the mosaic is narrow
+          columns, so a vertical stays vertical at every width and there is
+          nothing to crop around. The old off-centre bias existed only because
+          tall tiles were squashed into a 4:3 below lg. */}
       <Image
         src={poster}
         alt={alt}
         fill
         sizes={sizes}
-        className="object-cover object-[50%_28%] transition-transform duration-[900ms] ease-out group-hover:scale-[1.02] lg:object-center"
+        className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.02]"
         priority={priority}
       />
 
@@ -76,7 +76,7 @@ export default function HoverPreview({
           ref={videoRef}
           src={preview}
           poster={poster}
-          className="absolute inset-0 h-full w-full object-cover object-[50%_28%] lg:object-center"
+          className="absolute inset-0 h-full w-full object-cover"
           autoPlay
           muted
           loop

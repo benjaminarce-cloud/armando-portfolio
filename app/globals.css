@@ -109,9 +109,54 @@ a {
   }
 
   /* -----------------------------
+     The mosaic
+
+     A multi-column masonry, not a grid. Each tile keeps the shape it
+     was shot at and fills a column top to bottom, so the stagger comes
+     from the work itself — a 9:16 against a 16:9 against a square —
+     rather than from spans set by hand.
+
+     Gapless on purpose: the tiles butt against each other and run to
+     both edges of the screen. Any gutter here turns a wall into a
+     contact sheet, which is the thing this replaced.
+  ------------------------------ */
+
+  .mosaic {
+    column-count: 2;
+    column-gap: 0;
+  }
+
+  .mosaic > * {
+    display: block;
+    /* Without this a tile can be split across a column boundary. */
+    break-inside: avoid;
+    /* Chrome needs the older spelling to honour it inside multicol. */
+    -webkit-column-break-inside: avoid;
+  }
+
+  @media (min-width: 640px) {
+    .mosaic {
+      column-count: 3;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .mosaic {
+      column-count: 5;
+    }
+  }
+
+  @media (min-width: 1400px) {
+    .mosaic {
+      column-count: 6;
+    }
+  }
+
+  /* -----------------------------
      Hover-dim index
      Dim the set, undim the one under the cursor. Reads as focus
-     rather than as a highlight — no fills, no colour.
+     rather than as a highlight — no fills, no colour. Still used by
+     the lists on /me and /socials.
   ------------------------------ */
 
   .row {

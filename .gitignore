@@ -48,6 +48,8 @@ next-env.d.ts
 build/
 UPDATEDMANDOCONTENT/
 UPDATEDMANDOCONTENT.zip
+NEWCONTENT/
+NEW.zip
 
 # Local media preview symlink (see README)
 public/mando

@@ -14,47 +14,98 @@
 # follows. The vertical and 4:3 pieces stay vertical and 4:3, which is what
 # gives the grid its mixed sizes.
 #
-# Usage: scripts/transcode.sh [outdir]
+# Usage: scripts/transcode.sh [outdir] [slug filters...]
+#
+# SKIP_EXISTING=1 leaves any clip whose three outputs are already in the outdir
+# alone. Encoding the whole table is roughly an hour of CPU, so that is how you
+# add a drop to an outdir that already holds the previous one.
 
 set -euo pipefail
 
-SRC="${SRC:-$(cd "$(dirname "$0")/.." && pwd)/UPDATEDMANDOCONTENT}"
-OUT="${1:-$(cd "$(dirname "$0")/.." && pwd)/build/media}"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+OUT="${1:-$ROOT/build/media}"
+
+# Two drops, two folders. OLD is the 2026 drop the current site was built from;
+# NEW is the August package, which is where everything added since comes from.
+# An entry names its own root so both can be listed in one table.
+OLD="${SRC:-$ROOT/UPDATEDMANDOCONTENT}"
+NEW="${NEW_SRC:-$ROOT/NEWCONTENT}"
 
 mkdir -p "$OUT"
 
-# source-relative-path :: slug
+# root :: source-relative-path :: slug
 CLIPS=(
-  "VIDS/BYRDTRAILERMANDOINGGG.mov::miles-byrd-doc-trailer"
-  "VIDS/TATEFINAL22.mov::carnell-tate"
-  "VIDS/BYRDINTROCLIP.mov::byrd-intro-clip"
-  "VIDS/REEL(INCLUDESOMEWHEREINFRONTPAGE?.mov::reel"
-  "VIDS/CAMWARD-UA.mov::cam-ward"
-  "VIDS/WCFINAL2.mov::west-coast-final"
-  "VIDS/TRELLMICUP.mov::trell-mic-up"
-  "VIDS/ELZIE20PTS.mov::elzie-20"
-  "VIDS/TAEDUNK.mov::tae-dunk"
-  "VIDS/byrdstealandone.mov::byrd-steal-and-one"
-  "VIDS/marchmadnesshyper.mov::march-madness"
-  "VIDS/shootaroundnevada.mov::nevada-shootaround"
-  "VIDS/PRACTICE727.mov::practice-727"
-  "VIDS/ghosttown.mov::ghost-town"
-  "VIDS/COLORSOFTBALL.mov::softball-colors"
-  "VIDS/STRICLY FINALE.mov::strictly-finale"
-  "VIDS/STRICTLYFALL25RECAP.mov::strictly-fall-recap"
-  "VIDS/lilgrades.mov::color-grades"
-  "VIDS/track25.mov::track-25"
-  "VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/nattty5.mov::golf-natty"
-  "VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/teamlove.mov::golf-team"
-  "VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/ethandrives.mov::golf-drives"
-  "VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/vhsshots.mov::golf-vhs"
-  "VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/puttstills.mov::golf-putts"
-  "VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/still3.mov::golf-still-3"
-  "VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/still4.mov::golf-still-4"
-  "VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/box1.mov::golf-box"
-  "VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/board.mov::golf-board"
-  "VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/still1.mov::golf-still-1"
-  "VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/still2.mov::golf-still-2"
+  "OLD::VIDS/BYRDTRAILERMANDOINGGG.mov::miles-byrd-doc-trailer"
+  "OLD::VIDS/TATEFINAL22.mov::carnell-tate"
+  "OLD::VIDS/BYRDINTROCLIP.mov::byrd-intro-clip"
+  "OLD::VIDS/CAMWARD-UA.mov::cam-ward"
+  "OLD::VIDS/WCFINAL2.mov::west-coast-final"
+  "OLD::VIDS/TRELLMICUP.mov::trell-mic-up"
+  "OLD::VIDS/ELZIE20PTS.mov::elzie-20"
+  "OLD::VIDS/TAEDUNK.mov::tae-dunk"
+  "OLD::VIDS/byrdstealandone.mov::byrd-steal-and-one"
+  "OLD::VIDS/marchmadnesshyper.mov::march-madness"
+  "OLD::VIDS/shootaroundnevada.mov::nevada-shootaround"
+  "OLD::VIDS/PRACTICE727.mov::practice-727"
+  "OLD::VIDS/ghosttown.mov::ghost-town"
+  "OLD::VIDS/COLORSOFTBALL.mov::softball-colors"
+  "OLD::VIDS/STRICLY FINALE.mov::strictly-finale"
+  "OLD::VIDS/STRICTLYFALL25RECAP.mov::strictly-fall-recap"
+  "OLD::VIDS/lilgrades.mov::color-grades"
+  "OLD::VIDS/track25.mov::track-25"
+  "OLD::VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/nattty5.mov::golf-natty"
+  "OLD::VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/teamlove.mov::golf-team"
+  "OLD::VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/ethandrives.mov::golf-drives"
+  "OLD::VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/vhsshots.mov::golf-vhs"
+  "OLD::VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/puttstills.mov::golf-putts"
+  "OLD::VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/still3.mov::golf-still-3"
+  "OLD::VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/still4.mov::golf-still-4"
+  "OLD::VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/box1.mov::golf-box"
+  "OLD::VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/board.mov::golf-board"
+  "OLD::VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/still1.mov::golf-still-1"
+  "OLD::VIDS/NCAA GOLF CHAMPIONSHIPS POSTCARDS/still2.mov::golf-still-2"
+
+  # --- August drop ------------------------------------------------------
+  # The new reel. It supersedes the 2026 one, which is no longer built.
+  "NEW::VIDEOGRAPHYREEL-ARMANDOAGUILAR.mov::reel-2026"
+
+  "NEW::MILESBYRD-SPOTLIGHT.mp4::byrd-spotlight"
+  "NEW::CHASEFINALTRAILER5.mov::chase-trailer"
+
+  "NEW::SEASONTRAILER-2024-25.mp4::season-trailer-2425"
+  "NEW::SEASONTRAILER-2025-26.mov::season-trailer-2526"
+  "NEW::ittsjustbasketball.mov::its-just-basketball"
+  "NEW::mbbpracticesept2.mov::practice-sept-2"
+
+  # A second postcard set, shot the way the golf one was: locked-off
+  # observational holds. Unlike the golf masters these are true 4:3 — no
+  # pillarbox — so they take no crop.
+  "NEW::PRACTICE POSTCARDS/1.mov::practice-postcard-1"
+  "NEW::PRACTICE POSTCARDS/2.mov::practice-postcard-2"
+  "NEW::PRACTICE POSTCARDS/3.mov::practice-postcard-3"
+  "NEW::PRACTICE POSTCARDS/4.mov::practice-postcard-4"
+  "NEW::PRACTICE POSTCARDS/5.mov::practice-postcard-5"
+  "NEW::PRACTICE POSTCARDS/6.mov::practice-postcard-6"
+  "NEW::PRACTICE POSTCARDS/7.mov::practice-postcard-7"
+  "NEW::PRACTICE POSTCARDS/8.mov::practice-postcard-8"
+
+  # Offseason. offszn45.mov and OFFSZNRECAP.mov are the same cut delivered
+  # at 4:5 and 4:3 — identical to the frame, both 26.47s — so only the 4:5
+  # is built; a mosaic wants the vertical.
+  "NEW::Offszn_WK1.mov::offszn-wk1"
+  "NEW::offszn45.mov::offszn-recap"
+  "NEW::VHSoffszn.mov::offszn-vhs"
+
+  "NEW::strictweek7.mov::strictly-week-7"
+  "NEW::trackmediaday2.mov::track-media-day"
+  "NEW::btsvolley.mov::volleyball-media-day"
+  "NEW::FOODDRIVEHOOVER2.mov::food-drive"
+  "NEW::SUITSTATE.mov::suit-state"
+  "NEW::axofinal820.mov::axo-formal"
+  "NEW::looks.mov::intro-looks"
+  "NEW::ELZIEDUMP2.mov::elzie-dump"
+  "NEW::dumppersoo.mov::perso-dump"
+  "NEW::jazzdump.mov::jazz-dump"
 )
 
 # Long edge cap for the film, and for the hover preview.
@@ -83,6 +134,8 @@ CROPS=(
   "golf-box::crop=2880:2160:480:0"
   "golf-board::crop=2880:2160:480:0"
   "softball-colors::crop=2160:2160:360:0"
+  # Ships 3840x2880 with the square framing pillarboxed inside it.
+  "byrd-spotlight::crop=2880:2880:480:0"
 )
 
 crop_for() {
@@ -112,11 +165,25 @@ matches() {
 }
 
 for entry in "${CLIPS[@]}"; do
-  rel="${entry%%::*}"
+  root="${entry%%::*}"
   slug="${entry##*::}"
-  in="$SRC/$rel"
+  # What's left once the root and the slug are stripped off either end.
+  rel="${entry#*::}"
+  rel="${rel%::*}"
+
+  case "$root" in
+    OLD) in="$OLD/$rel" ;;
+    NEW) in="$NEW/$rel" ;;
+    *) echo "!! unknown root '$root' for $slug" >&2; continue ;;
+  esac
 
   matches "$slug" || continue
+
+  if [[ "${SKIP_EXISTING:-0}" == "1" ]] &&
+     [[ -f "$OUT/$slug.mp4" && -f "$OUT/$slug-preview.mp4" && -f "$OUT/$slug-poster.jpg" ]]; then
+    echo "--  $slug (already built)"
+    continue
+  fi
 
   if [[ ! -f "$in" ]]; then
     echo "!! missing: $rel" >&2

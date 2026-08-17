@@ -11,24 +11,37 @@ npm run dev
 `lib/` holds the content, `app/` only renders it — to change what is on the
 site, edit the data, not the pages.
 
-| Route      | Content source                 |
-| ---------- | ------------------------------ |
-| `/`        | `lib/films.ts`, `lib/photos.ts` |
-| `/video`   | `lib/films.ts`                 |
-| `/photo`   | `lib/photos.ts`                |
-| `/me`      | `lib/photos.ts` (`mePhotos`)   |
-| `/socials` | `lib/socials.ts`               |
+| Route          | Content source                          |
+| -------------- | --------------------------------------- |
+| `/`            | `lib/projects.ts` — every project        |
+| `/video`       | `lib/projects.ts` — `kind: "video"`      |
+| `/photo`       | `lib/projects.ts` — `kind: "photo"`      |
+| `/work/[slug]` | one project, whole                       |
+| `/me`          | `lib/photos.ts` (`mePhotos`)             |
+| `/socials`     | `lib/socials.ts`                         |
 
-Nav is `lib/tabs.ts` — three tabs, Video / Photo / Me. Socials keeps a page but
-is reached from the footer and from `/me`.
+### Projects
+
+The unit is a **project** — a shoot, a tournament, a season — not a single
+finished piece. A project has a cover, and it has media: any mix of clips from
+`lib/clips.ts` and stills from `lib/photo-manifest.ts`. Some hold forty frames
+and eleven clips; plenty hold exactly one, and a project of one is not a
+special case.
+
+Adding work means adding an entry to `projects` in `lib/projects.ts`. Nothing
+in `app/` needs to change.
 
 ### Layout
 
-`films` and `photos` each carry a `span` (columns out of 12) and an optional
-`drop`. `lib/layout.ts` cuts the flat list into explicit rows, so a wide piece
-sits beside a tall one with air left over instead of CSS grid auto-filling
-every gap and flattening the page back into a uniform grid. Recomposing an
-index means changing `span`/`drop`, not the JSX.
+The index is one gapless CSS multi-column masonry — `.mosaic` in
+`app/globals.css`, rendered by `components/Mosaic.tsx`. There are no spans to
+set: every tile keeps the shape its master was delivered at, so the stagger
+comes from the work itself. Column counts step 2 / 3 / 5 / 6 across the
+breakpoints, and reordering `projects` is the only way to recompose the wall.
+
+Project pages (`components/Breakdown.tsx`) run wide pieces full measure and
+pair verticals two-up — three-up once a project passes twenty pieces, so the
+long galleries stay a reasonable scroll.
 
 ## Media pipeline
 
@@ -46,10 +59,32 @@ npm run cloudinary:upload
 `scripts/transcode.sh` writes three files per clip — a 1080p H.264 film, a ~6s
 muted 720p hover preview, and a poster frame — and never changes the aspect
 ratio, because the mix of 16:9 / 4:3 / 4:5 / 9:16 is what the layout is built
-on. `scripts/prep-photos.sh` caps stills at 2600px.
+on. It reads two drops: `UPDATEDMANDOCONTENT/` and `NEWCONTENT/`, with each
+entry naming its own root. A full pass is about an hour of CPU, so adding a
+drop to an outdir that already holds the last one is:
+
+```bash
+SKIP_EXISTING=1 scripts/transcode.sh
+```
+
+`scripts/prep-photos.sh` caps stills at 2600px. It takes hand-picked frames
+one at a time (`PHOTOS`) *and* whole shoot folders wholesale (`FOLDERS`) —
+project pages want the shoot, not a selection. Folder slugs are derived from
+the master's filename, not a counter, so culling one frame never renumbers the
+rest. Where a frame ships more than once it ships as grades (`-2` warm, `-3`
+black and white); the colour master wins and the rest are skipped.
+
+Then regenerate the manifest that tells the site each still's shape:
+
+```bash
+node scripts/photo-manifest.js   # -> lib/photo-manifest.ts
+```
+
+`build/media` is gitignored, so that generated file is the only record of a
+photo's dimensions the site has at build time. It is committed on purpose.
 
 `scripts/upload.js` pushes `build/media` into the `mando/` folder, so
-`build/media/reel.mp4` becomes public id `mando/reel` — exactly what
+`build/media/reel-2026.mp4` becomes public id `mando/reel-2026` — exactly what
 `lib/media.ts` builds URLs for. It skips assets already present unless given
 `--force`, and takes a substring to push one clip:
 
@@ -57,8 +92,8 @@ on. `scripts/prep-photos.sh` caps stills at 2600px.
 npm run cloudinary:upload -- reel --force
 ```
 
-`build/` and `UPDATEDMANDOCONTENT/` are gitignored; only Cloudinary ids live in
-the repo.
+`build/`, `UPDATEDMANDOCONTENT/` and `NEWCONTENT/` are gitignored; only
+Cloudinary ids live in the repo.
 
 ### Previewing before upload
 
