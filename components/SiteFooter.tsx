@@ -16,7 +16,7 @@ const marks = HEADER_SOCIALS.map((name) =>
  */
 export default function SiteFooter() {
   return (
-    <footer className="mt-20 border-t border-[color:var(--rule)] px-5 py-8 sm:px-6 lg:mt-28">
+    <footer className="frame mt-20 border-t border-[color:var(--rule)] py-8 lg:mt-28">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-baseline sm:justify-between">
         <a
           href={`mailto:${EMAIL}`}

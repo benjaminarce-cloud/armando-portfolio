@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Lightbox from "@/components/Lightbox";
 import TilePreview from "@/components/TilePreview";
 import {
   packColumns,
@@ -51,6 +52,7 @@ export default function Mosaic({
   autoplay?: boolean;
 }) {
   const [columns, setColumns] = useState(WIDEST);
+  const [open, setOpen] = useState<number | null>(null);
 
   useEffect(() => {
     const measure = () => setColumns(columnsFor(window.innerWidth));
@@ -62,23 +64,37 @@ export default function Mosaic({
   const packed = packColumns(items, columns);
 
   return (
-    <div className="mosaic-frame">
-      <div className="mosaic">
-        {packed.map((column, i) => (
-          <div key={i} className="mosaic-col">
-            {column.map((item, row) => (
-              <Tile
-                key={item.key}
-                item={item}
-                autoplay={autoplay}
-                // The top tile of every column — the first thing on screen.
-                priority={row === 0}
-              />
-            ))}
-          </div>
-        ))}
+    <>
+      <div className="frame">
+        <div className="mosaic">
+          {packed.map((column, i) => (
+            <div key={i} className="mosaic-col">
+              {column.map((item, row) => (
+                <Tile
+                  key={item.key}
+                  item={item}
+                  autoplay={autoplay}
+                  // The top tile of every column — the first thing on screen.
+                  priority={row === 0}
+                  onOpen={
+                    item.full ? () => setOpen(items.indexOf(item)) : undefined
+                  }
+                />
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+
+      {open !== null ? (
+        <Lightbox
+          items={items}
+          index={open}
+          onClose={() => setOpen(null)}
+          onMove={setOpen}
+        />
+      ) : null}
+    </>
   );
 }
 
@@ -86,13 +102,16 @@ function Tile({
   item,
   autoplay,
   priority,
+  /** Single pieces open in place; a project cover navigates to its shoot. */
+  onOpen,
 }: {
   item: MosaicItem;
   autoplay: boolean;
   priority: boolean;
+  onOpen?: () => void;
 }) {
-  return (
-    <Link href={item.href} className="group relative block overflow-hidden">
+  const inner = (
+    <>
       <div className={TILE_RATIO_CLASS[item.ratio]}>
         <TilePreview
           poster={item.poster}
@@ -116,6 +135,25 @@ function Tile({
           <p className="caps-xs mt-0.5 text-[color:var(--muted)]">{item.subject}</p>
         ) : null}
       </div>
+    </>
+  );
+
+  if (onOpen) {
+    return (
+      <button
+        type="button"
+        onClick={onOpen}
+        aria-label={`${item.title} — open`}
+        className="group relative block w-full overflow-hidden text-left"
+      >
+        {inner}
+      </button>
+    );
+  }
+
+  return (
+    <Link href={item.href} className="group relative block overflow-hidden">
+      {inner}
     </Link>
   );
 }

@@ -35,6 +35,12 @@ mkdir -p "$OUT"
 
 # root :: source-relative-path :: slug
 CLIPS=(
+  # The full-screen hero. Delivered loose rather than inside a drop, so it
+  # reads from the repo root. It is muted in the browser — autoplay with
+  # sound is blocked everywhere — so the audio track is dropped here too
+  # rather than shipping 60s of stereo nobody can hear.
+  "ROOT::INTROREELB.mov::intro-hero"
+
   "OLD::VIDS/BYRDTRAILERMANDOINGGG.mov::miles-byrd-doc-trailer"
   "OLD::VIDS/TATEFINAL22.mov::carnell-tate"
   "OLD::VIDS/BYRDINTROCLIP.mov::byrd-intro-clip"
@@ -136,7 +142,25 @@ CROPS=(
   "softball-colors::crop=2160:2160:360:0"
   # Ships 3840x2880 with the square framing pillarboxed inside it.
   "byrd-spotlight::crop=2880:2880:480:0"
+  # The hero came off the same export pipeline as the golf postcards: 4:3
+  # framing pillarboxed inside 16:9. Left alone it plays full-screen with
+  # black bars down both sides.
+  "intro-hero::crop=2880:2160:480:0"
 )
+
+# Clips the site only ever plays muted. Shipping their audio is bytes nobody
+# can hear — and for a 60s full-screen hero that is not a rounding error.
+SILENT=(
+  "intro-hero"
+)
+
+is_silent() {
+  local slug="$1" entry
+  for entry in "${SILENT[@]}"; do
+    [[ "$entry" == "$slug" ]] && return 0
+  done
+  return 1
+}
 
 crop_for() {
   local slug="$1" entry
@@ -174,6 +198,7 @@ for entry in "${CLIPS[@]}"; do
   case "$root" in
     OLD) in="$OLD/$rel" ;;
     NEW) in="$NEW/$rel" ;;
+    ROOT) in="$ROOT/$rel" ;;
     *) echo "!! unknown root '$root' for $slug" >&2; continue ;;
   esac
 
@@ -201,11 +226,17 @@ for entry in "${CLIPS[@]}"; do
 
   echo "==> $slug  (${duration}s)"
 
+  if is_silent "$slug"; then
+    audio=(-an)
+  else
+    audio=(-c:a aac -b:a 128k -ac 2)
+  fi
+
   ffmpeg -nostdin -v error -y -i "$in" \
     -vf "$(fit $FILM_MAX "$crop")" \
     -c:v libx264 -profile:v high -preset slow -crf 20 -pix_fmt yuv420p \
     -movflags +faststart \
-    -c:a aac -b:a 128k -ac 2 \
+    "${audio[@]}" \
     "$OUT/$slug.mp4"
 
   ffmpeg -nostdin -v error -y -ss "$preview_at" -t "$PREVIEW_SECONDS" -i "$in" \

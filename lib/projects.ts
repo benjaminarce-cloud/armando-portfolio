@@ -511,7 +511,7 @@ export const totalPieces = projects.reduce((n, p) => n + p.media.length, 0);
 export type MosaicItem = {
   /** Unique within a list; React key and nothing else. */
   key: string;
-  /** Where the tile goes. A single piece still opens the shoot it came from. */
+  /** Where the tile goes when it is a link — the shoot it belongs to. */
   href: string;
   poster: string;
   /** Present only for moving pieces. A still has nothing to play. */
@@ -519,6 +519,21 @@ export type MosaicItem = {
   ratio: Ratio | PhotoRatio;
   title: string;
   subject?: string;
+  /**
+   * The piece at full size, for opening it in place.
+   *
+   * Set on single pieces and not on project covers: clicking a shoot on the
+   * index should open the shoot, but clicking one frame on /photo should open
+   * that frame, which is the whole reason those pages stopped showing
+   * collections. `href` stays either way, so the shoot is still one step from
+   * the piece.
+   */
+  full?: {
+    kind: "video" | "photo";
+    /** The film, or the still at a size worth looking at. */
+    src: string;
+    poster: string;
+  };
 };
 
 /** The index: one tile per project. */
@@ -567,6 +582,7 @@ export const pieceTiles = (kind: ProjectMedia["kind"]): MosaicItem[] => {
               ratio: clip.ratio,
               title: clip.title,
               subject: project.title,
+              full: { kind: "video", src: clipSources(clip).src, poster },
             };
           }
 
@@ -578,6 +594,11 @@ export const pieceTiles = (kind: ProjectMedia["kind"]): MosaicItem[] => {
             ratio,
             title: project.title,
             subject: project.subject,
+            full: {
+              kind: "photo",
+              src: photoSources(m.slug, 2400).src,
+              poster: src,
+            },
           };
         })
     )

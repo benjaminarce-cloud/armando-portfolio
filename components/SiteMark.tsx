@@ -28,7 +28,7 @@ export default function SiteMark({ filters = true }: { filters?: boolean }) {
   const pathname = usePathname();
 
   return (
-    <header className="px-5 pt-10 sm:px-6 lg:pt-14">
+    <header className="frame pt-10 lg:pt-14">
       <Link
         href="/"
         aria-label="Mando — Armando Aguilar, home"

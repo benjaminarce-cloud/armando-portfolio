@@ -52,7 +52,7 @@ export default async function ProjectPage({
     <div className="flex min-h-screen flex-col">
       <SiteMark filters={false} />
 
-      <main className="mt-14 flex-1 px-5 sm:px-6 lg:mt-20">
+      <main className="frame mt-14 flex-1 lg:mt-20">
         <div className="border-b border-[color:var(--rule)] pb-5">
           <div className="flex items-end justify-between gap-6">
             <div className="min-w-0">

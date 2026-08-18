@@ -31,12 +31,27 @@ special case.
 Adding work means adding an entry to `projects` in `lib/projects.ts`. Nothing
 in `app/` needs to change.
 
+The index opens on a full-screen hero (`components/Hero.tsx`, `intro-hero`)
+before the wall. It is muted because autoplay with sound is blocked everywhere,
+and it goes out through `heroUrl()` rather than `filmUrl()` — capped and
+`q_auto:eco`, which is 16.5 MB instead of 30 for a cover-cropped background
+nobody inspects.
+
 **Collections live on `/` only.** A tile on the index is a whole shoot. On
 `/video` and `/photo` the same work is unpacked to one tile per piece —
 `pieceTiles()` — so those pages read as the work itself rather than as a second,
 shorter list of the same collections. They deal round-robin across shoots,
 because concatenating them puts four screens of graduation portraits at the top
-of `/photo`. A single piece still links to the shoot it belongs to.
+of `/photo`.
+
+Clicking one of those tiles opens the **piece**, not the shoot
+(`components/Lightbox.tsx`) — otherwise the collection is back on screen and
+showing single frames achieved nothing. The shoot is one link away inside it.
+Project covers on `/` stay plain links, since there the shoot *is* the subject.
+
+Everything on the site sits in one measure, `.frame` — the mark, the filters,
+the wall and every project page — so the nav lines up with the left edge of the
+work instead of running to the viewport while the wall sits centred.
 
 ### Layout
 

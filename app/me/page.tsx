@@ -28,7 +28,7 @@ export default function MePage() {
     <div className="flex min-h-screen flex-col">
       <SiteMark />
 
-      <main className="mt-12 flex-1 px-5 sm:px-6 lg:mt-16">
+      <main className="frame mt-12 flex-1 lg:mt-16">
         <div className="flex items-end justify-between gap-6 border-b border-[color:var(--rule)] pb-5">
           <h1 className="display text-[clamp(30px,6vw,72px)]">
             Armando Aguilar

@@ -54,6 +54,10 @@ const postcards = (
 ) => entries.map(([slug, title]) => clip(slug, title, ratio));
 
 export const clips: Clip[] = [
+  // The full-screen opener on the index. It is not a project and never appears
+  // in the wall — it is here because this is where a moving piece's ids live.
+  clip("intro-hero", "Intro", "4:3"),
+
   // Reels
   clip("reel-2026", "Reel", "16:9"),
 

@@ -122,7 +122,11 @@ a {
      contact sheet, which is the thing this replaced.
   ------------------------------ */
 
-  .mosaic-frame {
+  /* One measure for the whole site. The mark, the filters, the wall and
+     every project page share it, so the nav lines up with the left edge
+     of the work instead of running to the viewport while the wall sits
+     centred. Change it here and the site moves together. */
+  .frame {
     width: 100%;
     max-width: 1280px;
     margin-inline: auto;
@@ -130,7 +134,7 @@ a {
   }
 
   @media (min-width: 640px) {
-    .mosaic-frame {
+    .frame {
       padding-inline: 2rem;
     }
   }
