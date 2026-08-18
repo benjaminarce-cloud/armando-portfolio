@@ -31,10 +31,22 @@ special case.
 Adding work means adding an entry to `projects` in `lib/projects.ts`. Nothing
 in `app/` needs to change.
 
-The index opens on a full-screen hero (`components/Hero.tsx`, `intro-hero`)
-before the wall. It is muted because autoplay with sound is blocked everywhere,
-and it goes out through `heroUrl()` rather than `filmUrl()` — capped and
-`q_auto:eco`, which is 16.5 MB instead of 30 for a cover-cropped background
+The index opens on a near-full-screen hero (`components/Hero.tsx`,
+`intro-hero`). It stops a band short of the viewport on purpose — a hero that
+fills the screen exactly gives no sign there is a page under it, and people
+were missing the rest of the site.
+
+It starts muted because autoplay with sound is blocked everywhere, and the
+speaker button is the visitor's gesture, which is what a browser wants before
+it lets sound through. Two traps live in that button: React sets `muted` as a
+DOM property and never reflects it to the attribute the autoplay check reads,
+so `video.muted = true` is set imperatively before `play()` — without it the
+hero sits on its poster the moment the file has an audio track. And unmuting
+can cost the playback outright, so a refused `play()` falls back to muted
+rather than leaving a frozen hero.
+
+It goes out through `heroUrl()` rather than `filmUrl()` — capped and
+`q_auto:eco`, which is ~18 MB instead of 30 for a cover-cropped background
 nobody inspects.
 
 **Collections live on `/` only.** A tile on the index is a whole shoot. On

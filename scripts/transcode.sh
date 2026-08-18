@@ -148,20 +148,6 @@ CROPS=(
   "intro-hero::crop=2880:2160:480:0"
 )
 
-# Clips the site only ever plays muted. Shipping their audio is bytes nobody
-# can hear — and for a 60s full-screen hero that is not a rounding error.
-SILENT=(
-  "intro-hero"
-)
-
-is_silent() {
-  local slug="$1" entry
-  for entry in "${SILENT[@]}"; do
-    [[ "$entry" == "$slug" ]] && return 0
-  done
-  return 1
-}
-
 crop_for() {
   local slug="$1" entry
   for entry in "${CROPS[@]}"; do
@@ -226,17 +212,11 @@ for entry in "${CLIPS[@]}"; do
 
   echo "==> $slug  (${duration}s)"
 
-  if is_silent "$slug"; then
-    audio=(-an)
-  else
-    audio=(-c:a aac -b:a 128k -ac 2)
-  fi
-
   ffmpeg -nostdin -v error -y -i "$in" \
     -vf "$(fit $FILM_MAX "$crop")" \
     -c:v libx264 -profile:v high -preset slow -crf 20 -pix_fmt yuv420p \
     -movflags +faststart \
-    "${audio[@]}" \
+    -c:a aac -b:a 128k -ac 2 \
     "$OUT/$slug.mp4"
 
   ffmpeg -nostdin -v error -y -ss "$preview_at" -t "$PREVIEW_SECONDS" -i "$in" \

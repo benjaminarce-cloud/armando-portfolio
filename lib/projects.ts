@@ -55,15 +55,45 @@ const DP = "Director of Photography / Editor";
 const PHOTOGRAPHER = "Photographer";
 
 export const projects: Project[] = [
+  // The order of the wall.
+  //
+  // The first five are the ones he asked for by name, in his order. What
+  // follows is strongest first: the pieces that stop you, then the shoots
+  // with depth behind them, then the quieter one-offs, then the studies.
+  // Nothing here is load-bearing — reordering only changes how the columns
+  // stack, because packColumns deals by height, not by position.
+
   {
-    slug: "reel",
-    title: "Reel",
-    subject: "Selected Work",
+    slug: "world-cup-final",
+    title: "World Cup Final",
+    subject: "New York City",
     year: 2026,
     kind: "video",
     role: DIRECTOR,
-    cover: "reel-2026",
-    media: video("reel-2026"),
+    cover: "west-coast-final",
+    media: video("west-coast-final"),
+  },
+
+  {
+    slug: "cam-ward",
+    title: "Cam Ward",
+    subject: "Under Armour QB Academy",
+    year: 2025,
+    kind: "video",
+    role: DIRECTOR,
+    cover: "cam-ward",
+    media: video("cam-ward"),
+  },
+
+  {
+    slug: "carnell-tate",
+    title: "Carnell Tate",
+    subject: "Portrait",
+    year: 2026,
+    kind: "video",
+    role: DIRECTOR,
+    cover: "carnell-tate",
+    media: video("carnell-tate"),
   },
 
   {
@@ -81,17 +111,6 @@ export const projects: Project[] = [
       "byrd-steal-and-one",
       "byrd-intro-clip"
     ),
-  },
-
-  {
-    slug: "graduation",
-    title: "Graduation",
-    subject: "San Diego State",
-    year: 2026,
-    kind: "photo",
-    role: PHOTOGRAPHER,
-    cover: "grad-hepner",
-    media: photo("grad-hepner", "grad-champagne", "coast-portrait", "campus-walk", ...photosByPrefix("grad")),
   },
 
   {
@@ -119,26 +138,14 @@ export const projects: Project[] = [
   },
 
   {
-    slug: "jaelan-phillips",
-    title: "Loma Linda",
-    subject: "Jaelan Phillips",
-    year: 2026,
-    kind: "photo",
-    role: PHOTOGRAPHER,
-    note: "A hospital visit that was about more than signed jerseys — showing up for kids facing what no child should have to, and reminding them they are not fighting it alone.",
-    cover: "jaelan-phillips-jersey",
-    media: photo("jaelan-phillips-jersey", "jaelan-phillips-signing", ...photosByPrefix("jaelan")),
-  },
-
-  {
-    slug: "carnell-tate",
-    title: "Carnell Tate",
-    subject: "Portrait",
+    slug: "reel",
+    title: "Reel",
+    subject: "Selected Work",
     year: 2026,
     kind: "video",
     role: DIRECTOR,
-    cover: "carnell-tate",
-    media: video("carnell-tate"),
+    cover: "reel-2026",
+    media: video("reel-2026"),
   },
 
   {
@@ -161,15 +168,14 @@ export const projects: Project[] = [
   },
 
   {
-    slug: "matthew-stafford",
-    title: "Miller Children's",
-    subject: "Matthew Stafford",
+    slug: "chase",
+    title: "Chase",
+    subject: "Documentary Trailer",
     year: 2026,
-    kind: "photo",
-    role: PHOTOGRAPHER,
-    note: "Shot in black and white, start to finish.",
-    cover: "stafford-visit",
-    media: photo("stafford-visit", "stafford-ball", ...photosByPrefix("stafford")),
+    kind: "video",
+    role: DIRECTOR,
+    cover: "chase-trailer",
+    media: video("chase-trailer"),
   },
 
   {
@@ -181,6 +187,41 @@ export const projects: Project[] = [
     role: DIRECTOR,
     cover: "trell-mic-up",
     media: video("trell-mic-up"),
+  },
+
+  {
+    slug: "suit-state",
+    title: "Suit State",
+    subject: "Aztec Basketball",
+    year: 2026,
+    kind: "video",
+    role: DIRECTOR,
+    cover: "suit-state",
+    media: video("suit-state"),
+  },
+
+  {
+    slug: "jaelan-phillips",
+    title: "Loma Linda",
+    subject: "Jaelan Phillips",
+    year: 2026,
+    kind: "photo",
+    role: PHOTOGRAPHER,
+    note: "A hospital visit that was about more than signed jerseys — showing up for kids facing what no child should have to, and reminding them they are not fighting it alone.",
+    cover: "jaelan-phillips-jersey",
+    media: photo("jaelan-phillips-jersey", "jaelan-phillips-signing", ...photosByPrefix("jaelan")),
+  },
+
+  {
+    slug: "matthew-stafford",
+    title: "Miller Children's",
+    subject: "Matthew Stafford",
+    year: 2026,
+    kind: "photo",
+    role: PHOTOGRAPHER,
+    note: "Shot in black and white, start to finish.",
+    cover: "stafford-visit",
+    media: photo("stafford-visit", "stafford-ball", ...photosByPrefix("stafford")),
   },
 
   {
@@ -207,14 +248,25 @@ export const projects: Project[] = [
   },
 
   {
-    slug: "chase",
-    title: "Chase",
-    subject: "Documentary Trailer",
+    slug: "elzie",
+    title: "Elzie",
+    subject: "Aztec Basketball",
     year: 2026,
     kind: "video",
     role: DIRECTOR,
-    cover: "chase-trailer",
-    media: video("chase-trailer"),
+    cover: "elzie-20",
+    media: video("elzie-20", "elzie-dump"),
+  },
+
+  {
+    slug: "tae",
+    title: "The Dunk",
+    subject: "Tae",
+    year: 2026,
+    kind: "video",
+    role: DIRECTOR,
+    cover: "tae-dunk",
+    media: video("tae-dunk"),
   },
 
   {
@@ -229,28 +281,6 @@ export const projects: Project[] = [
   },
 
   {
-    slug: "cam-ward",
-    title: "Cam Ward",
-    subject: "Under Armour QB Academy",
-    year: 2025,
-    kind: "video",
-    role: DIRECTOR,
-    cover: "cam-ward",
-    media: video("cam-ward"),
-  },
-
-  {
-    slug: "suit-state",
-    title: "Suit State",
-    subject: "Aztec Basketball",
-    year: 2026,
-    kind: "video",
-    role: DIRECTOR,
-    cover: "suit-state",
-    media: video("suit-state"),
-  },
-
-  {
     slug: "strictly-run-club",
     title: "Strictly Run Club",
     subject: "San Diego",
@@ -259,6 +289,83 @@ export const projects: Project[] = [
     role: DIRECTOR,
     cover: "strictly-finale",
     media: video("strictly-finale", "strictly-week-7", "strictly-fall-recap"),
+  },
+
+  {
+    slug: "ghost-town",
+    title: "Ghost Town",
+    subject: "Short",
+    year: 2026,
+    kind: "video",
+    role: DIRECTOR,
+    cover: "ghost-town",
+    media: video("ghost-town"),
+  },
+
+  {
+    slug: "graduation",
+    title: "Graduation",
+    subject: "San Diego State",
+    year: 2026,
+    kind: "photo",
+    role: PHOTOGRAPHER,
+    cover: "grad-hepner",
+    media: photo("grad-hepner", "grad-champagne", "coast-portrait", "campus-walk", ...photosByPrefix("grad")),
+  },
+
+  {
+    slug: "softball",
+    title: "Colors",
+    subject: "Aztec Softball",
+    year: 2026,
+    kind: "video",
+    role: DIRECTOR,
+    cover: "softball-colors",
+    media: video("softball-colors"),
+  },
+
+  {
+    slug: "track-field",
+    title: "Track & Field",
+    subject: "Aztec Athletics",
+    year: 2025,
+    kind: "video",
+    role: DIRECTOR,
+    cover: "track-media-day",
+    media: video("track-media-day", "track-25"),
+  },
+
+  {
+    slug: "volleyball",
+    title: "Volleyball",
+    subject: "Media Day — Behind the Scenes",
+    year: 2026,
+    kind: "video",
+    role: DIRECTOR,
+    cover: "volleyball-media-day",
+    media: video("volleyball-media-day"),
+  },
+
+  {
+    slug: "axo",
+    title: "Formal",
+    subject: "Alpha Chi Omega",
+    year: 2026,
+    kind: "video",
+    role: DIRECTOR,
+    cover: "axo-formal",
+    media: video("axo-formal"),
+  },
+
+  {
+    slug: "food-drive",
+    title: "Food Drive",
+    subject: "Hoover High School",
+    year: 2026,
+    kind: "video",
+    role: DIRECTOR,
+    cover: "food-drive",
+    media: video("food-drive"),
   },
 
   {
@@ -284,102 +391,14 @@ export const projects: Project[] = [
   },
 
   {
-    slug: "world-cup-final",
-    title: "World Cup Final",
-    subject: "New York City",
+    slug: "juun",
+    title: "JUUN",
+    subject: "Brand",
     year: 2026,
-    kind: "video",
-    role: DIRECTOR,
-    cover: "west-coast-final",
-    media: video("west-coast-final"),
-  },
-
-  {
-    slug: "elzie",
-    title: "Elzie",
-    subject: "Aztec Basketball",
-    year: 2026,
-    kind: "video",
-    role: DIRECTOR,
-    cover: "elzie-20",
-    media: video("elzie-20", "elzie-dump"),
-  },
-
-  {
-    slug: "track-field",
-    title: "Track & Field",
-    subject: "Aztec Athletics",
-    year: 2025,
-    kind: "video",
-    role: DIRECTOR,
-    cover: "track-media-day",
-    media: video("track-media-day", "track-25"),
-  },
-
-  {
-    slug: "ghost-town",
-    title: "Ghost Town",
-    subject: "Short",
-    year: 2026,
-    kind: "video",
-    role: DIRECTOR,
-    cover: "ghost-town",
-    media: video("ghost-town"),
-  },
-
-  {
-    slug: "volleyball",
-    title: "Volleyball",
-    subject: "Media Day — Behind the Scenes",
-    year: 2026,
-    kind: "video",
-    role: DIRECTOR,
-    cover: "volleyball-media-day",
-    media: video("volleyball-media-day"),
-  },
-
-  {
-    slug: "food-drive",
-    title: "Food Drive",
-    subject: "Hoover High School",
-    year: 2026,
-    kind: "video",
-    role: DIRECTOR,
-    cover: "food-drive",
-    media: video("food-drive"),
-  },
-
-  {
-    slug: "softball",
-    title: "Colors",
-    subject: "Aztec Softball",
-    year: 2026,
-    kind: "video",
-    role: DIRECTOR,
-    cover: "softball-colors",
-    media: video("softball-colors"),
-  },
-
-  {
-    slug: "axo",
-    title: "Formal",
-    subject: "Alpha Chi Omega",
-    year: 2026,
-    kind: "video",
-    role: DIRECTOR,
-    cover: "axo-formal",
-    media: video("axo-formal"),
-  },
-
-  {
-    slug: "tae",
-    title: "The Dunk",
-    subject: "Tae",
-    year: 2026,
-    kind: "video",
-    role: DIRECTOR,
-    cover: "tae-dunk",
-    media: video("tae-dunk"),
+    kind: "photo",
+    role: PHOTOGRAPHER,
+    cover: "juun-court",
+    media: photo("juun-court", "juun-can"),
   },
 
   {
@@ -400,25 +419,14 @@ export const projects: Project[] = [
   },
 
   {
-    slug: "dumps",
-    title: "Dumps",
-    subject: "Personal",
-    year: 2026,
-    kind: "video",
-    role: DIRECTOR,
-    cover: "perso-dump",
-    media: video("perso-dump", "jazz-dump"),
-  },
-
-  {
-    slug: "juun",
-    title: "JUUN",
-    subject: "Brand",
+    slug: "weight-room",
+    title: "Weight Room",
+    subject: "Aztec Basketball",
     year: 2026,
     kind: "photo",
     role: PHOTOGRAPHER,
-    cover: "juun-court",
-    media: photo("juun-court", "juun-can"),
+    cover: "weights-plate",
+    media: photo("weights-plate", "weights-rope"),
   },
 
   {
@@ -433,14 +441,14 @@ export const projects: Project[] = [
   },
 
   {
-    slug: "weight-room",
-    title: "Weight Room",
-    subject: "Aztec Basketball",
+    slug: "dumps",
+    title: "Dumps",
+    subject: "Personal",
     year: 2026,
-    kind: "photo",
-    role: PHOTOGRAPHER,
-    cover: "weights-plate",
-    media: photo("weights-plate", "weights-rope"),
+    kind: "video",
+    role: DIRECTOR,
+    cover: "perso-dump",
+    media: video("perso-dump", "jazz-dump"),
   },
 ];
 
