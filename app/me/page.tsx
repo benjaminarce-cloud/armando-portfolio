@@ -85,7 +85,7 @@ export default function MePage() {
           {/* The lead frame runs large and offset; the rest fall in under it. */}
           <div className="lg:col-span-7 lg:col-start-6">
             <div
-              className={`relative overflow-hidden bg-[color:var(--rule)] ${RATIO_CLASS[lead.ratio]}`}
+              className={`relative overflow-hidden bg-[color:var(--bg)] ${RATIO_CLASS[lead.ratio]}`}
             >
               <Image
                 src={mePhotoUrl(lead.slug, 1600)}
@@ -104,7 +104,7 @@ export default function MePage() {
             <div
               key={photo.slug}
               className={[
-                "relative overflow-hidden bg-[color:var(--rule)]",
+                "relative overflow-hidden bg-[color:var(--bg)]",
                 RATIO_CLASS[photo.ratio],
                 // Alternating widths and a drop on every other one, so the run
                 // reads as a contact sheet that was laid out rather than dumped.

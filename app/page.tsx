@@ -1,14 +1,18 @@
 import Mosaic from "@/components/Mosaic";
 import SiteFooter from "@/components/SiteFooter";
 import SiteMark from "@/components/SiteMark";
-import { projects } from "@/lib/projects";
+import { projectTiles } from "@/lib/projects";
 
 /**
  * The front page is the index. There is nothing above the work but the mark.
  *
- * The build before this one opened on a 190px wordmark, a full-width autoplaying
- * clip, a list of section links and three cropped frames — four screens before
- * you saw a body of work. This is one screen: the mark, and then everything.
+ * This is the only page that shows collections: a tile here is a whole shoot,
+ * and it opens into the whole of one. /video and /photo deliberately do the
+ * opposite and show single pieces, so the two readings never compete.
+ *
+ * Every loop plays on arrival rather than on hover — the wall is meant to be
+ * moving when you land on it. TilePreview keeps that bounded to what is on
+ * screen; see the note there.
  */
 export default function Page() {
   return (
@@ -16,7 +20,7 @@ export default function Page() {
       <SiteMark />
 
       <main className="mt-5 flex-1">
-        <Mosaic projects={projects} />
+        <Mosaic items={projectTiles()} autoplay />
       </main>
 
       <SiteFooter />

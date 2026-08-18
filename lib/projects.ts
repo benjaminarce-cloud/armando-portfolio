@@ -447,9 +447,6 @@ export const projects: Project[] = [
 export const projectBySlug = (slug: string) =>
   projects.find((p) => p.slug === slug);
 
-export const projectsOfKind = (kind: Project["kind"]) =>
-  projects.filter((p) => p.kind === kind);
-
 /** A still's URL and true shape, straight off the generated manifest. */
 export const photoSources = (slug: string, w = 1600) => ({
   src: imageUrl(`mando/${slug}`, w),
@@ -500,3 +497,161 @@ export const TILE_RATIO_CLASS: Record<Ratio | PhotoRatio, string> = {
 
 /** The count under the mark. */
 export const totalPieces = projects.reduce((n, p) => n + p.media.length, 0);
+
+/* ---------------------------------------------------------------------- *
+ * Tiles
+ *
+ * The mosaic draws two different things now. On the index a tile is a whole
+ * project, and clicking it opens the shoot. On /video and /photo a tile is a
+ * single piece — one clip, one frame — because those two are meant to read as
+ * the work itself rather than as a second set of collections. Both collapse to
+ * the same shape so one component can lay out either.
+ * ---------------------------------------------------------------------- */
+
+export type MosaicItem = {
+  /** Unique within a list; React key and nothing else. */
+  key: string;
+  /** Where the tile goes. A single piece still opens the shoot it came from. */
+  href: string;
+  poster: string;
+  /** Present only for moving pieces. A still has nothing to play. */
+  preview?: string;
+  ratio: Ratio | PhotoRatio;
+  title: string;
+  subject?: string;
+};
+
+/** The index: one tile per project. */
+export const projectTiles = (): MosaicItem[] =>
+  projects.map((project) => {
+    const { poster, preview, ratio } = tile(project);
+    return {
+      key: project.slug,
+      href: `/work/${project.slug}`,
+      poster,
+      preview,
+      ratio,
+      title: project.title,
+      subject: project.subject,
+    };
+  });
+
+/**
+ * /video and /photo: one tile per piece, dealt round-robin across the shoots.
+ *
+ * Concatenating the projects is the obvious way to flatten them and it reads
+ * terribly: graduation alone is forty-six frames, so a straight run puts four
+ * screens of near-identical portraits at the top of /photo before anything else
+ * appears, and the eleven golf postcards do the same to /video. Taking one
+ * piece from each project in turn instead spreads every shoot over the whole
+ * page, which is the point of showing single frames — the range reads at a
+ * glance rather than shoot by shoot.
+ *
+ * Within a shoot the pieces keep their authored order, so a set that was cut to
+ * run in sequence still runs in sequence, just spaced out.
+ */
+export const pieceTiles = (kind: ProjectMedia["kind"]): MosaicItem[] => {
+  const perProject = projects
+    .map((project) =>
+      project.media
+        .filter((m) => m.kind === kind)
+        .map((m): MosaicItem => {
+          if (m.kind === "video") {
+            const clip = clipBySlug(m.slug);
+            const { poster, preview } = clipSources(clip);
+            return {
+              key: m.slug,
+              href: `/work/${project.slug}`,
+              poster,
+              preview,
+              ratio: clip.ratio,
+              title: clip.title,
+              subject: project.title,
+            };
+          }
+
+          const { src, ratio } = photoSources(m.slug, 1200);
+          return {
+            key: m.slug,
+            href: `/work/${project.slug}`,
+            poster: src,
+            ratio,
+            title: project.title,
+            subject: project.subject,
+          };
+        })
+    )
+    .filter((pieces) => pieces.length > 0);
+
+  const out: MosaicItem[] = [];
+  const deepest = Math.max(0, ...perProject.map((p) => p.length));
+
+  for (let i = 0; i < deepest; i++) {
+    for (const pieces of perProject) {
+      if (i < pieces.length) out.push(pieces[i]);
+    }
+  }
+
+  return out;
+};
+
+/**
+ * Height as a multiple of width, for packing columns.
+ *
+ * The mosaic has to come out as a rectangle, which means the columns have to
+ * end level, which means something has to know how tall a tile will be before
+ * it is on screen. Every shape the site delivers is known up front, so this is
+ * a lookup rather than a measurement — no images have to load first, and the
+ * server can pack the same way the browser will.
+ */
+export const RATIO_HEIGHT: Record<Ratio | PhotoRatio, number> = {
+  "16:9": 9 / 16,
+  "4:3": 3 / 4,
+  "1:1": 1,
+  "3:2": 2 / 3,
+  "2:3": 3 / 2,
+  "4:5": 5 / 4,
+  "9:16": 16 / 9,
+};
+
+/**
+ * Deal tiles into `columns` columns so the columns end level.
+ *
+ * CSS multi-column balances by splitting a flow, and a tile cannot be split, so
+ * it leaves one column short and the block ends ragged — a stepped edge rather
+ * than the rectangle he asked for. Packing by known height instead gets the
+ * bottom flat.
+ *
+ * Taking the tiles in authored order and dropping each into the shortest column
+ * is the obvious way to do that, and it is good enough at two or three columns.
+ * At six it is not: thirty tiles over six columns is five apiece, and one 9:16
+ * landing late has nothing left to balance it — that ran about 13% out. So the
+ * tall pieces are placed first, when every column is still empty enough to take
+ * one, and the short ones fill in around them. Each column is then put back
+ * into authored order, because the packing decides *where* a tile goes and the
+ * author still decides what follows what.
+ */
+export function packColumns(items: MosaicItem[], columns: number): MosaicItem[][] {
+  const cols: MosaicItem[][] = Array.from({ length: columns }, () => []);
+  const heights = new Array<number>(columns).fill(0);
+  const order = new Map(items.map((item, i) => [item.key, i]));
+
+  const tallestFirst = [...items].sort(
+    (a, b) => RATIO_HEIGHT[b.ratio] - RATIO_HEIGHT[a.ratio]
+  );
+
+  for (const item of tallestFirst) {
+    let shortest = 0;
+    for (let i = 1; i < columns; i++) {
+      if (heights[i] < heights[shortest]) shortest = i;
+    }
+    cols[shortest].push(item);
+    heights[shortest] += RATIO_HEIGHT[item.ratio];
+  }
+
+  for (const col of cols) {
+    col.sort((a, b) => order.get(a.key)! - order.get(b.key)!);
+  }
+
+  return cols;
+}

@@ -116,7 +116,7 @@ function Piece({
     return (
       <figure>
         <div
-          className={`overflow-hidden bg-black ${RATIO_CLASS[clip.ratio]}`}
+          className={`overflow-hidden bg-[color:var(--bg)] ${RATIO_CLASS[clip.ratio]}`}
         >
           <FilmPlayer src={src} poster={poster} autoStart={false} />
         </div>
@@ -138,7 +138,7 @@ function Piece({
 
   return (
     <div
-      className={`relative overflow-hidden bg-[color:var(--rule)] ${
+      className={`relative overflow-hidden bg-[color:var(--bg)] ${
         PHOTO_RATIO_CLASS[ratio] ?? PHOTO_RATIO_CLASS["4:5"]
       }`}
     >

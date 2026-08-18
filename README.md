@@ -14,8 +14,8 @@ site, edit the data, not the pages.
 | Route          | Content source                          |
 | -------------- | --------------------------------------- |
 | `/`            | `lib/projects.ts` — every project        |
-| `/video`       | `lib/projects.ts` — `kind: "video"`      |
-| `/photo`       | `lib/projects.ts` — `kind: "photo"`      |
+| `/video`       | `lib/projects.ts` — every clip, singly   |
+| `/photo`       | `lib/projects.ts` — every frame, singly  |
 | `/work/[slug]` | one project, whole                       |
 | `/me`          | `lib/photos.ts` (`mePhotos`)             |
 | `/socials`     | `lib/socials.ts`                         |
@@ -31,13 +31,28 @@ special case.
 Adding work means adding an entry to `projects` in `lib/projects.ts`. Nothing
 in `app/` needs to change.
 
+**Collections live on `/` only.** A tile on the index is a whole shoot. On
+`/video` and `/photo` the same work is unpacked to one tile per piece —
+`pieceTiles()` — so those pages read as the work itself rather than as a second,
+shorter list of the same collections. They deal round-robin across shoots,
+because concatenating them puts four screens of graduation portraits at the top
+of `/photo`. A single piece still links to the shoot it belongs to.
+
 ### Layout
 
-The index is one gapless CSS multi-column masonry — `.mosaic` in
-`app/globals.css`, rendered by `components/Mosaic.tsx`. There are no spans to
-set: every tile keeps the shape its master was delivered at, so the stagger
-comes from the work itself. Column counts step 2 / 3 / 5 / 6 across the
-breakpoints, and reordering `projects` is the only way to recompose the wall.
+The index is one gapless block of tiles — `.mosaic` in `app/globals.css`,
+rendered by `components/Mosaic.tsx`. There are no spans to set: every tile keeps
+the shape its master was delivered at, so the stagger comes from the work
+itself.
+
+The block is a **centred rectangle**, which is why the columns are packed in JS
+rather than by CSS multi-column. Multi-column balances by splitting a flow and a
+tile cannot be split, so one column always ended short and the bottom came out
+stepped. `packColumns()` places the tallest pieces first — when every column is
+still empty enough to take one — then fills in around them and restores authored
+order within each column. That holds raggedness under ~6% at every breakpoint
+(2 / 3 / 5 / 6 columns); `RATIO_HEIGHT` is what makes it possible without
+measuring, since every shape is known before anything loads.
 
 Project pages (`components/Breakdown.tsx`) run wide pieces full measure and
 pair verticals two-up — three-up once a project passes twenty pieces, so the
@@ -108,10 +123,14 @@ Serves the local transcodes instead of the CDN.
 
 Two things keep video smooth, and both are easy to undo by accident:
 
-- **Previews load on hover only.** `components/HoverPreview.tsx` renders no
-  `<video>` until a pointer enters the tile, and drops the src on leave. An
-  earlier build put an `autoPlay` video on every tile, which started ~30
-  simultaneous downloads on `/video` and made all of them stutter.
+- **Previews are bounded to what is on screen.** `components/TilePreview.tsx`
+  has two modes. `hover` (used on `/video` and `/photo`) renders no `<video>`
+  until a pointer enters the tile and drops the src on leave. `auto` (the index)
+  plays every loop without interaction, as asked — but mounts a tile's video
+  only when it comes within half a screen of the viewport and unmounts it once
+  it is well past, so the number in flight tracks the window rather than the
+  length of the page. Removing that observer puts ~23 videos on the wire at once
+  and they all stutter; an earlier build did exactly that.
 - **Images are not double-optimized.** `next.config.ts` sets
   `images.unoptimized` because `lib/media.ts` already requests `f_auto,q_auto`
   at a capped width. Turning the Next optimizer back on re-encodes an
