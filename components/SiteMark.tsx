@@ -37,8 +37,12 @@ export default function SiteMark({
 }) {
   const pathname = usePathname();
 
+  // Under the reel the header tucks right up against it. The hero already
+  // stops 4.5rem short of the fold so a strip of page shows underneath; the
+  // links sitting in that strip are what turn it from a gap into a cue.
+  // Elsewhere there is no hero and the wordmark wants room above it.
   return (
-    <header className="frame pt-10 lg:pt-14">
+    <header className={`frame ${mark ? "pt-10 lg:pt-14" : "pt-4"}`}>
       {mark ? (
         <Link
           href="/"
@@ -57,9 +61,12 @@ export default function SiteMark({
           aria-label="Sections"
           // The gap exists to clear the wordmark. With the wordmark on the reel
           // instead, the links sit just under it and the gap would be a hole.
-          className={mark ? "mt-14 lg:mt-20" : "mt-1"}
+          className={mark ? "mt-14 lg:mt-20" : "mt-0"}
         >
-          <ul className="flex items-baseline gap-5 sm:gap-6">
+          {/* Centred, to sit under a centred wordmark and, on the index, under
+              the centred mark on the reel. Left-aligned they read as a corner
+              nav you skim past rather than as the way into the page. */}
+          <ul className="flex items-baseline justify-center gap-5 sm:gap-6">
             {FILTERS.map((filter) => {
               const active =
                 filter.href === "/"
