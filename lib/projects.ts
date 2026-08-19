@@ -310,7 +310,37 @@ export const projects: Project[] = [
     kind: "photo",
     role: PHOTOGRAPHER,
     cover: "grad-hepner",
-    media: photo("grad-hepner", "grad-champagne", "coast-portrait", "campus-walk", ...photosByPrefix("grad")),
+    // Named one at a time rather than taken wholesale off the folder.
+    //
+    // The shoot delivered forty-six frames and they are genuinely different
+    // exposures, but they are not different pictures: one subject gave ten
+    // near-identical frames on the same ledge, another six on the same step.
+    // Run in full it read as a proof sheet someone forgot to edit. So each run
+    // of near-identical frames is down to its best one, and what survives is
+    // the frames that differ — a pose, a location, a black-and-white pass.
+    //
+    // Eighteen of forty-six. The rest are still built and still on the CDN;
+    // they are simply not shown, so restoring one is a line here.
+    media: photo(
+      "grad-hepner",       // Hepner Hall, black and white — the cover
+      "grad-champagne",    // two graduates, champagne on the lawn
+      "coast-portrait",    // black and white, on the rocks
+      "campus-walk",       // candid, crossing campus
+      "grad-1a7a0419",     // standing on the lawn
+      "grad-1a7a0447",     // seated on the ledge, angled
+      "grad-1a7a0495",     // seated on the ledge, square on
+      "grad-1a7a0541",     // the arcade, hands up
+      "grad-1a7a0554",     // the arcade, black and white
+      "grad-1a7a0572",     // the arcade, full length down the colonnade
+      "grad-1a7a0597",     // Hepner Hall in colour
+      "grad-1a7a4914",     // against the brick wall, cap in hand
+      "grad-1a7a4937",     // seated on the steps, cap in hand
+      "grad-1a7a5230",     // the arcade, standing
+      "grad-1a7a5265",     // walking, the garden
+      "grad-1a7a5289",     // the bench, with flowers
+      "grad-1a7a5510",     // seated on the steps
+      "grad-1a7a5600"      // seated on the steps, leaning back
+    ),
   },
 
   {
@@ -545,6 +575,82 @@ export type MosaicItem = {
 };
 
 /** The index: one tile per project. */
+/**
+ * Pieces strong enough to stand on the index on their own.
+ *
+ * The index shows shoots, which is right for a body of work but buries the
+ * single frames that actually stop someone scrolling — the square Byrd
+ * portrait, the March Madness floor, the aerial over the run. Those sat behind
+ * a cover that was never going to be as arresting as they were.
+ *
+ * So a handful are promoted and run beside the collections rather than inside
+ * them. They are chosen for the wall, not for completeness: a spread of shapes
+ * (1:1, 9:16, 4:5, 16:9, 4:3) and no two from the same shoot unless both earn
+ * it. A featured tile opens the piece in place, and the lightbox still offers
+ * the shoot it came from, so promoting one costs the collection nothing.
+ */
+const FEATURED: string[] = [
+  "byrd-spotlight",
+  "march-madness",
+  "strictly-week-7",
+  "practice-727",
+  "track-25",
+  "elzie-dump",
+  "golf-vhs",
+  "byrd-steal-and-one",
+];
+
+/** The featured pieces as tiles, in the order named above. */
+const featuredTiles = (): MosaicItem[] =>
+  FEATURED.map((slug) => {
+    const project = projects.find((p) => p.media.some((m) => m.slug === slug));
+    if (!project) throw new Error(`Featured piece belongs to no project: ${slug}`);
+
+    const clip = clipBySlug(slug);
+    const { poster, preview, src } = clipSources(clip);
+
+    return {
+      key: `featured-${slug}`,
+      href: `/work/${project.slug}`,
+      poster,
+      preview,
+      ratio: clip.ratio,
+      title: clip.title,
+      subject: project.title,
+      full: { kind: "video" as const, src, poster },
+    };
+  });
+
+/**
+ * The index: shoots, with the featured pieces woven through them.
+ *
+ * Appending the featured tiles would leave eight single pieces in a block at
+ * the bottom, which reads as an afterthought and undoes the point of promoting
+ * them. Spacing them evenly through the collections puts one every few tiles,
+ * so the wall alternates between a shoot and a frame the whole way down.
+ */
+export const indexTiles = (): MosaicItem[] => {
+  const collections = projectTiles();
+  const featured = featuredTiles();
+  if (featured.length === 0) return collections;
+
+  const out: MosaicItem[] = [];
+  const every = Math.max(1, Math.floor(collections.length / featured.length));
+  let next = 0;
+
+  collections.forEach((tile, i) => {
+    out.push(tile);
+    if ((i + 1) % every === 0 && next < featured.length) {
+      out.push(featured[next]);
+      next += 1;
+    }
+  });
+
+  // Anything the spacing did not reach still goes on rather than being lost.
+  out.push(...featured.slice(next));
+  return out;
+};
+
 export const projectTiles = (): MosaicItem[] =>
   projects.map((project) => {
     const { poster, preview, ratio } = tile(project);

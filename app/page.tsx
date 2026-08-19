@@ -4,7 +4,7 @@ import SiteFooter from "@/components/SiteFooter";
 import SiteMark from "@/components/SiteMark";
 import { clipBySlug, clipSources } from "@/lib/clips";
 import { heroUrl } from "@/lib/media";
-import { projectTiles } from "@/lib/projects";
+import { indexTiles } from "@/lib/projects";
 
 /**
  * The front page: the reel full screen, then the index under it.
@@ -29,12 +29,14 @@ export default function Page() {
       <Hero
         src={heroUrl(intro.filmId)}
         poster={clipSources(intro).poster}
+        ratio={intro.ratio}
       />
 
-      <SiteMark />
+      {/* The wordmark rides the reel now, so this is the links alone. */}
+      <SiteMark mark={false} />
 
       <main className="mt-5 flex-1">
-        <Mosaic items={projectTiles()} autoplay />
+        <Mosaic items={indexTiles()} autoplay />
       </main>
 
       <SiteFooter />

@@ -2,26 +2,39 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { RATIO_CLASS, type Ratio } from "@/lib/clips";
+
 /**
- * The opener: one reel, edge to edge, above the wall.
+ * The opener: the reel at its own shape, with the mark over it.
  *
- * It stops short of the full screen on purpose. A hero that fills the viewport
- * exactly gives a visitor no reason to believe there is anything under it, and
- * people were missing the rest of the site — so a band of white is left showing
- * at the bottom. It is the page itself peeking through rather than a cue drawn
- * on top, which is why the arrow that used to sit here is gone.
+ * The reel is never cropped. It used to be `object-cover`, which filled the
+ * screen by scaling the 4:3 master until it covered a much wider box and threw
+ * the top and bottom away — on a phone that cost about 62% of every frame's
+ * width. `object-contain` shows the frame that was cut and lets the page show
+ * either side of it instead, which is the trade he asked for: leave the format
+ * alone, even if that means bars.
+ *
+ * The surround is the page's own white rather than black. It is the one place
+ * a dark panel would have been defensible, but a black band here would be the
+ * only black surface on the site and would read as a player chrome rather than
+ * as part of the page.
+ *
+ * On a phone the section is the reel's shape exactly, so there is nothing
+ * either side and the bars never appear. Above `sm` it is capped to the
+ * viewport so the wall below stays reachable in one scroll.
+ *
+ * The hero stops short of the full screen on purpose: a hero that fills the
+ * viewport exactly gives a visitor no reason to believe there is anything
+ * under it, and people were missing the rest of the site. The band of page
+ * left showing at the bottom is that cue.
  *
  * `100svh` rather than `100vh` — on mobile Safari `vh` is the viewport with the
  * browser chrome *hidden*, so a `100vh` hero is taller than the screen on
- * arrival and the strip of white would be scrolled off before anyone saw it.
+ * arrival and the strip would be scrolled off before anyone saw it.
  *
  * Sound starts off and has to stay that way: autoplay with audio is blocked in
- * every browser, and an unmuted `<video autoplay>` simply never starts. The
- * control is the visitor's gesture, which is exactly what the browser wants
- * before it will let sound through.
+ * every browser, and an unmuted `<video autoplay>` simply never starts.
  */
-
-const BAND = "4.5rem";
 
 /**
  * Whether to offer the sound control.
@@ -42,9 +55,12 @@ const HAS_SOUND = false;
 export default function Hero({
   src,
   poster,
+  /** The reel's true shape, so nothing has to be cropped to hold it. */
+  ratio,
 }: {
   src: string;
   poster: string;
+  ratio: Ratio;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
@@ -57,8 +73,7 @@ export default function Hero({
     // `muted` as a DOM property and does not reflect it to the attribute, and
     // the browser's autoplay check reads the attribute — so with an audio
     // track present the play() below is refused and the hero sits on its
-    // poster. It worked right up until the reel grew a sound toggle and got
-    // its audio back, which is exactly what makes this easy to miss.
+    // poster.
     video.muted = true;
 
     // Muted autoplay is allowed everywhere, but a rejected promise is still
@@ -78,8 +93,7 @@ export default function Hero({
 
     // Turning sound on can cost you the playback: a browser that does not
     // count this as a user gesture will pause rather than let audio through,
-    // and a frozen hero is a worse outcome than a silent one. If it will not
-    // play with sound, put it back the way it was.
+    // and a frozen hero is a worse outcome than a silent one.
     try {
       await video.play();
     } catch {
@@ -89,16 +103,18 @@ export default function Hero({
     }
   };
 
+  // The 4.5rem is the band of page left showing under the tall hero. It is
+  // written out rather than held in a const because Tailwind reads arbitrary
+  // values straight out of the source and cannot see one assembled at runtime.
   return (
     <section
-      className="relative w-full overflow-hidden bg-[color:var(--bg)]"
-      style={{ height: `calc(100svh - ${BAND})` }}
+      className={`relative w-full overflow-hidden bg-[color:var(--bg)] ${RATIO_CLASS[ratio]} sm:aspect-auto sm:h-[calc(100svh-4.5rem)]`}
     >
       <video
         ref={ref}
         src={src}
         poster={poster}
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-contain"
         autoPlay
         muted
         loop
@@ -106,6 +122,22 @@ export default function Hero({
         preload="auto"
         aria-label="Showreel"
       />
+
+      {/* The mark, centred on the reel — the brand over the work rather than
+          a caption under it. The reel runs from a black arena to daylight, so
+          the wordmark cannot rely on the footage staying dark: it carries its
+          own soft scrim, sized to the type rather than drawn across the frame,
+          which keeps it legible on a bright cut without becoming a panel. */}
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+        <div className="px-12 py-10 [background:radial-gradient(ellipse_at_center,rgba(0,0,0,0.55)_0%,rgba(0,0,0,0.34)_45%,rgba(0,0,0,0.12)_70%,transparent_85%)]">
+          <span className="wordmark block text-center text-[clamp(34px,8vw,104px)] leading-[0.95] text-white drop-shadow-[0_2px_22px_rgba(0,0,0,0.55)]">
+            Mando
+          </span>
+          <span className="byline mt-3 block text-center text-[10px] text-white/90 drop-shadow-[0_1px_10px_rgba(0,0,0,0.6)] sm:text-[12px]">
+            Armando Aguilar
+          </span>
+        </div>
+      </div>
 
       {HAS_SOUND ? (
         <button
