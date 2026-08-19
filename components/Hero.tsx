@@ -23,6 +23,22 @@ import { useEffect, useRef, useState } from "react";
 
 const BAND = "4.5rem";
 
+/**
+ * Whether to offer the sound control.
+ *
+ * Off, because the reel we were sent has no sound to offer. Its audio track is
+ * not missing — INTROREELB.mov carries a real AAC stereo track at 319 kb/s that
+ * measures -91.0 dB both mean and peak, which is the floor: digital silence end
+ * to end. A master from the same drop measures -12.2 dB mean and peaks at 0.0,
+ * and comes through the transcode intact, so the pipeline is not eating it. The
+ * reel was exported with the audio disabled.
+ *
+ * Everything below still works; a control that does nothing when clicked is
+ * just worse than no control. Flip this back to `true` the moment a reel with
+ * a real mix lands and gets re-encoded.
+ */
+const HAS_SOUND = false;
+
 export default function Hero({
   src,
   poster,
@@ -91,15 +107,17 @@ export default function Hero({
         aria-label="Showreel"
       />
 
-      <button
-        type="button"
-        onClick={toggle}
-        aria-pressed={!muted}
-        aria-label={muted ? "Turn sound on" : "Turn sound off"}
-        className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-[color:var(--bg)] text-[color:var(--fg)] transition-opacity hover:opacity-70 sm:bottom-6 sm:right-6"
-      >
-        <SoundIcon muted={muted} />
-      </button>
+      {HAS_SOUND ? (
+        <button
+          type="button"
+          onClick={toggle}
+          aria-pressed={!muted}
+          aria-label={muted ? "Turn sound on" : "Turn sound off"}
+          className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-[color:var(--bg)] text-[color:var(--fg)] transition-opacity hover:opacity-70 sm:bottom-6 sm:right-6"
+        >
+          <SoundIcon muted={muted} />
+        </button>
+      ) : null}
     </section>
   );
 }
