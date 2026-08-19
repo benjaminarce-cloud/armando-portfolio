@@ -123,20 +123,22 @@ export default function Hero({
         aria-label="Showreel"
       />
 
-      {/* The mark, centred on the reel — the brand over the work rather than
-          a caption under it. The reel runs from a black arena to daylight, so
-          the wordmark cannot rely on the footage staying dark: it carries its
-          own soft scrim, sized to the type rather than drawn across the frame,
-          which keeps it legible on a bright cut without becoming a panel. */}
+      {/* The mark, centred on the reel. Nothing behind it: no panel, no scrim,
+          no name under it — the wordmark alone, small enough to read as a
+          maker's mark on the work rather than as a title over it.
+          
+          The only concession to the footage is a soft shadow on the glyphs
+          themselves, which is not a background and leaves no visible edge, but
+          keeps the mark from dissolving when the reel cuts to daylight.
+          
+          Tracking is opened up here and nowhere else. `.wordmark` is set at
+          -0.02em for the large sizes it was written for; at this size that
+          same negative tracking reads as cramped, and a little air is what
+          makes a small uppercase mark look deliberate. */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <div className="px-12 py-10 [background:radial-gradient(ellipse_at_center,rgba(0,0,0,0.55)_0%,rgba(0,0,0,0.34)_45%,rgba(0,0,0,0.12)_70%,transparent_85%)]">
-          <span className="wordmark block text-center text-[clamp(34px,8vw,104px)] leading-[0.95] text-white drop-shadow-[0_2px_22px_rgba(0,0,0,0.55)]">
-            Mando
-          </span>
-          <span className="byline mt-3 block text-center text-[10px] text-white/90 drop-shadow-[0_1px_10px_rgba(0,0,0,0.6)] sm:text-[12px]">
-            Armando Aguilar
-          </span>
-        </div>
+        <span className="wordmark text-center text-[clamp(19px,2.3vw,31px)] tracking-[0.14em] text-white drop-shadow-[0_1px_12px_rgba(0,0,0,0.6)]">
+          Mando
+        </span>
       </div>
 
       {HAS_SOUND ? (
