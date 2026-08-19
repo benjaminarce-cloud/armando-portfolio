@@ -4,17 +4,21 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 /**
- * The top of every page: the mark, small and centred, with a lot of air under
- * it, then the filters set flush left just above the mosaic.
+ * The top of every page: the wordmark, and the links into the sections.
  *
- * The old header ran a nav bar with a rule under it and the wordmark at 190px
- * on the home page. Both are gone — the reference he pointed at gives the mark
- * about forty pixels and lets the work carry the screen, and that restraint is
- * most of what he was reacting to.
+ * Two arrangements, and the index is the reason there are two.
  *
- * The filters are real routes, not client-side state: /video and /photo render
- * their own subset on the server, so they are linkable, cached and work with
- * no JavaScript. Only the current-page underline needs the pathname.
+ * `page` is the plain one and the one the site had before the reel arrived:
+ * the wordmark centred with air around it, the links flush left under it, the
+ * work under those.
+ *
+ * `index` is the same thing at desktop width — because the reel is a phone-only
+ * opener now — and something different on a phone, where the reel *is* there
+ * and already carries the wordmark on top of it. So on a phone the wordmark
+ * here would be the second one on screen: it is dropped, and the links move to
+ * the middle and tuck up under the reel, where they double as the hint that
+ * the page keeps going. Everything switches at `sm` on a media query alone, so
+ * the markup is the same server-side and there is nothing to hydrate.
  */
 
 const FILTERS = [
@@ -26,47 +30,54 @@ const FILTERS = [
 
 export default function SiteMark({
   filters = true,
-  /**
-   * The index carries the wordmark on the reel itself, so it asks for the
-   * links alone. Every other page has no hero to carry it and keeps both.
-   */
-  mark = true,
+  variant = "page",
 }: {
   filters?: boolean;
-  mark?: boolean;
+  variant?: "page" | "index";
 }) {
   const pathname = usePathname();
+  const index = variant === "index";
 
-  // Under the reel the header tucks right up against it. The hero already
-  // stops 4.5rem short of the fold so a strip of page shows underneath; the
-  // links sitting in that strip are what turn it from a gap into a cue.
-  // Elsewhere there is no hero and the wordmark wants room above it.
   return (
-    <header className={`frame ${mark ? "pt-10 lg:pt-14" : "pt-4"}`}>
-      {mark ? (
-        <Link
-          href="/"
-          aria-label="Mando — Armando Aguilar, home"
-          className="mx-auto block w-fit text-center transition-opacity hover:opacity-55"
-        >
-          <span className="wordmark block text-[22px] sm:text-[26px]">Mando</span>
-          <span className="byline mt-1 block text-[color:var(--muted)]">
-            Armando Aguilar
-          </span>
-        </Link>
-      ) : null}
+    <header
+      className={
+        index
+          ? // Tight to the reel on a phone; the usual air once the reel is gone.
+            "frame pt-4 sm:pt-10 lg:pt-14"
+          : "frame pt-10 lg:pt-14"
+      }
+    >
+      <Link
+        href="/"
+        aria-label="Mando — Armando Aguilar, home"
+        className={[
+          "mx-auto w-fit text-center transition-opacity hover:opacity-55",
+          // On the index below `sm` the reel is carrying the mark already.
+          index ? "hidden sm:block" : "block",
+        ].join(" ")}
+      >
+        <span className="wordmark block text-[22px] sm:text-[26px]">Mando</span>
+        <span className="byline mt-1 block text-[color:var(--muted)]">
+          Armando Aguilar
+        </span>
+      </Link>
 
       {filters ? (
         <nav
           aria-label="Sections"
-          // The gap exists to clear the wordmark. With the wordmark on the reel
-          // instead, the links sit just under it and the gap would be a hole.
-          className={mark ? "mt-14 lg:mt-20" : "mt-0"}
+          // The gap clears the wordmark. Where the wordmark is not there — the
+          // index on a phone — it would be a hole instead.
+          className={index ? "mt-0 sm:mt-14 lg:mt-20" : "mt-14 lg:mt-20"}
         >
-          {/* Centred, to sit under a centred wordmark and, on the index, under
-              the centred mark on the reel. Left-aligned they read as a corner
-              nav you skim past rather than as the way into the page. */}
-          <ul className="flex items-baseline justify-center gap-5 sm:gap-6">
+          {/* Flush left, which is where they sit under a centred wordmark.
+              The exception is the index on a phone: no wordmark above them and
+              a centred mark on the reel, so centred is what lines up. */}
+          <ul
+            className={[
+              "flex items-baseline gap-5 sm:gap-6",
+              index ? "justify-center sm:justify-start" : "",
+            ].join(" ")}
+          >
             {FILTERS.map((filter) => {
               const active =
                 filter.href === "/"

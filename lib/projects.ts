@@ -327,11 +327,6 @@ export const projects: Project[] = [
       "coast-portrait",    // black and white, on the rocks
       "campus-walk",       // candid, crossing campus
       "grad-1a7a0419",     // standing on the lawn
-      "grad-1a7a0447",     // seated on the ledge, angled
-      "grad-1a7a0495",     // seated on the ledge, square on
-      "grad-1a7a0541",     // the arcade, hands up
-      "grad-1a7a0554",     // the arcade, black and white
-      "grad-1a7a0572",     // the arcade, full length down the colonnade
       "grad-1a7a0597",     // Hepner Hall in colour
       "grad-1a7a4914",     // against the brick wall, cap in hand
       "grad-1a7a4937",     // seated on the steps, cap in hand
