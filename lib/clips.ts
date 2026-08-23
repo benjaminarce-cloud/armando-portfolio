@@ -79,14 +79,14 @@ export const clips: Clip[] = [
   clip("practice-727", "Practice, 7/27", "9:16"),
   clip("practice-sept-2", "Practice, 9/2", "9:16"),
   ...postcards([
-    ["practice-postcard-1", "One"],
-    ["practice-postcard-2", "Two"],
-    ["practice-postcard-3", "Three"],
-    ["practice-postcard-4", "Four"],
-    ["practice-postcard-5", "Five"],
-    ["practice-postcard-6", "Six"],
-    ["practice-postcard-7", "Seven"],
-    ["practice-postcard-8", "Eight"],
+    ["practice-postcard-1", "The Jam Center"],
+    ["practice-postcard-2", "Center Court"],
+    ["practice-postcard-3", "Scrimmage"],
+    ["practice-postcard-4", "We Will Win"],
+    ["practice-postcard-5", "Shooting"],
+    ["practice-postcard-6", "Drills"],
+    ["practice-postcard-7", "The Line"],
+    ["practice-postcard-8", "Full Court"],
   ]),
 
   // Offseason
@@ -96,17 +96,17 @@ export const clips: Clip[] = [
 
   // NCAA golf championships
   ...postcards([
-    ["golf-natty", "Natty"],
-    ["golf-team", "Team"],
+    ["golf-natty", "National Champion"],
+    ["golf-team", "The Embrace"],
     ["golf-drives", "Drives"],
     ["golf-vhs", "VHS"],
     ["golf-putts", "Putts"],
-    ["golf-still-1", "Still I"],
-    ["golf-still-2", "Still II"],
-    ["golf-still-3", "Still III"],
-    ["golf-still-4", "Still IV"],
-    ["golf-box", "Box"],
-    ["golf-board", "Board"],
+    ["golf-still-1", "Championship Box"],
+    ["golf-still-2", "Duke and Florida"],
+    ["golf-still-3", "Flags"],
+    ["golf-still-4", "Auburn"],
+    ["golf-box", "Tee Marker"],
+    ["golf-board", "Leaderboard"],
   ]),
 
   // Strictly Run Club
@@ -120,9 +120,9 @@ export const clips: Clip[] = [
   clip("west-coast-final", "World Cup Final", "16:9"),
   clip("trell-mic-up", "Mic'd Up", "9:16"),
   clip("elzie-20", "Twenty Points", "9:16"),
-  clip("elzie-dump", "Dump", "4:5"),
+  clip("elzie-dump", "Highlights", "4:5"),
   clip("ghost-town", "Ghost Town", "4:3"),
-  clip("track-25", "Track '25", "4:5"),
+  clip("track-25", "Portraits", "4:5"),
   clip("track-media-day", "Media Day", "4:3"),
   clip("volleyball-media-day", "Media Day", "9:16"),
   clip("softball-colors", "Colors", "1:1"),
@@ -130,9 +130,9 @@ export const clips: Clip[] = [
   clip("chase-trailer", "Trailer", "9:16"),
   clip("food-drive", "Food Drive", "16:9"),
   clip("suit-state", "Suit State", "9:16"),
-  clip("axo-formal", "Formal", "16:9"),
+  clip("axo-formal", "Recap", "16:9"),
   clip("color-grades", "Grades", "4:5"),
-  clip("perso-dump", "Perso", "4:5"),
+  clip("perso-dump", "Friends", "4:5"),
   clip("jazz-dump", "Jazz", "4:5"),
 
   // Kept from the build before the 2026 drop at his request, so it still

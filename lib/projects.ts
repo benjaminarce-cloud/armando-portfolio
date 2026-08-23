@@ -179,8 +179,8 @@ export const projects: Project[] = [
 
   {
     slug: "chase",
-    title: "Chase",
-    subject: "Documentary Trailer",
+    title: "Blenders Eyewear",
+    subject: "Chase Fisher — Documentary Trailer",
     year: 2026,
     kind: "video",
     role: DIRECTOR,
@@ -399,8 +399,8 @@ export const projects: Project[] = [
 
   {
     slug: "axo",
-    title: "Formal",
-    subject: "Alpha Chi Omega",
+    title: "Alpha Chi Omega",
+    subject: "Recap",
     year: 2026,
     kind: "video",
     role: DIRECTOR,
