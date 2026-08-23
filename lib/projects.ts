@@ -36,6 +36,8 @@ export type Project = {
   role: string;
   /** A sentence, only where there is something to say that the frames don't. */
   note?: string;
+  /** Where the finished piece lives in full, when it is published elsewhere. */
+  link?: { label: string; href: string };
   /** The piece whose still becomes the tile. Must be in `media`. */
   cover: string;
   media: ProjectMedia[];
@@ -103,14 +105,22 @@ export const projects: Project[] = [
     year: 2026,
     kind: "video",
     role: DIRECTOR,
-    note: "A documentary on the Aztec guard, cut down to a trailer, a spotlight and the nights either side of them.",
+    link: {
+      label: "Watch on YouTube",
+      href: "https://www.youtube.com/watch?v=PEtrScv564s&t=1s",
+    },
     cover: "miles-byrd-doc-trailer",
-    media: video(
-      "miles-byrd-doc-trailer",
-      "byrd-spotlight",
-      "byrd-steal-and-one",
-      "byrd-intro-clip"
-    ),
+    media: [
+      ...video(
+        "miles-byrd-doc-trailer",
+        "byrd-spotlight",
+        "byrd-steal-and-one",
+        "byrd-intro-clip"
+      ),
+      // Him crossing campus with a bag. It was filed under graduation, where
+      // it was the only frame of a subject the rest of that shoot never shows.
+      ...photo("campus-walk"),
+    ],
   },
 
   {
@@ -174,6 +184,10 @@ export const projects: Project[] = [
     year: 2026,
     kind: "video",
     role: DIRECTOR,
+    link: {
+      label: "Watch on YouTube",
+      href: "https://www.youtube.com/watch?v=X4s6ZiFHgpk",
+    },
     cover: "chase-trailer",
     media: video("chase-trailer"),
   },
@@ -209,7 +223,16 @@ export const projects: Project[] = [
     role: PHOTOGRAPHER,
     note: "A hospital visit that was about more than signed jerseys — showing up for kids facing what no child should have to, and reminding them they are not fighting it alone.",
     cover: "jaelan-phillips-jersey",
-    media: photo("jaelan-phillips-jersey", "jaelan-phillips-signing", ...photosByPrefix("jaelan")),
+    media: photo(
+      "jaelan-phillips-jersey",
+      "jaelan-phillips-signing",
+      ...photosByPrefix("jaelan"),
+      // A second visit, in a Dolphins jersey rather than a Panthers one.
+      "community-visit",
+      // His own football camp, in Redlands.
+      "bball-1a7a8620",
+      "bball-1a7a8681"
+    ),
   },
 
   {
@@ -219,7 +242,6 @@ export const projects: Project[] = [
     year: 2026,
     kind: "photo",
     role: PHOTOGRAPHER,
-    note: "Shot in black and white, start to finish.",
     cover: "stafford-visit",
     media: photo("stafford-visit", "stafford-ball", ...photosByPrefix("stafford")),
   },
@@ -325,7 +347,7 @@ export const projects: Project[] = [
       "grad-hepner",       // Hepner Hall, black and white — the cover
       "grad-champagne",    // two graduates, champagne on the lawn
       "coast-portrait",    // black and white, on the rocks
-      "campus-walk",       // candid, crossing campus
+      "bball-1a7a5519",    // seated on the steps, red stole
       "grad-1a7a0419",     // standing on the lawn
       "grad-1a7a0597",     // Hepner Hall in colour
       "grad-1a7a4914",     // against the brick wall, cap in hand
@@ -357,7 +379,11 @@ export const projects: Project[] = [
     kind: "video",
     role: DIRECTOR,
     cover: "track-media-day",
-    media: video("track-media-day", "track-25"),
+    media: [
+      ...video("track-media-day", "track-25"),
+      // A media-day portrait, in the kit the film above is shooting.
+      ...photo("locker-syd"),
+    ],
   },
 
   {
@@ -401,17 +427,19 @@ export const projects: Project[] = [
     kind: "photo",
     role: PHOTOGRAPHER,
     cover: "aztec-hood",
+    // Named one at a time rather than taken off the `bball` folder wholesale.
+    // The folder was a mixed best-of, not a shoot: it also held the Jaelan
+    // Phillips camp, a graduation portrait, the studio session and a track
+    // media-day frame, all of which now sit with their own shoots.
     media: photo(
       "aztec-hood",
       "aztec-profile",
       "game-night",
       "camp-ball",
-      "studio-football",
-      "community-visit",
-      ...photosByPrefix("bball"),
+      "bball-1a7a3861",
+      "bball-1a7a4067",
       "locker-1a7a5461-2",
-      "locker-1a7a5476",
-      "locker-syd"
+      "locker-1a7a5476"
     ),
   },
 
@@ -441,6 +469,20 @@ export const projects: Project[] = [
       "locker-000000010003-3",
       "locker-000000010022-3"
     ),
+  },
+
+  {
+    slug: "studio",
+    title: "Studio",
+    subject: "Portraits",
+    year: 2026,
+    kind: "photo",
+    role: PHOTOGRAPHER,
+    // Two setups from one session — the black-and-white with the ball, and
+    // the colour frame on the olive backdrop. They were filed under Aztec
+    // basketball, which is neither the sport nor the shoot.
+    cover: "studio-football",
+    media: photo("studio-football", "bball-1a7a8575"),
   },
 
   {
@@ -546,6 +588,8 @@ export type MosaicItem = {
   key: string;
   /** Where the tile goes when it is a link — the shoot it belongs to. */
   href: string;
+  /** The shoot it came from. Lets the lightbox offer its siblings. */
+  project?: string;
   poster: string;
   /** Present only for moving pieces. A still has nothing to play. */
   preview?: string;
@@ -607,6 +651,7 @@ const featuredTiles = (): MosaicItem[] =>
     return {
       key: `featured-${slug}`,
       href: `/work/${project.slug}`,
+      project: project.slug,
       poster,
       preview,
       ratio: clip.ratio,
@@ -652,6 +697,7 @@ export const projectTiles = (): MosaicItem[] =>
     return {
       key: project.slug,
       href: `/work/${project.slug}`,
+      project: project.slug,
       poster,
       preview,
       ratio,
@@ -686,6 +732,7 @@ export const pieceTiles = (kind: ProjectMedia["kind"]): MosaicItem[] => {
             return {
               key: m.slug,
               href: `/work/${project.slug}`,
+              project: project.slug,
               poster,
               preview,
               ratio: clip.ratio,
@@ -699,6 +746,7 @@ export const pieceTiles = (kind: ProjectMedia["kind"]): MosaicItem[] => {
           return {
             key: m.slug,
             href: `/work/${project.slug}`,
+            project: project.slug,
             poster: src,
             ratio,
             title: project.title,

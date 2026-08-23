@@ -80,6 +80,19 @@ export default async function ProjectPage({
               {project.note}
             </p>
           ) : null}
+
+          {/* Where the finished piece lives, for the ones that are published
+              somewhere in full. The site shows the trailer; this is the film. */}
+          {project.link ? (
+            <a
+              href={project.link.href}
+              target="_blank"
+              rel="noreferrer"
+              className="caps u mt-6 inline-block transition-opacity hover:opacity-55"
+            >
+              {project.link.label} &rarr;
+            </a>
+          ) : null}
         </div>
 
         <div className="mt-8 lg:mt-12">
