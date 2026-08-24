@@ -36,9 +36,9 @@ PHOTOS=(
   # Matthew Stafford — hospital visit essay
   "PICS/MATTHEW STAFFORD/1A7A8100-3.jpg::stafford-visit"
   "PICS/MATTHEW STAFFORD/1A7A9024.jpg::stafford-ball"
-  # 35mm scans
+  # 35mm scans. The roll also held the media-day portrait that MISC PICS
+  # delivers as syd.jpg at a larger size — see DUPLICATES.
   "PICS/000000010002 3.jpg::film-tunnel"
-  "PICS/000000010005 2.jpg::film-portrait"
   # Grad portraits
   "PICS/1A7A0607-2.jpg::grad-hepner"
   "PICS/1A7A6054.jpg::grad-champagne"
@@ -128,6 +128,11 @@ ALREADY_LIVE=(
 DUPLICATES=(
   "./nascar.JPG"          # same frame as 000000010025 5.jpg, with text over it
   "./IMG_7085 6.JPG"      # same paddock wide as IMG_7085 5.JPG
+  # The signed-jersey frame, which the 2026 drop already delivers as jp-2.jpg
+  # and the site shows as jaelan-phillips-jersey.
+  "JAELAN PHILLIPS/jp.jpg"
+  # The same profile against the hospital wall as 1A7A7509.jpg, re-exported.
+  "MATTHEW STAFFORD PICS/4.jpg"
 )
 
 is_duplicate() {
