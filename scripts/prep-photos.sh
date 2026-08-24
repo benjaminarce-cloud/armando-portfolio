@@ -13,14 +13,15 @@
 #
 # Usage: scripts/prep-photos.sh [outdir]
 #
-# Two sources: the hand-picked PHOTOS list reads the 2026 drop, the FOLDERS
-# list reads whole shoots out of the August one.
+# The hand-picked PHOTOS list reads the 2026 drop; the FOLDERS list reads whole
+# shoots, each naming the drop it belongs to.
 
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OLD="${SRC:-$ROOT/UPDATEDMANDOCONTENT}"
 NEW="${NEW_SRC:-$ROOT/NEWCONTENT}"
+NASCAR="${NASCAR_SRC:-$ROOT/NASCARCONTENT}"
 OUT="${1:-$ROOT/build/media}"
 
 mkdir -p "$OUT"
@@ -86,13 +87,17 @@ PHOTOS=(
 #
 #   GRAD PICS/1A7A0438.jpg  ->  grad-1a7a0438.jpg
 #
-# folder :: slug prefix
+# root :: folder :: slug prefix
+#
+# A folder of "." is the root itself, for a drop that arrives flat rather than
+# in named shoots.
 FOLDERS=(
-  "GRAD PICS::grad"
-  "JAELAN PHILLIPS::jaelan"
-  "MATTHEW STAFFORD PICS::stafford"
-  "EXTRA BASKETBALL PICS::bball"
-  "MISC PICS::locker"
+  "NEW::GRAD PICS::grad"
+  "NEW::JAELAN PHILLIPS::jaelan"
+  "NEW::MATTHEW STAFFORD PICS::stafford"
+  "NEW::EXTRA BASKETBALL PICS::bball"
+  "NEW::MISC PICS::locker"
+  "NASCAR::.::nascar"
 )
 
 # Frames that are already on the site under a curated slug from the list
@@ -112,6 +117,23 @@ ALREADY_LIVE=(
   "MISC PICS/1A7A5070.jpg"                 # aztec-profile
 )
 
+# Frames the drop delivered twice over. Unlike the graded variants these do not
+# announce themselves in the filename, so they are named here: the portrait
+# arrived once clean and once with the role burned across it as a social card,
+# and the paddock wide arrived twice a few degrees apart.
+DUPLICATES=(
+  "./nascar.JPG"          # same frame as 000000010025 5.jpg, with text over it
+  "./IMG_7085 6.JPG"      # same paddock wide as IMG_7085 5.JPG
+)
+
+is_duplicate() {
+  local rel="$1" entry
+  for entry in "${DUPLICATES[@]}"; do
+    [[ "$entry" == "$rel" ]] && return 0
+  done
+  return 1
+}
+
 is_live() {
   local rel="$1" entry
   for entry in "${ALREADY_LIVE[@]}"; do
@@ -128,7 +150,7 @@ is_alternate_grade() {
   local dir="$1" base="$2" stem
   [[ "$base" =~ ^(.*)-[0-9]+$ ]] || return 1
   stem="${BASH_REMATCH[1]}"
-  [[ -f "$dir/$stem.jpg" ]]
+  [[ -f "$dir/$stem.jpg" || -f "$dir/$stem.JPG" ]]
 }
 
 slugify() { # basename -> lowercase, anything not a letter or digit becomes a dash
@@ -162,9 +184,16 @@ for entry in "${PHOTOS[@]}"; do
 done
 
 for entry in "${FOLDERS[@]}"; do
-  folder="${entry%%::*}"
+  root="${entry%%::*}"
   prefix="${entry##*::}"
-  dir="$NEW/$folder"
+  folder="${entry#*::}"
+  folder="${folder%::*}"
+
+  case "$root" in
+    NEW) dir="$NEW/$folder" ;;
+    NASCAR) dir="$NASCAR/$folder" ;;
+    *) echo "!! unknown root '$root' for $prefix" >&2; continue ;;
+  esac
 
   if [[ ! -d "$dir" ]]; then
     echo "!! missing folder: $folder" >&2
@@ -176,16 +205,20 @@ for entry in "${FOLDERS[@]}"; do
 
   # A plain glob, sorted, so the run is the same every time.
   while IFS= read -r -d '' file; do
-    base="$(basename "$file" .jpg)"
+    base="$(basename "$file")"
+    base="${base%.*}"
 
-    if is_live "$folder/$(basename "$file")" || is_alternate_grade "$dir" "$base"; then
+    rel="$folder/$(basename "$file")"
+    if is_live "$rel" || is_duplicate "$rel" || is_alternate_grade "$dir" "$base"; then
       skipped=$((skipped + 1))
       continue
     fi
 
     resize "$file" "$prefix-$(slugify "$base")"
     kept=$((kept + 1))
-  done < <(find "$dir" -maxdepth 1 -name '*.jpg' -print0 | sort -z)
+    # -iname, and the extension stripped by pattern rather than by suffix,
+    # because a drop can arrive with .JPG as readily as .jpg.
+  done < <(find "$dir" -maxdepth 1 -iname '*.jpg' -print0 | sort -z)
 
   echo "==> $folder: $kept frames ($skipped skipped)"
 done

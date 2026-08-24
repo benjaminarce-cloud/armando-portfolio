@@ -34,8 +34,11 @@ export type Project = {
   kind: "video" | "photo";
   /** What he did on it, shown as the credit on the project page. */
   role: string;
-  /** A sentence, only where there is something to say that the frames don't. */
-  note?: string;
+  /**
+   * Only where there is something to say that the frames don't. An array is
+   * rendered as separate paragraphs, so copy written in beats keeps them.
+   */
+  note?: string | string[];
   /** Where the finished piece lives in full, when it is published elsewhere. */
   link?: { label: string; href: string };
   /** The piece whose still becomes the tile. Must be in `media`. */
@@ -190,6 +193,34 @@ export const projects: Project[] = [
     },
     cover: "chase-trailer",
     media: video("chase-trailer"),
+  },
+
+  {
+    slug: "nascar",
+    title: "NASCAR San Diego",
+    subject: "Official Livestream",
+    year: 2026,
+    kind: "photo",
+    // Not shot as a photographer: the stills are what came back from a weekend
+    // spent operating a camera. One frame carries the role burned across it —
+    // "NASCAR SAN DIEGO / ROLE: LIVESTREAM CAM OP."
+    role: "Camera Operator",
+    note: [
+      "Spent last weekend as a cam op for the official livestream of the NASCAR San Diego race. Covered the garage and pits area, for a live behind the scenes look at the teams, mechanics, and cars before the race, while also capturing interviews throughout the event.",
+      "A historic race celebrating America's 250th anniversary.",
+    ],
+    cover: "nascar-000000010025-5",
+    media: photo(
+      "nascar-000000010025-5", // in the garage, black and white
+      "nascar-img-7072-9",     // the Haas Factory Team pit
+      "nascar-img-6877-5",     // shooting down onto the grid
+      "nascar-img-6878",       // over the pit wall
+      "nascar-img-7085-5",     // the paddock, flags up
+      "nascar-img-7100-5",     // the 00 car
+      "nascar-img-7112-5",     // a crew member and the car
+      "nascar-img-7101-5",     // the case, packed
+      "nascar-img-7105-5"      // the bodies, black and white
+    ),
   },
 
   {

@@ -21,11 +21,18 @@ const ROOT = path.join(__dirname, "..");
 const DIR = path.join(ROOT, "build", "media");
 const OUT = path.join(ROOT, "lib", "photo-manifest.ts");
 
-/** Snap a measured ratio to the three the site actually lays out. */
+/**
+ * Snap a measured ratio to the three the site actually lays out.
+ *
+ * The portrait boundary is the midpoint between 4:5 (0.800) and 2:3 (0.667),
+ * so a frame lands in whichever box crops it least. It used to sit at 0.75,
+ * which is exactly 3:4 — a real shape, and one that fell to the far side and
+ * got cropped to 2:3 when 4:5 was the closer fit.
+ */
 function classify(width, height) {
   const v = width / height;
   if (v > 1.3) return "3:2";
-  if (v > 0.75) return "4:5";
+  if (v > 0.733) return "4:5";
   return "2:3";
 }
 

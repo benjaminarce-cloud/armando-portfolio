@@ -75,11 +75,22 @@ export default async function ProjectPage({
             <p className="caps-xs ml-auto text-[color:var(--muted)]">{slate}</p>
           </div>
 
-          {project.note ? (
-            <p className="mt-6 max-w-2xl text-[13px] leading-[1.65]">
-              {project.note}
-            </p>
-          ) : null}
+          {/* Copy written in beats keeps them, rather than being run together
+              into one block. */}
+          {project.note
+            ? (Array.isArray(project.note) ? project.note : [project.note]).map(
+                (para, i) => (
+                  <p
+                    key={i}
+                    className={`max-w-2xl text-[13px] leading-[1.65] ${
+                      i === 0 ? "mt-6" : "mt-4"
+                    }`}
+                  >
+                    {para}
+                  </p>
+                )
+              )
+            : null}
 
           {/* Where the finished piece lives, for the ones that are published
               somewhere in full. The site shows the trailer; this is the film. */}
