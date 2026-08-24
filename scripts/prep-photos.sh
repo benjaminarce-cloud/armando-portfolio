@@ -115,6 +115,10 @@ ALREADY_LIVE=(
   "MATTHEW STAFFORD PICS/1A7A8100-3.jpg"   # stafford-visit
   "MATTHEW STAFFORD PICS/1A7A9024.jpg"     # stafford-ball
   "MISC PICS/1A7A5070.jpg"                 # aztec-profile
+  # Byte-identical to the frame the 2026 drop delivered — both drops carried
+  # the same scan under the same lab filename, so it built twice under two
+  # slugs and showed twice in 35mm.
+  "MISC PICS/000000010002 3.jpg"           # film-tunnel
 )
 
 # Frames the drop delivered twice over. Unlike the graded variants these do not

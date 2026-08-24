@@ -83,7 +83,6 @@ export const PHOTO_MANIFEST: Record<string, PhotoRatio> = {
   "jaelan-phillips-signing": "4:5",
   "juun-can": "4:5",
   "juun-court": "4:5",
-  "locker-000000010002-3": "2:3",
   "locker-000000010003-3": "2:3",
   "locker-000000010022-3": "2:3",
   "locker-1a7a5461-2": "4:5",

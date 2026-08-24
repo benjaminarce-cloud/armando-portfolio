@@ -496,7 +496,6 @@ export const projects: Project[] = [
     media: photo(
       "film-tunnel",
       "film-portrait",
-      "locker-000000010002-3",
       "locker-000000010003-3",
       "locker-000000010022-3"
     ),
