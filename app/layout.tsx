@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 
 /**
  * The reference face is Helvetica Neue, which every Mac already has. Inter is
@@ -25,7 +26,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${sans.variable} antialiased`}>{children}</body>
+      <body className={`${sans.variable} antialiased`}>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
