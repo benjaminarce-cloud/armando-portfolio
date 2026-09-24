@@ -30,6 +30,8 @@ OUT="${1:-$ROOT/build/media}"
 # An entry names its own root so both can be listed in one table.
 OLD="${SRC:-$ROOT/UPDATEDMANDOCONTENT}"
 NEW="${NEW_SRC:-$ROOT/NEWCONTENT}"
+# The September package, delivered into the ignored media/ folder.
+SEPT="${SEPT_SRC:-$ROOT/media/september-2026}"
 
 mkdir -p "$OUT"
 
@@ -112,6 +114,22 @@ CLIPS=(
   "NEW::ELZIEDUMP2.mov::elzie-dump"
   "NEW::dumppersoo.mov::perso-dump"
   "NEW::jazzdump.mov::jazz-dump"
+
+  # --- September drop ---------------------------------------------------
+  # "Video Sep 15 2026, 2 24 57 PM.mov" is not built: it is an earlier cut of
+  # the schedule release carrying a different set of dates. The timeline
+  # breakdown below was recorded over that cut, which is why its dates differ
+  # from the finished film.
+  "SEPT::SCHEDULERELEASE3.mov::schedule-release"
+  "SEPT::SCHEDULERELEASETIMELINE.mov::schedule-release-timeline"
+  "SEPT::BLENDER3DCOURTBTS.mov::schedule-release-blender"
+  "SEPT::SCHEDULE RELEASE FUSION BTS.mov::schedule-release-fusion"
+  "SEPT::MBBBLACKOUTTRAILER.mov::blackout-trailer"
+  "SEPT::BASKETBALLATFTBLGAME.mov::football-game"
+  "SEPT::TIMELINEBTS.mov::football-game-timeline"
+  "SEPT::DAY AT THE RACES RECAP.mov::day-at-the-races"
+  "SEPT::TAME IMPALA PRACTICE RECAP.mov::practice-tame-impala"
+  "SEPT::VOLLEYINTROVID.mov::volleyball-intro"
 )
 
 # Long edge cap for the film, and for the hover preview.
@@ -146,6 +164,9 @@ CROPS=(
   # framing pillarboxed inside 16:9. Left alone it plays full-screen with
   # black bars down both sides.
   "intro-hero::crop=2880:2160:480:0"
+  # Pillarboxed to 2268 wide inside 4:3. The nearest shape the grid lays out
+  # is square, which costs 54px a side.
+  "practice-tame-impala::crop=2160:2160:360:0"
 )
 
 crop_for() {
@@ -184,6 +205,7 @@ for entry in "${CLIPS[@]}"; do
   case "$root" in
     OLD) in="$OLD/$rel" ;;
     NEW) in="$NEW/$rel" ;;
+    SEPT) in="$SEPT/$rel" ;;
     ROOT) in="$ROOT/$rel" ;;
     *) echo "!! unknown root '$root' for $slug" >&2; continue ;;
   esac

@@ -150,6 +150,68 @@ export const projects: Project[] = [
     ),
   },
 
+  // The September drop.
+  {
+    slug: "schedule-release",
+    title: "Schedule Release",
+    subject: "Aztec Basketball",
+    year: 2026,
+    kind: "video",
+    role: DIRECTOR,
+    note: "The court was built in Blender and the dates set in Fusion. The breakdowns follow the film.",
+    cover: "schedule-release",
+    media: video(
+      "schedule-release",
+      "schedule-release-blender",
+      "schedule-release-fusion",
+      "schedule-release-timeline"
+    ),
+  },
+
+  {
+    slug: "tecs-on-film",
+    title: "Tecs on Film",
+    subject: "Aztec Basketball — 35mm",
+    year: 2026,
+    kind: "photo",
+    role: PHOTOGRAPHER,
+    cover: "tecs-000000010029",
+    media: photo("tecs-000000010029", ...photosByPrefix("tecs")),
+  },
+
+  {
+    slug: "blackout",
+    title: "Blackout at Viejas",
+    subject: "Aztec Basketball — Trailer",
+    year: 2026,
+    kind: "video",
+    role: DIRECTOR,
+    cover: "blackout-trailer",
+    media: video("blackout-trailer"),
+  },
+
+  {
+    slug: "football-game",
+    title: "At the Football Game",
+    subject: "Aztec Basketball",
+    year: 2026,
+    kind: "video",
+    role: DIRECTOR,
+    cover: "football-game",
+    media: video("football-game", "football-game-timeline"),
+  },
+
+  {
+    slug: "day-at-the-races",
+    title: "Day at the Races",
+    subject: "Recap",
+    year: 2026,
+    kind: "video",
+    role: DIRECTOR,
+    cover: "day-at-the-races",
+    media: video("day-at-the-races"),
+  },
+
   {
     slug: "reel",
     title: "Reel",
@@ -295,6 +357,7 @@ export const projects: Project[] = [
       "practice-postcard-6",
       "practice-postcard-7",
       "practice-postcard-8",
+      "practice-tame-impala",
       "practice-727",
       "practice-sept-2"
     ),
@@ -420,12 +483,12 @@ export const projects: Project[] = [
   {
     slug: "volleyball",
     title: "Volleyball",
-    subject: "Media Day — Behind the Scenes",
+    subject: "Aztec Volleyball",
     year: 2026,
     kind: "video",
     role: DIRECTOR,
-    cover: "volleyball-media-day",
-    media: video("volleyball-media-day"),
+    cover: "volleyball-intro",
+    media: video("volleyball-intro", "volleyball-media-day"),
   },
 
   {

@@ -60,6 +60,16 @@ POSTERS=(
   "golf-still-4::3.15"
   "golf-box::2.48"
   "golf-board::0.68"
+
+  # September drop
+  "schedule-release::62.15"        # the court in the red ring, no card over it
+  "schedule-release-blender::11.96" # the finished render, wide
+  "blackout-trailer::3.85"         # 24, under the rim
+  "football-game::13.08"           # shouting in the stands
+  "football-game-timeline::13.08"
+  "day-at-the-races::21.02"        # the field, mid-race
+  "practice-tame-impala::17.07"
+  "volleyball-intro::8.51"         # 7, in red
 )
 
 for entry in "${POSTERS[@]}"; do

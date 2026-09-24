@@ -22,6 +22,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OLD="${SRC:-$ROOT/UPDATEDMANDOCONTENT}"
 NEW="${NEW_SRC:-$ROOT/NEWCONTENT}"
 NASCAR="${NASCAR_SRC:-$ROOT/NASCARCONTENT}"
+SEPT="${SEPT_SRC:-$ROOT/media/september-2026}"
 OUT="${1:-$ROOT/build/media}"
 
 mkdir -p "$OUT"
@@ -98,6 +99,8 @@ FOLDERS=(
   "NEW::EXTRA BASKETBALL PICS::bball"
   "NEW::MISC PICS::locker"
   "NASCAR::.::nascar"
+  # 35mm, from practice — posted as "Tecs on Film".
+  "SEPT::AUG 6::tecs"
 )
 
 # Frames that are already on the site under a curated slug from the list
@@ -133,7 +136,32 @@ DUPLICATES=(
   "JAELAN PHILLIPS/jp.jpg"
   # The same profile against the hospital wall as 1A7A7509.jpg, re-exported.
   "MATTHEW STAFFORD PICS/4.jpg"
+  # The carousel's opening card: 000000010029 with the title and a swipe cue
+  # laid over it.
+  "AUG 6/TECS.jpg"
 )
+
+# Scans come back from the lab all landscape and carry no orientation tag, so
+# -auto-orient has nothing to go on. The portraits shot upright are turned by
+# hand. Degrees clockwise.
+ROTATE=(
+  "AUG 6/000000010023.jpg::90"
+  "AUG 6/000000010024.jpg::90"
+  "AUG 6/000000010025.jpg::90"
+  "AUG 6/000000010028.jpg::90"
+  "AUG 6/000000010033.jpg::90"
+)
+
+rotation_for() {
+  local rel="$1" entry
+  for entry in "${ROTATE[@]}"; do
+    if [[ "${entry%%::*}" == "$rel" ]]; then
+      echo "${entry##*::}"
+      return
+    fi
+  done
+  echo 0
+}
 
 is_duplicate() {
   local rel="$1" entry
@@ -168,9 +196,10 @@ slugify() { # basename -> lowercase, anything not a letter or digit becomes a da
   echo "$1" | tr '[:upper:]' '[:lower:]' | sed -E -e 's/[^a-z0-9]+/-/g' -e 's/^-//' -e 's/-$//'
 }
 
-resize() { # $1 = source file, $2 = slug
+resize() { # $1 = source file, $2 = slug, $3 = optional clockwise rotation
   magick "$1" \
     -auto-orient \
+    -rotate "${3:-0}" \
     -resize "${MAX}x${MAX}>" \
     -strip \
     -quality 88 \
@@ -201,6 +230,7 @@ for entry in "${FOLDERS[@]}"; do
   case "$root" in
     NEW) dir="$NEW/$folder" ;;
     NASCAR) dir="$NASCAR/$folder" ;;
+    SEPT) dir="$SEPT/$folder" ;;
     *) echo "!! unknown root '$root' for $prefix" >&2; continue ;;
   esac
 
@@ -223,7 +253,7 @@ for entry in "${FOLDERS[@]}"; do
       continue
     fi
 
-    resize "$file" "$prefix-$(slugify "$base")"
+    resize "$file" "$prefix-$(slugify "$base")" "$(rotation_for "$rel")"
     kept=$((kept + 1))
     # -iname, and the extension stripped by pattern rather than by suffix,
     # because a drop can arrive with .JPG as readily as .jpg.

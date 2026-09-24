@@ -73,15 +73,24 @@ async function main() {
     process.stdout.write(`->  ${publicId} (${mb} MB) ... `);
 
     try {
-      await cloudinary.uploader.upload_large(path.join(DIR, file), {
-        public_id: publicId,
-        resource_type: resourceType,
-        overwrite: true,
-        invalidate: true,
-        // 20 MB parts: comfortably under the single-request cap, so the big
-        // films go up in pieces instead of failing outright.
-        chunk_size: 20 * 1024 * 1024,
-      });
+      // upload_large hands back a stream, not a promise, so awaiting it
+      // directly returns at once and reports "ok" whether or not the parts
+      // arrived. The callback is the only place the real result lands.
+      await new Promise((resolve, reject) =>
+        cloudinary.uploader.upload_large(
+          path.join(DIR, file),
+          {
+            public_id: publicId,
+            resource_type: resourceType,
+            overwrite: true,
+            invalidate: true,
+            // 20 MB parts: comfortably under the single-request cap, so the
+            // big films go up in pieces instead of failing outright.
+            chunk_size: 20 * 1024 * 1024,
+          },
+          (err, result) => (err ? reject(err) : resolve(result))
+        )
+      );
       console.log("ok");
       done++;
     } catch (err) {

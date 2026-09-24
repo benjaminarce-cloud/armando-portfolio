@@ -89,6 +89,21 @@ export const clips: Clip[] = [
     ["practice-postcard-8", "Full Court"],
   ]),
 
+  // Schedule release, and the three breakdowns cut from its making
+  clip("schedule-release", "Schedule Release", "4:3"),
+  clip("schedule-release-blender", "The Court, in Blender", "4:3"),
+  clip("schedule-release-fusion", "The Dates, in Fusion", "4:3"),
+  clip("schedule-release-timeline", "The Timeline", "4:3"),
+
+  // The football game, and its edit
+  clip("football-game", "At the Football Game", "4:3"),
+  clip("football-game-timeline", "The Timeline", "9:16"),
+
+  clip("blackout-trailer", "Blackout at Viejas", "4:5"),
+  clip("day-at-the-races", "Day at the Races", "4:3"),
+  clip("practice-tame-impala", "Practice Recap", "1:1"),
+  clip("volleyball-intro", "Intro", "4:3"),
+
   // Offseason
   clip("offszn-wk1", "Week One", "16:9"),
   clip("offszn-recap", "Recap", "4:5"),
