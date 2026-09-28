@@ -213,6 +213,17 @@ export const projects: Project[] = [
   },
 
   {
+    slug: "soccer",
+    title: "Soccer",
+    subject: "Aztec Women's Soccer — Media Day",
+    year: 2026,
+    kind: "video",
+    role: DIRECTOR,
+    cover: "soccer-media-day",
+    media: video("soccer-media-day"),
+  },
+
+  {
     slug: "reel",
     title: "Reel",
     subject: "Selected Work",
@@ -357,7 +368,7 @@ export const projects: Project[] = [
       "practice-postcard-6",
       "practice-postcard-7",
       "practice-postcard-8",
-      "practice-tame-impala",
+      "practice-new-person",
       "practice-727",
       "practice-sept-2"
     ),
@@ -487,8 +498,8 @@ export const projects: Project[] = [
     year: 2026,
     kind: "video",
     role: DIRECTOR,
-    cover: "volleyball-intro",
-    media: video("volleyball-intro", "volleyball-media-day"),
+    cover: "volleyball-2026",
+    media: video("volleyball-2026", "volleyball-media-day"),
   },
 
   {
@@ -721,6 +732,7 @@ export type MosaicItem = {
  * the shoot it came from, so promoting one costs the collection nothing.
  */
 const FEATURED: string[] = [
+  "practice-new-person",
   "byrd-spotlight",
   "march-madness",
   "strictly-week-7",

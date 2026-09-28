@@ -32,6 +32,7 @@ OLD="${SRC:-$ROOT/UPDATEDMANDOCONTENT}"
 NEW="${NEW_SRC:-$ROOT/NEWCONTENT}"
 # The September package, delivered into the ignored media/ folder.
 SEPT="${SEPT_SRC:-$ROOT/media/september-2026}"
+OCT="${OCT_SRC:-$ROOT/media/october-2026}"
 
 mkdir -p "$OUT"
 
@@ -128,8 +129,19 @@ CLIPS=(
   "SEPT::BASKETBALLATFTBLGAME.mov::football-game"
   "SEPT::TIMELINEBTS.mov::football-game-timeline"
   "SEPT::DAY AT THE RACES RECAP.mov::day-at-the-races"
-  "SEPT::TAME IMPALA PRACTICE RECAP.mov::practice-tame-impala"
-  "SEPT::VOLLEYINTROVID.mov::volleyball-intro"
+
+  # --- October drop -----------------------------------------------------
+  # All three were exported as they ran on Instagram, with the account handle
+  # and the post's controls in frame. That is how they were delivered and they
+  # are built as-is.
+  #
+  # newpersonMBB is the finished cut of the Tame Impala practice recap in the
+  # September drop — same footage, opening on the song card — so it replaces
+  # that one rather than running beside it. VBcut is the finished volleyball
+  # intro, whose rough cut was pulled before it went live.
+  "OCT::newpersonMBB.mov::practice-new-person"
+  "OCT::VBcut.mov::volleyball-2026"
+  "OCT::WSOCCER.mov::soccer-media-day"
 )
 
 # Long edge cap for the film, and for the hover preview.
@@ -166,7 +178,7 @@ CROPS=(
   "intro-hero::crop=2880:2160:480:0"
   # Pillarboxed to 2268 wide inside 4:3. The nearest shape the grid lays out
   # is square, which costs 54px a side.
-  "practice-tame-impala::crop=2160:2160:360:0"
+  "practice-new-person::crop=2160:2160:360:0"
 )
 
 crop_for() {
@@ -206,6 +218,7 @@ for entry in "${CLIPS[@]}"; do
     OLD) in="$OLD/$rel" ;;
     NEW) in="$NEW/$rel" ;;
     SEPT) in="$SEPT/$rel" ;;
+    OCT) in="$OCT/$rel" ;;
     ROOT) in="$ROOT/$rel" ;;
     *) echo "!! unknown root '$root' for $slug" >&2; continue ;;
   esac

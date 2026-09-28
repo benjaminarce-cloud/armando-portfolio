@@ -101,8 +101,9 @@ export const clips: Clip[] = [
 
   clip("blackout-trailer", "Blackout at Viejas", "4:5"),
   clip("day-at-the-races", "Day at the Races", "4:3"),
-  clip("practice-tame-impala", "Practice Recap", "1:1"),
-  clip("volleyball-intro", "Intro", "4:3"),
+  clip("practice-new-person", "New Person, Same Old Mistakes", "1:1"),
+  clip("volleyball-2026", "Intro", "4:3"),
+  clip("soccer-media-day", "Media Day", "4:3"),
 
   // Offseason
   clip("offszn-wk1", "Week One", "16:9"),

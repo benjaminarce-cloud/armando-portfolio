@@ -68,8 +68,11 @@ POSTERS=(
   "football-game::13.08"           # shouting in the stands
   "football-game-timeline::13.08"
   "day-at-the-races::21.02"        # the field, mid-race
-  "practice-tame-impala::17.07"
-  "volleyball-intro::8.51"         # 7, in red
+
+  # October drop
+  "practice-new-person::6.90"      # the dunk, under the rim
+  "volleyball-2026::9.32"          # 2, lit from behind
+  "soccer-media-day::4.55"
 )
 
 for entry in "${POSTERS[@]}"; do
