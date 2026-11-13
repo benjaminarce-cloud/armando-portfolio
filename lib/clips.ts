@@ -105,6 +105,12 @@ export const clips: Clip[] = [
   clip("volleyball-2026", "Intro", "4:3"),
   clip("soccer-media-day", "Media Day", "4:3"),
 
+  // November drop
+  clip("kendra-scott-gameday", "Gameday", "9:16"),
+  clip("cash-app-bait-house", "Lightning Lake Bait House", "4:3"),
+  clip("pregame-game-one", "Pregame", "4:3"),
+  clip("pregame-bill-walton", "Pregame", "4:3"),
+
   // Offseason
   clip("offszn-wk1", "Week One", "16:9"),
   clip("offszn-recap", "Recap", "4:5"),

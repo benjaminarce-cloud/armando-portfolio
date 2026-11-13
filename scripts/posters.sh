@@ -73,6 +73,12 @@ POSTERS=(
   "practice-new-person::6.90"      # the dunk, under the rim
   "volleyball-2026::9.32"          # 2, lit from behind
   "soccer-media-day::4.55"
+
+  # November drop
+  "kendra-scott-gameday::14.00"    # two in cowboy hats, Texas pin
+  "cash-app-bait-house::6.00"      # on her phone under the BAIT sign
+  "pregame-game-one::2.00"         # AZTECS 0, lacing a red shoe
+  "pregame-bill-walton::13.50"     # the tie-dye warmups, in a row
 )
 
 for entry in "${POSTERS[@]}"; do

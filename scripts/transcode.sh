@@ -33,6 +33,7 @@ NEW="${NEW_SRC:-$ROOT/NEWCONTENT}"
 # The September package, delivered into the ignored media/ folder.
 SEPT="${SEPT_SRC:-$ROOT/media/september-2026}"
 OCT="${OCT_SRC:-$ROOT/media/october-2026}"
+NOV="${NOV_SRC:-$ROOT/media/november-2026}"
 
 mkdir -p "$OUT"
 
@@ -142,6 +143,15 @@ CLIPS=(
   "OCT::newpersonMBB.mov::practice-new-person"
   "OCT::VBcut.mov::volleyball-2026"
   "OCT::WSOCCER.mov::soccer-media-day"
+
+  # --- November drop ----------------------------------------------------
+  # Two brand films and two pregames. "HERO" in a filename is the brand's word
+  # for the lead spot of a campaign, not the site's hero — the Cash App piece
+  # is a project like any other.
+  "NOV::KENDRASCOTT_HERO_50SEC_REVISED.mov::kendra-scott-gameday"
+  "NOV::HERO40SEC43.mov::cash-app-bait-house"
+  "NOV::GAME1PRE.mov::pregame-game-one"
+  "NOV::PREEECOOLLLL.mov::pregame-bill-walton"
 )
 
 # Long edge cap for the film, and for the hover preview.
@@ -219,6 +229,7 @@ for entry in "${CLIPS[@]}"; do
     NEW) in="$NEW/$rel" ;;
     SEPT) in="$SEPT/$rel" ;;
     OCT) in="$OCT/$rel" ;;
+    NOV) in="$NOV/$rel" ;;
     ROOT) in="$ROOT/$rel" ;;
     *) echo "!! unknown root '$root' for $slug" >&2; continue ;;
   esac

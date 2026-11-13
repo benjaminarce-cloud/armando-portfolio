@@ -62,11 +62,74 @@ const PHOTOGRAPHER = "Photographer";
 export const projects: Project[] = [
   // The order of the wall.
   //
-  // The first five are the ones he asked for by name, in his order. What
-  // follows is strongest first: the pieces that stop you, then the shoots
+  // The newest drop leads. Position here does not pick a tile's column —
+  // packColumns deals by height — but it does pick its row: each column is put
+  // back into this order, so whatever is written first lands in the top row of
+  // its column. A drop filed further down sits a screen or more below the fold
+  // however good it is, which is where the October volleyball cut ended up
+  // before it was moved up here.
+  //
+  // After the newest drop come the five he asked for by name, in his order.
+  // What follows is strongest first: the pieces that stop you, then the shoots
   // with depth behind them, then the quieter one-offs, then the studies.
-  // Nothing here is load-bearing — reordering only changes how the columns
-  // stack, because packColumns deals by height, not by position.
+
+  // The November drop.
+  {
+    slug: "kendra-scott",
+    title: "Kendra Scott",
+    subject: "Texas Gameday",
+    year: 2026,
+    kind: "video",
+    role: DIRECTOR,
+    cover: "kendra-scott-gameday",
+    media: video("kendra-scott-gameday"),
+  },
+
+  {
+    slug: "cash-app",
+    title: "Cash App",
+    subject: "Lightning Lake Bait House — Los Angeles",
+    year: 2026,
+    kind: "video",
+    role: DIRECTOR,
+    cover: "cash-app-bait-house",
+    media: video("cash-app-bait-house"),
+  },
+
+  {
+    slug: "game-one",
+    title: "Game One",
+    subject: "Aztec Basketball — Pregame",
+    year: 2026,
+    kind: "video",
+    role: DIRECTOR,
+    cover: "pregame-game-one",
+    media: video("pregame-game-one"),
+  },
+
+  {
+    slug: "bill-walton-classic",
+    title: "Bill Walton Classic",
+    subject: "Aztec Basketball — Pregame",
+    year: 2026,
+    kind: "video",
+    role: DIRECTOR,
+    cover: "pregame-bill-walton",
+    media: video("pregame-bill-walton"),
+  },
+
+  // From the October drop: its finished intro had been left where the old
+  // rough cut sat, two-thirds of the way down the wall.
+  {
+    slug: "volleyball",
+    title: "Volleyball",
+    subject: "Aztec Volleyball",
+    year: 2026,
+    kind: "video",
+    role: DIRECTOR,
+    cover: "volleyball-2026",
+    media: video("volleyball-2026", "volleyball-media-day"),
+  },
 
   {
     slug: "world-cup-final",
@@ -489,17 +552,6 @@ export const projects: Project[] = [
       // A media-day portrait, in the kit the film above is shooting.
       ...photo("locker-syd"),
     ],
-  },
-
-  {
-    slug: "volleyball",
-    title: "Volleyball",
-    subject: "Aztec Volleyball",
-    year: 2026,
-    kind: "video",
-    role: DIRECTOR,
-    cover: "volleyball-2026",
-    media: video("volleyball-2026", "volleyball-media-day"),
   },
 
   {
